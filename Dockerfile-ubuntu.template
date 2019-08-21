@@ -28,6 +28,6 @@ ENV JAVA_HOME $IDSVR_HOME/lib/java/jre
 ENV PATH $IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH
 WORKDIR $IDSVR_HOME
 
-COPY idsvr-${VERSION}/idsvr /opt/idsvr
+COPY idsvr-{{VERSION}}/idsvr /opt/idsvr
 
 CMD ["idsvr"]

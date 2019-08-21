@@ -2,13 +2,21 @@
 
 This repository contains Dockerfiles and other resources that can be used to create Docker images of the [Curity Identity Server](https://curity.io). 
 
+# Usage
+
+* Download the release from the (Curity Developer portal)[https://developer.curity.io/downloads]
+* Run the command `./idsvr-images.sh <VERSION>`
+
+This will unpack the release, create a version folder and copy the Dockerfiles inside it and then build the images and push them to docker hub.
+
+
 # Contributing
 
 Pull requests are welcome. To do so, just fork this repo, and submit a pull request. 
 
 # License
 
-The software running in the Docker containers produced by the Dockerfiles maintained in this repository is licensed by Curity AB. The Docker-related files and resources maintained in this respository are licsned License under the [Apache 2 license](LICENSE>).
+The software running in the Docker containers produced by the Dockerfiles maintained in this repository is licensed by Curity AB. The Docker-related files and resources maintained in this respository are licensed under the [Apache 2 license](LICENSE>).
 
 # More Information
 

@@ -27,7 +27,7 @@ ENV JAVA_HOME $IDSVR_HOME/lib/java/jre
 ENV PATH /usr/local/ssl/bin:$IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH
 WORKDIR $IDSVR_HOME
 
-COPY idsvr-${VERSION}/idsvr /opt/idsvr
+COPY idsvr-{{VERSION}}/idsvr /opt/idsvr
 
 RUN ln -s /usr/lib/x86_64-linux-gnu/libcrypto.so.1.0.2 $IDSVR_HOME/lib/libcrypto.so.1.0.0
 
