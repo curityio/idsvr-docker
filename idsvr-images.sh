@@ -27,5 +27,5 @@ docker build -t curity/idsvr:${VERSION}-centos -t curity/idsvr:${VERSION}-centos
 docker build -t curity/idsvr:${VERSION}-stretch -f ${VERSION}/strech/Dockerfile .
 docker build -t curity/idsvr:${VERSION}-stretch-slim -t curity/idsvr:${VERSION}-slim -f ${VERSION}/stretch-slim/Dockerfile .
 
-docker images --format "{{.Repository}}:{{.Tag}}" | grep ${VERSION} | xargs -n 1 docker push
+docker images --format "{{.Repository}}:{{.Tag}}" | grep curity/idsvr:${VERSION} | xargs -n 1 docker push
 docker push curity/idsvr:latest
