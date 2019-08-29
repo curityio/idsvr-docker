@@ -25,5 +25,6 @@ ENV PATH $IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH
 WORKDIR $IDSVR_HOME
 
 COPY idsvr-4.2.1/idsvr /opt/idsvr
+COPY first-run /opt/idsvr/etc/first-run
 
 CMD ["idsvr"]
