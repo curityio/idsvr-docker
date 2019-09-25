@@ -6,10 +6,10 @@ if [ ! -d "${VERSION}" ]; then
   mkdir -p "${VERSION}/stretch"
   mkdir -p "${VERSION}/stretch-slim"
 
-  sed -e "s/{{VERSION}}/${VERSION}/g" < Dockerfile-ubuntu.template > "${VERSION}/ubuntu/Dockerfile"
-  sed -e "s/{{VERSION}}/${VERSION}/g" < Dockerfile-centos.template > "${VERSION}/centos/Dockerfile"
-  sed -e "s/{{VERSION}}/${VERSION}/g" < Dockerfile-stretch.template > "${VERSION}/stretch/Dockerfile"
-  sed -e "s/{{VERSION}}/${VERSION}/g" < Dockerfile-stretch-slim.template > "${VERSION}/stretch-slim/Dockerfile"
+  sed -e "s/{{VERSION}}/${VERSION}/g" Dockerfile-ubuntu.template > "${VERSION}/ubuntu/Dockerfile"
+  sed -e "s/{{VERSION}}/${VERSION}/g" Dockerfile-centos.template > "${VERSION}/centos/Dockerfile"
+  sed -e "s/{{VERSION}}/${VERSION}/g" Dockerfile-stretch.template > "${VERSION}/stretch/Dockerfile"
+  sed -e "s/{{VERSION}}/${VERSION}/g" Dockerfile-stretch-slim.template > "${VERSION}/stretch-slim/Dockerfile"
 fi
 
 docker build --no-cache -t curity/idsvr:latest -t "curity/idsvr:${VERSION}" -t "curity/idsvr:${VERSION}-ubuntu" -t "curity/idsvr:${VERSION}-ubuntu18" -t "curity/idsvr:${VERSION}-ubuntu18.04" -f "${VERSION}/ubuntu/Dockerfile" .
