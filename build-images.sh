@@ -7,8 +7,8 @@ if [ ! -d "${VERSION}" ]; then
   mkdir -p "${VERSION}/stretch-slim"
 
   sed -e "s/{{VERSION}}/${VERSION}/g" < Dockerfile-ubuntu.template > "${VERSION}/ubuntu/Dockerfile"
-  sed -e "s/{{VERSION}}/${VERSION}/g"< Dockerfile-centos.template > "${VERSION}/centos/Dockerfile"
-  sed -e "s/{{VERSION}}/${VERSION}/g"< Dockerfile-stretch.template > "${VERSION}/stretch/Dockerfile"
+  sed -e "s/{{VERSION}}/${VERSION}/g" < Dockerfile-centos.template > "${VERSION}/centos/Dockerfile"
+  sed -e "s/{{VERSION}}/${VERSION}/g" < Dockerfile-stretch.template > "${VERSION}/stretch/Dockerfile"
   sed -e "s/{{VERSION}}/${VERSION}/g" < Dockerfile-stretch-slim.template > "${VERSION}/stretch-slim/Dockerfile"
 fi
 
