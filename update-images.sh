@@ -22,9 +22,9 @@ do
   fi
 
   RELEASE_FILENAME=idsvr-$VERSION-linux.tar.gz
-  curl -H "Authorization: Bearer ${ACCESS_TOKEN}" ${RELEASE_API}/"${VERSION}"/linux-release > "${RELEASE_FILENAME}"
+  curl -H "Authorization: Bearer ${ACCESS_TOKEN}" "${RELEASE_API}/${VERSION}/linux-release" > "${RELEASE_FILENAME}"
 
-  RELEASE_HASH=$(curl -H "Authorization: Bearer ${ACCESS_TOKEN}" ${RELEASE_API}/"${VERSION}" | jq -r '."linux-sha256-checksum"')
+  RELEASE_HASH=$(curl -H "Authorization: Bearer ${ACCESS_TOKEN}" "${RELEASE_API}/${VERSION}" | jq -r '."linux-sha256-checksum"')
   echo "$RELEASE_HASH" "$RELEASE_FILENAME" | sha256sum -c
 
   tar -xf "$RELEASE_FILENAME"
