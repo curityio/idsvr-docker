@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ ! -d "$DIRECTORY" ]; then
+if [ ! -d "$VERSION" ]; then
   mkdir -p "${VERSION}"/ubuntu
   mkdir -p "${VERSION}"/centos
   mkdir -p "${VERSION}"/stretch
