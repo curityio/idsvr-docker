@@ -2,8 +2,8 @@
 
 set -e
 
-[[ -z "$CLIENT_ID" ]] && echo "CLIENT_ID not set"; exit 1;
-[[ -z "$CLIENT_SECRET" ]] && echo "CLIENT_SECRET not set"; exit 1;
+[[ -z "$CLIENT_ID" ]] && echo "CLIENT_ID not set" &&  exit 1;
+[[ -z "$CLIENT_SECRET" ]] && echo "CLIENT_SECRET not set" &&  exit 1;
 
 TOKEN_ENDPOINT=https://login.curity.io/oauth/v2/token
 RELEASE_API=https://releaseapi.curity.io/releases
