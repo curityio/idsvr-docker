@@ -49,4 +49,4 @@ done < <(find -- * -maxdepth 0 -type d)
 docker tag "curity/idsvr:${LATEST_RELEASE}" curity/idsvr:latest && docker push curity/idsvr:latest
 
 # Clean up date tags
-docker images --format \"{{.Repository}}:{{.Tag}}\" | grep "curity/idsvr:.*-${DATE}" | xargs -n 1 docker rmi
+docker images --format \"{{.Repository}}:{{.Tag}}\" | grep "curity/idsvr:.*-${DATE}" | xargs -rn 1 docker rmi
