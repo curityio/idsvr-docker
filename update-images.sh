@@ -2,6 +2,8 @@
 
 set -e
 
+DATE=$(/bin/date +%Y%m%d)
+
 [[ -z "${CLIENT_ID}" ]] && echo "CLIENT_ID not set" >&2 && exit 1;
 [[ -z "${CLIENT_SECRET}" ]] && echo "CLIENT_SECRET not set" >&2 && exit 1;
 
@@ -10,6 +12,12 @@ RELEASE_API=https://releaseapi.curity.io/releases
 SCOPE="release_download release_read"
 
 LATEST_RELEASE=$(find -- * -maxdepth 0 -type d | sort -rh | head -n 1)
+
+# Pull base images to avoid using the cache for those
+docker pull centos:centos7
+docker pull buildpack-deps:stretch
+docker pull debian:stretch-slim
+docker pull ubuntu:18.04
 
 while IFS= read -r VERSION
 do
@@ -29,7 +37,7 @@ do
   RELEASE_HASH=$(curl -s -S -H "Authorization: Bearer ${ACCESS_TOKEN}" "${RELEASE_API}/${VERSION}" | jq -r '."linux-sha256-checksum"')
   echo "${RELEASE_HASH}" "${RELEASE_FILENAME}" | sha256sum -c
 
-  tar -xf "${RELEASE_FILENAME}"
+  tar -xf "${RELEASE_FILENAME}" -C "${VERSION}"
 
   # build the images and push them. Latest pushed seperately after the loop to avoid making each release :latest while running this script.
   export VERSION=${VERSION} && ./build-images.sh
@@ -37,6 +45,8 @@ do
 
 done < <(find -- * -maxdepth 0 -type d)
 
-# Push the latest tag
+## Push the latest tag
 docker tag "curity/idsvr:${LATEST_RELEASE}" curity/idsvr:latest && docker push curity/idsvr:latest
 
+# Clean up date tags
+docker images --format \"{{.Repository}}:{{.Tag}}\" | grep "curity/idsvr:.*-${DATE}" | xargs -n 1 docker rmi
