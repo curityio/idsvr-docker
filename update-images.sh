@@ -18,6 +18,7 @@ docker pull centos:centos7
 docker pull buildpack-deps:stretch
 docker pull debian:stretch-slim
 docker pull ubuntu:18.04
+docker pull curity/idsvr:latest
 
 while IFS= read -r VERSION
 do
@@ -40,13 +41,18 @@ do
   tar -xf "${RELEASE_FILENAME}" -C "${VERSION}"
 
   # build the images and push them. Latest pushed seperately after the loop to avoid making each release :latest while running this script.
-  export VERSION=${VERSION} && ./build-images.sh
-  docker images --format \"{{.Repository}}:{{.Tag}}\" | grep "curity/idsvr:${VERSION}" | xargs -n 1 docker push
+  export VERSION=${VERSION} && export PUSH_IMAGES=true
+  ./build-images.sh
 
 done < <(find -- * -maxdepth 0 -type d)
 
-## Push the latest tag
-docker tag "curity/idsvr:${LATEST_RELEASE}" curity/idsvr:latest && docker push curity/idsvr:latest
+## Push the latest tag if updated
+CURRENT_LATEST_IMAGE_ID=$(docker images --filter=reference="curity/idsvr:latest" --format "{{.ID}}")
+LATEST_IMAGE_ID=$(docker images --filter=reference="curity/idsvr:${LATEST_RELEASE}" --format "{{.ID}}")
+
+if [[ "${LATEST_IMAGE_ID}" != "${CURRENT_LATEST_IMAGE_ID}" ]]; then
+  docker tag "curity/idsvr:${LATEST_RELEASE}" curity/idsvr:latest && docker push curity/idsvr:latest
+fi
 
 # Clean up date tags
 docker images --format \"{{.Repository}}:{{.Tag}}\" | grep "curity/idsvr:.*-${DATE}" | xargs -rn 1 docker rmi

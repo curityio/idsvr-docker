@@ -16,6 +16,7 @@ if [ ! -d "${VERSION}" ]; then
   sed -e "s/{{VERSION}}/${VERSION}/g" Dockerfile-centos.template > "${VERSION}/centos/Dockerfile"
   sed -e "s/{{VERSION}}/${VERSION}/g" Dockerfile-stretch.template > "${VERSION}/stretch/Dockerfile"
   sed -e "s/{{VERSION}}/${VERSION}/g" Dockerfile-stretch-slim.template > "${VERSION}/stretch-slim/Dockerfile"
+  CACHE_CONTROL=--no-cache
 fi
 
 build_image() {
@@ -26,18 +27,21 @@ build_image() {
   CURRENT_PUBLISHED_IMAGE_ID=$(docker images --filter=reference="${IMAGE}" --format "{{.ID}}")
 
   # Build the image again (it should use cache if the base layer is the same)
-  docker build -t "${IMAGE}" -f "${DOCKERFILE}" "${VERSION}"
+  docker build "${CACHE_CONTROL}" -t "${IMAGE}" -f "${DOCKERFILE}" "${VERSION}"
 
   # Compare the newly built image with the published one
   BUILT_IMAGE_ID=$(docker images --filter=reference="${IMAGE}" --format "{{.ID}}")
   if [[ "${BUILT_IMAGE_ID}" != "${CURRENT_PUBLISHED_IMAGE_ID}" ]]; then
+    if [[ -n "${PUSH_IMAGES}" ]] ; then docker push "${IMAGE}"; fi
 
     # Update the extra tags
     docker tag "${IMAGE}" "${IMAGE}-${DATE}"
+    if [[ -n "${PUSH_IMAGES}" ]] ; then docker push "${IMAGE}-${DATE}"; fi
 
     for TAG in "${@:3}"
     do
       docker tag "${IMAGE}" "${TAG}"
+      if [[ -n "${PUSH_IMAGES}" ]] ; then docker push "${TAG}"; fi
     done
 
   fi
