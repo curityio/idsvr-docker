@@ -27,7 +27,7 @@ build_image() {
   CURRENT_PUBLISHED_IMAGE_ID=$(docker images --filter=reference="${IMAGE}" --format "{{.ID}}")
 
   # Build the image again (it should use cache if the base layer is the same)
-  docker build "${CACHE_CONTROL}" -t "${IMAGE}" -f "${DOCKERFILE}" "${VERSION}"
+  docker build ${CACHE_CONTROL} -t "${IMAGE}" -f "${DOCKERFILE}" "${VERSION}"
 
   # Compare the newly built image with the published one
   BUILT_IMAGE_ID=$(docker images --filter=reference="${IMAGE}" --format "{{.ID}}")
