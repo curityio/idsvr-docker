@@ -41,7 +41,7 @@ do
   tar -xf "${RELEASE_FILENAME}" -C "${VERSION}"
 
   # build the images and push them. Latest pushed seperately after the loop to avoid making each release :latest while running this script.
-  export VERSION=${VERSION} && export PUSH_IMAGES=true
+  export VERSION=${VERSION}
   ./build-images.sh
 
 done < <(find -- * -maxdepth 0 -type d)
@@ -51,7 +51,7 @@ CURRENT_LATEST_IMAGE_ID=$(docker images --filter=reference="curity/idsvr:latest"
 LATEST_IMAGE_ID=$(docker images --filter=reference="curity/idsvr:${LATEST_RELEASE}" --format "{{.ID}}")
 
 if [[ "${LATEST_IMAGE_ID}" != "${CURRENT_LATEST_IMAGE_ID}" ]]; then
-  docker tag "curity/idsvr:${LATEST_RELEASE}" curity/idsvr:latest && docker push curity/idsvr:latest
+  if [[ -n "${PUSH_IMAGES}" ]] ; then docker tag "curity/idsvr:${LATEST_RELEASE}" curity/idsvr:latest && docker push curity/idsvr:latest; fi
 fi
 
 # Clean up date tags
