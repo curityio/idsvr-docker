@@ -17,14 +17,19 @@ if [ ! -d "${VERSION}" ]; then
   sed -e "s/{{VERSION}}/${VERSION}/g" Dockerfile-stretch.template > "${VERSION}/stretch/Dockerfile"
   sed -e "s/{{VERSION}}/${VERSION}/g" Dockerfile-stretch-slim.template > "${VERSION}/stretch-slim/Dockerfile"
   CACHE_CONTROL=--no-cache
+  NEW_IMAGE=true
 fi
 
 build_image() {
   IMAGE=$1
   DOCKERFILE=$2
-  # Download the current published image and store its ID
-  docker pull "${IMAGE}"
-  CURRENT_PUBLISHED_IMAGE_ID=$(docker images --filter=reference="${IMAGE}" --format "{{.ID}}")
+  CURRENT_PUBLISHED_IMAGE_ID=""
+
+   if [[ -z "${NEW_IMAGE}" ]] ; then
+      # Download the current published image and store its ID
+      docker pull "${IMAGE}" ##
+      CURRENT_PUBLISHED_IMAGE_ID=$(docker images --filter=reference="${IMAGE}" --format "{{.ID}}")
+   fi
 
   # Build the image again (it should use cache if the base layer is the same)
   docker build ${CACHE_CONTROL} -t "${IMAGE}" -f "${DOCKERFILE}" "${VERSION}"
