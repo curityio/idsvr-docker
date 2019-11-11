@@ -4,6 +4,8 @@ set -e
 
 DATE=$(/bin/date +%Y%m%d)
 
+DOCKER_CONTEXT=${VERSION}
+
 if [ ! -d "${VERSION}" ]; then
   mkdir -p "${VERSION}/ubuntu"
   mkdir -p "${VERSION}/centos"
@@ -17,6 +19,7 @@ if [ ! -d "${VERSION}" ]; then
   sed -e "s/{{VERSION}}/${VERSION}/g" Dockerfile-stretch.template > "${VERSION}/stretch/Dockerfile"
   sed -e "s/{{VERSION}}/${VERSION}/g" Dockerfile-stretch-slim.template > "${VERSION}/stretch-slim/Dockerfile"
   CACHE_CONTROL=--no-cache
+  DOCKER_CONTEXT="."
   NEW_IMAGE=true
 fi
 
@@ -32,7 +35,7 @@ build_image() {
    fi
 
   # Build the image again (it should use cache if the base layer is the same)
-  docker build ${CACHE_CONTROL} -t "${IMAGE}" -f "${DOCKERFILE}" "${VERSION}"
+  docker build ${CACHE_CONTROL} -t "${IMAGE}" -f "${DOCKERFILE}" "${DOCKER_CONTEXT}"
 
   # Compare the newly built image with the published one
   BUILT_IMAGE_ID=$(docker images --filter=reference="${IMAGE}" --format "{{.ID}}")
