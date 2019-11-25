@@ -30,7 +30,7 @@ build_image() {
 
    if [[ -z "${NEW_IMAGE}" ]] ; then
       # Download the current published image and store its ID
-      docker pull "${IMAGE}" ##
+      docker pull "${IMAGE}" || true
       CURRENT_PUBLISHED_IMAGE_ID=$(docker images --filter=reference="${IMAGE}" --format "{{.ID}}")
    fi
 
