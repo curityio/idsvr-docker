@@ -6,36 +6,16 @@ DATE=$(/bin/date +%Y%m%d)
 
 DOCKER_CONTEXT=${VERSION}
 
-if [ ! -d "${VERSION}" ]; then
-  mkdir -p "${VERSION}/ubuntu"
-  mkdir -p "${VERSION}/centos"
-  mkdir -p "${VERSION}/stretch"
-  mkdir -p "${VERSION}/stretch-slim"
-
-  cp first-run "${VERSION}/first-run"
-
-  sed -e "s/{{VERSION}}/${VERSION}/g" Dockerfile-ubuntu.template > "${VERSION}/ubuntu/Dockerfile"
-  sed -e "s/{{VERSION}}/${VERSION}/g" Dockerfile-centos.template > "${VERSION}/centos/Dockerfile"
-  sed -e "s/{{VERSION}}/${VERSION}/g" Dockerfile-stretch.template > "${VERSION}/stretch/Dockerfile"
-  sed -e "s/{{VERSION}}/${VERSION}/g" Dockerfile-stretch-slim.template > "${VERSION}/stretch-slim/Dockerfile"
-  CACHE_CONTROL=--no-cache
-  DOCKER_CONTEXT="."
-  NEW_IMAGE=true
-fi
-
 build_image() {
   IMAGE=$1
   DOCKERFILE=$2
-  CURRENT_PUBLISHED_IMAGE_ID=""
 
-   if [[ -z "${NEW_IMAGE}" ]] ; then
-      # Download the current published image and store its ID
-      docker pull "${IMAGE}" || true
-      CURRENT_PUBLISHED_IMAGE_ID=$(docker images --filter=reference="${IMAGE}" --format "{{.ID}}")
-   fi
+  # Download the current published image and store its ID
+  docker pull "${IMAGE}" || true
+  CURRENT_PUBLISHED_IMAGE_ID=$(docker images --filter=reference="${IMAGE}" --format "{{.ID}}")
 
   # Build the image again (it should use cache if the base layer is the same)
-  docker build ${CACHE_CONTROL} -t "${IMAGE}" -f "${DOCKERFILE}" "${DOCKER_CONTEXT}"
+  docker build -t "${IMAGE}" -f "${DOCKERFILE}" "${DOCKER_CONTEXT}"
 
   # Compare the newly built image with the published one
   BUILT_IMAGE_ID=$(docker images --filter=reference="${IMAGE}" --format "{{.ID}}")
@@ -44,12 +24,18 @@ build_image() {
 
     # Update the extra tags
     docker tag "${IMAGE}" "${IMAGE}-${DATE}"
-    if [[ -n "${PUSH_IMAGES}" ]] ; then docker push "${IMAGE}-${DATE}"; fi
+    if [[ -n "${PUSH_IMAGES}" ]] ; then 
+      echo "Pushing image: ${IMAGE}-${DATE}"
+      docker push "${IMAGE}-${DATE}"; 
+    fi
 
     for TAG in "${@:3}"
     do
       docker tag "${IMAGE}" "${TAG}"
-      if [[ -n "${PUSH_IMAGES}" ]] ; then docker push "${TAG}"; fi
+      if [[ -n "${PUSH_IMAGES}" ]] ; then
+        echo "Pushing image: ${TAG}"
+        docker push "${TAG}"; 
+      fi
     done
 
   fi
