@@ -15,6 +15,7 @@ LABEL maintainer="Curity AB <info@curity.se>"
 
 EXPOSE 8443
 EXPOSE 6749
+EXPOSE 4465
 
 RUN apt-get update && \
 	apt-get upgrade -y && \
