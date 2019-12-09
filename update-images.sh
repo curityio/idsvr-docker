@@ -51,7 +51,10 @@ CURRENT_LATEST_IMAGE_ID=$(docker images --filter=reference="curity/idsvr:latest"
 LATEST_IMAGE_ID=$(docker images --filter=reference="curity/idsvr:${LATEST_RELEASE}" --format "{{.ID}}")
 
 if [[ "${LATEST_IMAGE_ID}" != "${CURRENT_LATEST_IMAGE_ID}" ]]; then
-  if [[ -n "${PUSH_IMAGES}" ]] ; then docker tag "curity/idsvr:${LATEST_RELEASE}" curity/idsvr:latest && docker push curity/idsvr:latest; fi
+  if [[ -n "${PUSH_IMAGES}" ]] ; then
+    echo "Pushing image: curity/idsvr:latest"
+    docker tag "curity/idsvr:${LATEST_RELEASE}" curity/idsvr:latest && docker push curity/idsvr:latest;
+  fi
 fi
 
 # Clean up date tags
