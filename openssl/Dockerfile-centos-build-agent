@@ -1,0 +1,13 @@
+FROM centos:centos7
+
+LABEL maintainer="Curity AB <info@curity.se>"
+
+RUN yum clean all && \
+	yum install -y perl-core && \
+	yum groupinstall -y "Development tools"
+
+RUN adduser --system myuser	
+
+COPY compile-openssl.sh /bin
+
+CMD ["compile-openssl.sh"]	
