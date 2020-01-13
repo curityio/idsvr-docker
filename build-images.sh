@@ -41,17 +41,6 @@ build_image() {
   fi
 }
 
-D=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-CENTOS_DIR=$D/$VERSION/centos
-CENTOS_BIN_DIR=$CENTOS_DIR/bin
-CENTOS_LIB_DIR=$CENTOS_DIR/lib
-OPENSSL_BUILD_DIR=$D/openssl/build
-
-$D/openssl/build-openssl.sh && \
-  mkdir -p $CENTOS_BIN_DIR $CENTOS_LIB_DIR && \
-  cp -a $OPENSSL_BUILD_DIR/bin/openssl $CENTOS_DIR/bin && \
-  cp -a $OPENSSL_BUILD_DIR/lib/lib*.so* $CENTOS_DIR/lib
-
 build_image "curity/idsvr:${VERSION}-ubuntu18.04" "${VERSION}/ubuntu/Dockerfile" "curity/idsvr:${VERSION}-ubuntu" "curity/idsvr:${VERSION}-ubuntu18" "curity/idsvr:${VERSION}"
 build_image "curity/idsvr:${VERSION}-centos7" "${VERSION}/centos/Dockerfile" "curity/idsvr:${VERSION}-centos"
 build_image "curity/idsvr:${VERSION}-stretch" "${VERSION}/stretch/Dockerfile"
