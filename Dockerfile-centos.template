@@ -23,12 +23,12 @@ RUN cd /tmp && curl https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.ta
     tar -xf openssl.tar.gz && \
     rm openssl.tar.gz
 
-RUN cd  /tmp/openssl-${OPENSSL_VERSION} && ./config --prefix=/build --release \
-    	no-ec2m no-idea no-mdc2 no-rc5 no-ssl no-dtls no-dtls1-method no-dtls1_2-method && \
-    	make && \
-    	chmod -R go+rX . && \
-    	make test && \
-    	make install_sw install_ssldirs
+RUN cd /tmp/openssl-${OPENSSL_VERSION} && ./config --prefix=/build --release \
+    no-ec2m no-idea no-mdc2 no-rc5 no-ssl no-dtls no-dtls1-method no-dtls1_2-method && \
+    make && \
+    chmod -R go+rX . && \
+    make test && \
+    make install_sw install_ssldirs
 
 FROM centos:centos7
 
