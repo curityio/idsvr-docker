@@ -9,7 +9,7 @@
 # For further information, please contact Curity AB.
 #
 
-FROM debian:stretch-slim
+FROM ubuntu:18.04
 
 LABEL maintainer="Curity AB <info@curity.se>"
 
@@ -17,19 +17,19 @@ EXPOSE 8443
 EXPOSE 6749
 EXPOSE 4465
 
-RUN apt-get update && apt-get upgrade -y && \
-	apt-get install libssl1.1 -y && \
+RUN apt-get update && \
+	apt-get upgrade -y && \
+	apt-get install -y openssl libssl1.1 openssh-client && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* 
 
 ENV IDSVR_HOME /opt/idsvr
 ENV JAVA_HOME $IDSVR_HOME/lib/java/jre
-ENV PATH /usr/local/ssl/bin:$IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH
+ENV PATH $IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH
 WORKDIR $IDSVR_HOME
 
-COPY idsvr-{{VERSION}}/idsvr /opt/idsvr
+COPY idsvr-4.5.3/idsvr /opt/idsvr
 COPY first-run /opt/idsvr/etc/first-run
-
-RUN ln -s /usr/lib/x86_64-linux-gnu/libcrypto.so.1.0.2 $IDSVR_HOME/lib/libcrypto.so.1.0.0
+COPY crypto.so /opt/idsvr/lib/confd/lib/core/crypto/priv/lib
 
 CMD ["idsvr"]

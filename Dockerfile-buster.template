@@ -9,7 +9,7 @@
 # For further information, please contact Curity AB.
 #
 
-FROM buildpack-deps:stretch
+FROM buildpack-deps:buster
 
 LABEL maintainer="Curity AB <info@curity.se>"
 
@@ -28,7 +28,5 @@ WORKDIR $IDSVR_HOME
 
 COPY idsvr-{{VERSION}}/idsvr /opt/idsvr
 COPY first-run /opt/idsvr/etc/first-run
-
-RUN ln -s /usr/lib/x86_64-linux-gnu/libcrypto.so.1.0.2 $IDSVR_HOME/lib/libcrypto.so.1.0.0
 
 CMD ["idsvr"]

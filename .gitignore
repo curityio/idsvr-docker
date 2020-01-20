@@ -1,3 +1,6 @@
 idsvr-*/
 */centos/lib
 */centos/bin
+
+.DS_Store
+.idea/
