@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2019 Curity AB. All rights reserved.
+# Copyright (C) 2020 Curity AB. All rights reserved.
 #
 # The contents of this file are the property of Curity AB.
 # You may not copy or use this file, in either source code
@@ -9,7 +9,7 @@
 # For further information, please contact Curity AB.
 #
 
-FROM debian:stretch-slim
+FROM debian:buster-slim
 
 LABEL maintainer="Curity AB <info@curity.se>"
 
@@ -29,7 +29,5 @@ WORKDIR $IDSVR_HOME
 
 COPY idsvr-{{VERSION}}/idsvr /opt/idsvr
 COPY first-run /opt/idsvr/etc/first-run
-
-RUN ln -s /usr/lib/x86_64-linux-gnu/libcrypto.so.1.0.2 $IDSVR_HOME/lib/libcrypto.so.1.0.0
 
 CMD ["idsvr"]

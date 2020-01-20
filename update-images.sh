@@ -17,6 +17,8 @@ LATEST_RELEASE=$(find -- * -maxdepth 0 -type d | sort -rh | head -n 1)
 docker pull centos:centos7
 docker pull buildpack-deps:stretch
 docker pull debian:stretch-slim
+docker pull buildpack-deps:buster
+docker pull debian:buster-slim
 docker pull ubuntu:18.04
 docker pull curity/idsvr:latest
 

@@ -24,7 +24,7 @@ RUN cd /tmp && curl https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.ta
     rm openssl.tar.gz
 
 RUN cd /tmp/openssl-${OPENSSL_VERSION} && ./config --prefix=/build --release \
-    no-ec2m no-idea no-mdc2 no-rc5 no-ssl no-dtls no-dtls1-method no-dtls1_2-method && \
+    no-idea no-mdc2 no-rc5 no-ssl no-dtls no-dtls1-method no-dtls1_2-method && \
     make && \
     chmod -R go+rX . && \
     make test && \
@@ -48,7 +48,8 @@ WORKDIR $IDSVR_HOME
 COPY --from=openssl-builder /build/bin/openssl /bin/
 COPY --from=openssl-builder /build/lib/lib*so* /usr/lib64/
 
-COPY idsvr-{{VERSION}}/idsvr /opt/idsvr
+COPY idsvr-4.5.3/idsvr /opt/idsvr
 COPY first-run /opt/idsvr/etc/first-run
+COPY crypto.so /opt/idsvr/lib/confd/lib/core/crypto/priv/lib
 
 CMD ["idsvr"]
