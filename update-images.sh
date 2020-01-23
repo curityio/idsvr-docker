@@ -46,7 +46,7 @@ do
   export VERSION=${VERSION}
   ./build-images.sh
 
-done < <(find -- * -maxdepth 0 -type d)
+done < <(find -- * -maxdepth 0 -type d ! -name crypto_so_src)
 
 ## Push the latest tag if updated
 CURRENT_LATEST_IMAGE_ID=$(docker images --filter=reference="curity/idsvr:latest" --format "{{.ID}}")
