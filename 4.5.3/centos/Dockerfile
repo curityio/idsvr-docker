@@ -24,11 +24,16 @@ RUN cd /tmp && curl https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.ta
     rm openssl.tar.gz
 
 RUN cd /tmp/openssl-${OPENSSL_VERSION} && ./config --prefix=/build --release \
-    no-idea no-mdc2 no-rc5 no-ssl no-dtls no-dtls1-method no-dtls1_2-method && \
+    no-ec2m no-idea no-mdc2 no-rc5 no-ssl no-dtls no-dtls1-method no-dtls1_2-method && \
     make && \
     chmod -R go+rX . && \
     make test && \
     make install_sw install_ssldirs
+
+COPY crypto_so_src /crypto_so_src
+
+RUN cd /crypto_so_src && \
+    make OUT_DIR=/build 
 
 FROM centos:centos7
 
@@ -50,6 +55,6 @@ COPY --from=openssl-builder /build/lib/lib*so* /usr/lib64/
 
 COPY idsvr-4.5.3/idsvr /opt/idsvr
 COPY first-run /opt/idsvr/etc/first-run
-COPY crypto.so /opt/idsvr/lib/confd/lib/core/crypto/priv/lib
+COPY --from=openssl-builder /build/crypto.so /opt/idsvr/lib/confd/lib/core/crypto/priv/lib
 
 CMD ["idsvr"]
