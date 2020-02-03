@@ -45,6 +45,9 @@ EXPOSE 4465
 
 RUN yum install -y openssh-clients && yum clean all
 
+RUN useradd -ms /bin/bash idsvr
+USER idsvr:idsvr
+
 ENV IDSVR_HOME /opt/idsvr
 ENV JAVA_HOME $IDSVR_HOME/lib/java/jre
 ENV PATH $IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH
@@ -53,8 +56,8 @@ WORKDIR $IDSVR_HOME
 COPY --from=openssl-builder /build/bin/openssl /bin/
 COPY --from=openssl-builder /build/lib/lib*so* /usr/lib64/
 
-COPY idsvr-{{VERSION}}/idsvr /opt/idsvr
-COPY first-run /opt/idsvr/etc/first-run
-COPY --from=openssl-builder /build/crypto.so /opt/idsvr/lib/confd/lib/core/crypto/priv/lib
+COPY --chown=idsvr idsvr-{{VERSION}}/idsvr /opt/idsvr
+COPY --chown=idsvr first-run /opt/idsvr/etc/first-run
+COPY --chown=idsvr --from=openssl-builder /build/crypto.so /opt/idsvr/lib/confd/lib/core/crypto/priv/lib
 
 CMD ["idsvr"]

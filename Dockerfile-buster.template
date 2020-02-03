@@ -21,12 +21,16 @@ RUN apt-get update && apt-get upgrade -y && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* 
 
+RUN groupadd --gid 1000 idsvr \
+  && useradd --uid 1000 --gid idsvr --shell /bin/bash --create-home idsvr
+USER idsvr:idsvr
+
 ENV IDSVR_HOME /opt/idsvr
 ENV JAVA_HOME $IDSVR_HOME/lib/java/jre
 ENV PATH /usr/local/ssl/bin:$IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH
 WORKDIR $IDSVR_HOME
 
-COPY idsvr-{{VERSION}}/idsvr /opt/idsvr
-COPY first-run /opt/idsvr/etc/first-run
+COPY --chown=idsvr idsvr-{{VERSION}}/idsvr /opt/idsvr
+COPY --chown=idsvr first-run /opt/idsvr/etc/first-run
 
 CMD ["idsvr"]
