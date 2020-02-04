@@ -10,4 +10,6 @@ fi
 
 if [ -z "$DEBUG_LOGGING" ]; then
   sed -i 's/AsyncLogger name="se.curity" level="DEBUG"/AsyncLogger name="se.curity" level="INFO"/g' "$IDSVR_HOME/etc/log4j2.xml"
+else
+  sed -i 's/AsyncLogger name="io.curity" level="INFO"/AsyncLogger name="io.curity" level="DEBUG"/g' "$IDSVR_HOME/etc/log4j2.xml"
 fi
