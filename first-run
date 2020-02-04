@@ -6,3 +6,8 @@
 if [ -n "$PASSWORD" -a -z "$SKIP_INSTALL" ]; then
     unattendedinstall
 fi
+
+
+if [ -z "$DEBUG_LOGGING" ]; then
+  sed -e 's/AsyncLogger name="se.curity" level="DEBUG"/AsyncLogger name="se.curity" level="INFO"/g' "$IDSVR_HOME/etc/log4j2.xml" > "$IDSVR_HOME/etc/log4j2.xml"
+fi
