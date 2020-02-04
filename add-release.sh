@@ -8,6 +8,7 @@ if [ ! -d "${VERSION}" ]; then
 
   cp first-run "${VERSION}/first-run"
   cp -r crypto_so_src "${VERSION}"
+  cp .dockerignore "${VERSION}/.dockerignore"
 
   sed -e "s/{{VERSION}}/${VERSION}/g" Dockerfile-ubuntu.template > "${VERSION}/ubuntu/Dockerfile"
   sed -e "s/{{VERSION}}/${VERSION}/g" Dockerfile-centos.template > "${VERSION}/centos/Dockerfile"
