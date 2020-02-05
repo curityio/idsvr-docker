@@ -30,11 +30,6 @@ RUN cd /tmp/openssl-${OPENSSL_VERSION} && ./config --prefix=/build --release \
     make test && \
     make install_sw install_ssldirs
 
-COPY crypto_so_src /crypto_so_src
-
-RUN cd /crypto_so_src && \
-    make OUT_DIR=/build 
-
 FROM centos:centos7
 
 LABEL maintainer="Curity AB <info@curity.se>"
@@ -43,7 +38,7 @@ EXPOSE 8443
 EXPOSE 6749
 EXPOSE 4465
 
-RUN yum install -y openssh-clients && yum clean all
+RUN yum update -y && yum clean all
 
 ENV IDSVR_HOME /opt/idsvr
 ENV JAVA_HOME $IDSVR_HOME/lib/java/jre
@@ -55,6 +50,5 @@ COPY --from=openssl-builder /build/lib/lib*so* /usr/lib64/
 
 COPY idsvr-{{VERSION}}/idsvr /opt/idsvr
 COPY first-run /opt/idsvr/etc/first-run
-COPY --from=openssl-builder /build/crypto.so /opt/idsvr/lib/confd/lib/core/crypto/priv/lib
 
 CMD ["idsvr"]
