@@ -21,8 +21,7 @@ RUN apt-get update && apt-get upgrade -y && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* 
 
-RUN groupadd --gid 1000 idsvr \
-  && useradd --uid 1000 --gid idsvr --shell /bin/bash --create-home idsvr
+RUN useradd --system idsvr
 USER idsvr:idsvr
 
 ENV IDSVR_HOME /opt/idsvr
