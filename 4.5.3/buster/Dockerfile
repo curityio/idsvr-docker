@@ -21,6 +21,7 @@ RUN apt-get update && apt-get upgrade -y && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* 
 
+EVN PAGER=more
 ENV IDSVR_HOME /opt/idsvr
 ENV JAVA_HOME $IDSVR_HOME/lib/java/jre
 ENV PATH /usr/local/ssl/bin:$IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH
