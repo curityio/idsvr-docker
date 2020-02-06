@@ -45,7 +45,6 @@ ENV JAVA_HOME $IDSVR_HOME/lib/java/jre
 ENV PATH $IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH
 WORKDIR $IDSVR_HOME
 
-COPY --from=openssl-builder /build/bin/openssl /bin/
 COPY --from=openssl-builder /build/lib/lib*so* /usr/lib64/
 
 COPY idsvr-{{VERSION}}/idsvr /opt/idsvr
