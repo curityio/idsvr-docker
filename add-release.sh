@@ -7,7 +7,6 @@ if [ ! -d "${VERSION}" ]; then
   mkdir -p "${VERSION}/buster-slim"
 
   cp first-run "${VERSION}/first-run"
-  cp -r crypto_so_src "${VERSION}"
   cp .dockerignore "${VERSION}/.dockerignore"
 
   sed -e "s/{{VERSION}}/${VERSION}/g" Dockerfile-ubuntu.template > "${VERSION}/ubuntu/Dockerfile"
