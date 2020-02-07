@@ -23,7 +23,7 @@ RUN apt-get update && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* 
 
-EVN PAGER=more
+ENV PAGER=more
 ENV IDSVR_HOME /opt/idsvr
 ENV JAVA_HOME $IDSVR_HOME/lib/java/jre
 ENV PATH $IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH
