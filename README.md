@@ -5,8 +5,8 @@ This repository contains Dockerfiles and other resources that can be used to cre
 # Usage
 
 * Download the linux release from the (Curity Developer portal)[https://developer.curity.io/downloads]
-* Extract the release in the folder with the version you want to build
-* Run the command ```VERSION=X.X.X ./build-images.sh```
+* Extract the release in the `<VERSION>` directory of this project
+* Run the command `VERSION=X.X.X ./build-images.sh $VERSION`
 
 This will build the images using the Dockerfile(s) of the specific version locally.
 
@@ -21,6 +21,12 @@ Since the base OS of the images can regularly be patched, the script ```update-i
 The script downloads the releases from Curity's release API, pulls the latest base OS images and rebuilds all the versions. If there is a change in the OS, the docker cache won't be used and the new images will be pushed to Docker hub.
   
 So, the tag of the form `<version>-<os>` always contains the latest, while the tag `<version>-<os>-<date>` is the image that was built that specific date (which is never updated).
+
+# Building a single image
+
+* Download the linux release from the (Curity Developer portal)[https://developer.curity.io/downloads]
+* Extract the release in the `VERSION` directory of this project
+* Run the command `docker build -t <image_tag> -f <VERSION>/<DISTRO>/Dockerfile <VERSION>`  
 
 # Contributing
 
