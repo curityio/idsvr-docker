@@ -60,4 +60,4 @@ if [[ "${LATEST_IMAGE_ID}" != "${CURRENT_LATEST_IMAGE_ID}" ]]; then
 fi
 
 # Clean up date tags
-docker images --format \"{{.Repository}}:{{.Tag}}\" | grep "curity/idsvr:.*-${DATE}" | xargs -rn 1 docker rmi
+docker images --format \"\{\{.Repository\}\}:\{\{.Tag\}\}\" | grep "curity/idsvr:.*-${DATE}" | xargs -rn 1 docker rmi
