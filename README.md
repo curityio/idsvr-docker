@@ -5,10 +5,16 @@ This repository contains Dockerfiles and other resources that can be used to cre
 # Usage
 
 * Download the linux release from the (Curity Developer portal)[https://developer.curity.io/downloads]
-* Extract the release in the root directory of this project
+* Extract the release in the `<VERSION>` directory of this project
 * Run the command `VERSION=X.X.X ./build-images.sh $VERSION`
 
 This will unpack the release, create a version folder and copy the Dockerfiles inside it and then build the images and push them to docker hub.
+
+# Building a single image
+
+* Download the linux release from the (Curity Developer portal)[https://developer.curity.io/downloads]
+* Extract the release in the `VERSION` directory of this project
+* Run the command `docker build -t <image_tag> -f <VERSION>/<DISTRO>/Dockerfile <VERSION>`  
 
 # Contributing
 
