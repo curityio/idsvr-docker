@@ -40,7 +40,7 @@ EXPOSE 4465
 
 RUN yum update -y && yum clean all
 
-RUN useradd -ms /bin/bash idsvr
+RUN useradd --system idsvr
 USER idsvr:idsvr
 
 ENV IDSVR_HOME /opt/idsvr
