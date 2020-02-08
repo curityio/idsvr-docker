@@ -12,11 +12,11 @@ This will build the images using the Dockerfile(s) of the specific version local
 
 # Adding a new version
 
-In order to add a new version, run the following ```VERSION=X.X.X ./add-release.sh```
+In order to add a new version, run the following `VERSION=X.X.X ./add-release.sh`
 
 # Image updates 
 
-Since the base OS of the images can regularly be patched, the script ```update-images.sh``` is run every day to make sure that the images contain the latest security fixes. 
+Since the base OS of the images can regularly be patched, the script `update-images.sh` is run every day to make sure that the images contain the latest security fixes. 
 
 The script downloads the releases from Curity's release API, pulls the latest base OS images and rebuilds all the versions. If there is a change in the OS, the docker cache won't be used and the new images will be pushed to Docker hub.
   
