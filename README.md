@@ -4,7 +4,7 @@ This repository contains Dockerfiles and other resources that can be used to cre
 
 # Usage
 
-* Download the linux release from the (Curity Developer portal)[https://developer.curity.io/downloads]
+* Download the linux release from the [Curity Developer portal](https://developer.curity.io/downloads)
 * Extract the release in the `<VERSION>` directory of this project
 * Run the command `VERSION=X.X.X ./build-images.sh $VERSION`
 
@@ -24,7 +24,7 @@ So, the tag of the form `<version>-<os>` always contains the latest, while the t
 
 # Building a single image
 
-* Download the linux release from the (Curity Developer portal)[https://developer.curity.io/downloads]
+* Download the linux release from the [Curity Developer portal](https://developer.curity.io/downloads)
 * Extract the release in the `VERSION` directory of this project
 * Run the command `docker build -t <image_tag> -f <VERSION>/<DISTRO>/Dockerfile <VERSION>`  
 
