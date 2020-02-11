@@ -16,6 +16,7 @@ LABEL maintainer="Curity AB <info@curity.se>"
 EXPOSE 8443
 EXPOSE 6749
 EXPOSE 4465
+EXPOSE 4466
 
 RUN useradd --system idsvr
 USER idsvr:idsvr
