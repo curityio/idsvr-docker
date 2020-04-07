@@ -20,10 +20,18 @@ build_image() {
     # Compare the newly built image with the published one
     BUILT_IMAGE_ID=$(docker images --filter=reference="${IMAGE}" --format "{{.ID}}")
     if [[ "${BUILT_IMAGE_ID}" != "${CURRENT_PUBLISHED_IMAGE_ID}" ]]; then
-      if [[ -n "${PUSH_IMAGES}" ]] ; then docker push "${IMAGE}"; fi
-
       # Update the extra tags
       docker tag "${IMAGE}" "${IMAGE}-${DATE}"
+
+      #Run sanity tests if RUN_SANITY_CHECK is set
+      main_version=(${VERSION//./ }[0])
+      if [[ -n "${RUN_SANITY_CHECK}" ]] && [[ ${main_version} -ge 5 ]] ; then
+        echo "Running Sanity tests on image: ${IMAGE}-${DATE}"
+        ./../tests/sanity-tests.sh 1 curity-idsvr admin Password1 ${IMAGE}-${DATE};
+      fi
+
+      if [[ -n "${PUSH_IMAGES}" ]] ; then docker push "${IMAGE}"; fi
+
       if [[ -n "${PUSH_IMAGES}" ]] ; then
         echo "Pushing image: ${IMAGE}-${DATE}"
         docker push "${IMAGE}-${DATE}";
