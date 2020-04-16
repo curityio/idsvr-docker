@@ -52,5 +52,6 @@ WORKDIR $IDSVR_HOME
 COPY --chown=idsvr idsvr-5.0.0/idsvr /opt/idsvr
 COPY --chown=idsvr first-run /opt/idsvr/etc/first-run
 COPY --from=openssl-builder /build/lib/lib*so* /usr/lib64/
+COPY --from=openssl-builder /build/bin/openssl /bin/
 
 CMD ["idsvr"]
