@@ -24,8 +24,8 @@ build_image() {
       docker tag "${IMAGE}" "${IMAGE}-${DATE}"
 
       #Run sanity tests if RUN_SANITY_CHECK is set
-      main_version=(${VERSION//./ }[0])
-      if [[ -n "${RUN_SANITY_CHECK}" ]] && [[ ${main_version} -ge 5 ]] ; then
+      MAJOR_VERSION=(${VERSION//./ }[0])
+      if [[ -n "${RUN_SANITY_CHECK}" ]] && [[ ${MAJOR_VERSION} -ge 5 ]] ; then
         echo "Running Sanity tests on image: ${IMAGE}-${DATE}"
         ./../tests/sanity-tests.sh 1 curity-idsvr admin Password1 ${IMAGE}-${DATE};
       fi
