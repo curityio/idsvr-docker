@@ -1,5 +1,8 @@
 # Docker-related Files and Info
 
+[![Quality](https://curity.io/assets/images/badges/idsvr-docker-quality.svg)](https://curity.io/resources/code-examples/status/)
+[![Availability](https://curity.io/assets/images/badges/idsvr-docker-availability.svg)](https://curity.io/resources/code-examples/status/)
+
 This repository contains Dockerfiles and other resources that can be used to create Docker images of the [Curity Identity Server](https://curity.io). 
 
 # Usage
