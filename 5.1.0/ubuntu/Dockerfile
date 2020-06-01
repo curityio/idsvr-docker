@@ -20,7 +20,7 @@ EXPOSE 4466
 
 RUN apt-get update && \
 	apt-get upgrade -y && \
-	apt-get install -y libssl1.1 && \
+	apt-get install -y libssl1.1 openssl && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* 
 
