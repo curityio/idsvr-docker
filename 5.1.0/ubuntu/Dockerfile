@@ -25,7 +25,6 @@ RUN apt-get update && \
 	rm -rf /var/lib/apt/lists/* 
 
 RUN useradd --system idsvr
-USER idsvr:idsvr
 
 ENV IDSVR_HOME /opt/idsvr
 ENV JAVA_HOME $IDSVR_HOME/lib/java/jre
@@ -34,5 +33,9 @@ WORKDIR $IDSVR_HOME
 
 COPY --chown=idsvr idsvr-5.1.0/idsvr /opt/idsvr
 COPY --chown=idsvr first-run /opt/idsvr/etc/first-run
+
+RUN chgrp -R 0 /opt/idsvr && \
+    chmod -R g+rwX /opt/idsvr
+USER idsvr:idsvr
 
 CMD ["idsvr"]
