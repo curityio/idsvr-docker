@@ -20,7 +20,7 @@ docker pull debian:stretch-slim
 docker pull buildpack-deps:buster
 docker pull debian:buster-slim
 docker pull ubuntu:18.04
-docker pull curity/idsvr:latest
+docker pull curity.azurecr.io/curity/idsvr:latest
 
 while IFS= read -r VERSION
 do
@@ -49,15 +49,15 @@ do
 done < <(find -- * -maxdepth 0 -type d)
 
 ## Push the latest tag if updated
-CURRENT_LATEST_IMAGE_ID=$(docker images --filter=reference="curity/idsvr:latest" --format "{{.ID}}")
-LATEST_IMAGE_ID=$(docker images --filter=reference="curity/idsvr:${LATEST_RELEASE}" --format "{{.ID}}")
+CURRENT_LATEST_IMAGE_ID=$(docker images --filter=reference="curity.azurecr.io/curity/idsvr:latest" --format "{{.ID}}")
+LATEST_IMAGE_ID=$(docker images --filter=reference="curity.azurecr.io/curity/idsvr:${LATEST_RELEASE}" --format "{{.ID}}")
 
 if [[ "${LATEST_IMAGE_ID}" != "${CURRENT_LATEST_IMAGE_ID}" ]]; then
   if [[ -n "${PUSH_IMAGES}" ]] ; then
-    echo "Pushing image: curity/idsvr:latest"
-    docker tag "curity/idsvr:${LATEST_RELEASE}" curity/idsvr:latest && docker push curity/idsvr:latest;
+    echo "Pushing image: curity.azurecr.io/curity/idsvr:latest"
+    docker tag "curity.azurecr.io/curity/idsvr:${LATEST_RELEASE}" curity.azurecr.io/curity/idsvr:latest && docker push curity.azurecr.io/curity/idsvr:latest;
   fi
 fi
 
 # Clean up date tags
-docker images --format \"\{\{.Repository\}\}:\{\{.Tag\}\}\" | grep "curity/idsvr:.*-${DATE}" | xargs -rn 1 docker rmi
+docker images --format \"\{\{.Repository\}\}:\{\{.Tag\}\}\" | grep "curity.azurecr.io/curity/idsvr:.*-${DATE}" | xargs -rn 1 docker rmi
