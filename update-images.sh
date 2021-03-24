@@ -55,7 +55,7 @@ LATEST_IMAGE_ID=$(docker images --filter=reference="curity.azurecr.io/curity/ids
 if [[ "${LATEST_IMAGE_ID}" != "${CURRENT_LATEST_IMAGE_ID}" ]]; then
   if [[ -n "${PUSH_IMAGES}" ]] ; then
     echo "Pushing image: curity.azurecr.io/curity/idsvr:latest"
-    docker tag "curity.azurecr.io/curity/idsvr:${LATEST_RELEASE}" curity.azurecr.io/curity/idsvr:latest && docker push curity.azurecr.io/curity/idsvr:latest;
+    docker tag "curity.azurecr.io/curity/idsvr:${LATEST_RELEASE}-ubuntu18.04" curity.azurecr.io/curity/idsvr:latest && docker push curity.azurecr.io/curity/idsvr:latest;
   fi
 fi
 
