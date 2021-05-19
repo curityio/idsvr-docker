@@ -54,4 +54,8 @@ COPY --chown=idsvr first-run /opt/idsvr/etc/first-run
 COPY --from=openssl-builder /build/lib/lib*so* /usr/lib64/
 COPY --from=openssl-builder /build/bin/openssl /bin/
 
+RUN find /opt/idsvr -type f -exec chmod a-w {} \; && \
+    chmod -R o-rwx /opt/idsvr && \
+    chown -R idsvr: /opt/idsvr
+
 CMD ["idsvr"]

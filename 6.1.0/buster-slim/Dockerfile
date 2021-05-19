@@ -34,4 +34,8 @@ WORKDIR $IDSVR_HOME
 COPY --chown=idsvr idsvr-6.1.0/idsvr /opt/idsvr
 COPY --chown=idsvr first-run /opt/idsvr/etc/first-run
 
+RUN find /opt/idsvr -type f -exec chmod a-w {} \; && \
+	chmod -R o-rwx /opt/idsvr && \
+	chown -R idsvr: /opt/idsvr
+
 CMD ["idsvr"]
