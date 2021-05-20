@@ -55,9 +55,7 @@ COPY --from=openssl-builder /build/bin/openssl /bin/
 
 RUN find /opt/idsvr -type f -exec chmod a-w {} \; && \
     chmod -R o-rwx /opt/idsvr && \
-    chown -R idsvr /opt/idsvr && \
-    chgrp -R 0 /opt/idsvr && \
-    chmod -R g+rX /opt/idsvr
+    chown -R idsvr: /opt/idsvr
 
 USER idsvr:idsvr
 
