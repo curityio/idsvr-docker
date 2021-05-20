@@ -22,5 +22,9 @@
   "5.1.0": {
     "original_files": ["idsvr/lib/identityserver.core-5.1.0-d8e3e36de7.jar"],
     "hotfix_path": "hotfix-path-traversal-issue"
+  },
+  "5.0.0": {
+    "original_files": ["idsvr/lib/identityserver.core-5.0.0-158be8576e.jar"],
+    "hotfix_path": "hotfix-path-traversal-issue"
   }
 }
