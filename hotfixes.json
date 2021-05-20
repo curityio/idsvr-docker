@@ -1,0 +1,10 @@
+{
+  "6.1.0": {
+    "original_files": ["idsvr/lib/identityserver.core-6.1.0-c734ecde67.jar"],
+    "hotfix_path": "hotfix-path-traversal-issue"
+  },
+  "6.0.1": {
+    "original_files": ["idsvr/lib/identityserver.core-6.0.1-3bce38c61b.jar"],
+    "hotfix_path": "hotfix-path-traversal-issue"
+  }
+}

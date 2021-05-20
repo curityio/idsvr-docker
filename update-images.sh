@@ -42,6 +42,19 @@ do
 
   tar -xf "${RELEASE_FILENAME}" -C "${VERSION}"
 
+  if jq -e -r '."'$VERSION'"' hotfixes.json > /dev/null; then
+    # Applying hotfix for $VERSION
+    HOTFIX_PATH=$(jq -e -r '."'$VERSION'".hotfix_path' hotfixes.json)
+
+    curl -f -s -S -H "Authorization: Bearer ${ACCESS_TOKEN}" "${RELEASE_API}/${VERSION}/${HOTFIX_PATH}/file" > "${HOTFIX_PATH}-${VERSION}.tgz"
+
+    for original_file in $(jq -e -r '."'$VERSION'".original_files[]' hotfixes.json); do
+      rm "${VERSION}/idsvr-${VERSION}/${original_file}"
+    done
+
+    tar -xf "${HOTFIX_PATH}-${VERSION}.tgz" --exclude='*.md' -C "${VERSION}/idsvr-${VERSION}"
+  fi
+
   # build the images and push them. Latest pushed seperately after the loop to avoid making each release :latest while running this script.
   export VERSION=${VERSION}
   ./build-images.sh
