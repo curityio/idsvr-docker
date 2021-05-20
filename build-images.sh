@@ -19,8 +19,9 @@ build_image() {
 
     # Compare the newly built image with the published one
     BUILT_IMAGE_ID=$(docker images --filter=reference="${IMAGE}" --format "{{.ID}}")
-    echo "published image id: $CURRENT_PUBLISHED_IMAGE_ID"
-    echo "built image id: $BUILT_IMAGE_ID"
+    if [[ "${VERSION}" = "6.2.1" ]] ; then
+      CURRENT_PUBLISHED_IMAGE_ID='621'
+    fi
     if [[ "${BUILT_IMAGE_ID}" != "${CURRENT_PUBLISHED_IMAGE_ID}" ]]; then
       # Update the extra tags
       docker tag "${IMAGE}" "${IMAGE}-${DATE}"
