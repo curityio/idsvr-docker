@@ -6,5 +6,17 @@
   "6.0.1": {
     "original_files": ["idsvr/lib/identityserver.core-6.0.1-3bce38c61b.jar"],
     "hotfix_path": "hotfix-path-traversal-issue"
+  },
+  "5.4.0": {
+    "original_files": ["idsvr/lib/identityserver.core-5.4.0-acf64db6b2.jar"],
+    "hotfix_path": "hotfix-path-traversal-issue"
+  },
+  "5.3.1": {
+    "original_files": ["idsvr/lib/identityserver.core-5.3.1-8bdb8f68bc.jar"],
+    "hotfix_path": "hotfix-path-traversal-issue"
+  },
+  "5.2.0": {
+    "original_files": ["idsvr/lib/identityserver.core-5.2.0-399e002416.jar"],
+    "hotfix_path": "hotfix-path-traversal-issue"
   }
 }
