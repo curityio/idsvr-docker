@@ -20,7 +20,7 @@ docker pull debian:stretch-slim
 docker pull buildpack-deps:buster
 docker pull debian:buster-slim
 docker pull ubuntu:18.04
-docker pull curity.azurecr.io/curity/idsvr:latest
+docker pull curity.azurecr.io/curity/idsvr:latest || true
 
 while IFS= read -r VERSION
 do
