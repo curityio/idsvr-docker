@@ -45,6 +45,8 @@ build_image() {
           docker push "${TAG}";
         fi
       done
+    else
+      echo "Skip pushing ${IMAGE} because it is unchanged"
     fi
   fi
 }
