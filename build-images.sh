@@ -30,6 +30,13 @@ build_image() {
         ./../tests/sanity-tests.sh 1 curity-idsvr admin Password1 ${IMAGE}-${DATE};
       fi
 
+      #Run bats test if RUN_BATS_TEST is set
+      if [[ -n "${RUN_BATS_TEST}" ]] ; then
+        echo "Running Bats tests on image: ${IMAGE}-${DATE}"
+        export BATS_CURITY_IMAGE=${IMAGE}-${DATE}
+        tests/bats/bin/bats tests
+      fi
+
       if [[ -n "${PUSH_IMAGES}" ]] ; then docker push "${IMAGE}"; fi
 
       if [[ -n "${PUSH_IMAGES}" ]] ; then
