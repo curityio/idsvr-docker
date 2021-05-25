@@ -19,6 +19,7 @@ build_image() {
 
     # Compare the newly built image with the published one
     BUILT_IMAGE_ID=$(docker images --filter=reference="${IMAGE}" --format "{{.ID}}")
+
     if [[ "${BUILT_IMAGE_ID}" != "${CURRENT_PUBLISHED_IMAGE_ID}" ]]; then
       # Update the extra tags
       docker tag "${IMAGE}" "${IMAGE}-${DATE}"
@@ -52,13 +53,30 @@ build_image() {
           docker push "${TAG}";
         fi
       done
+    else
+      echo "Skip pushing ${IMAGE} because it is unchanged"
     fi
   fi
 }
 
-build_image "curity.azurecr.io/curity/idsvr:${VERSION}-ubuntu18.04" "${VERSION}/ubuntu/Dockerfile" "curity.azurecr.io/curity/idsvr:${VERSION}-ubuntu" "curity.azurecr.io/curity/idsvr:${VERSION}-ubuntu18" "curity.azurecr.io/curity/idsvr:${VERSION}"
-build_image "curity.azurecr.io/curity/idsvr:${VERSION}-centos7" "${VERSION}/centos/Dockerfile" "curity.azurecr.io/curity/idsvr:${VERSION}-centos"
-build_image "curity.azurecr.io/curity/idsvr:${VERSION}-stretch" "${VERSION}/stretch/Dockerfile"
-build_image "curity.azurecr.io/curity/idsvr:${VERSION}-stretch-slim" "${VERSION}/stretch-slim/Dockerfile" "curity.azurecr.io/curity/idsvr:${VERSION}-slim"
-build_image "curity.azurecr.io/curity/idsvr:${VERSION}-buster" "${VERSION}/buster/Dockerfile"
-build_image "curity.azurecr.io/curity/idsvr:${VERSION}-buster-slim" "${VERSION}/buster-slim/Dockerfile" "curity.azurecr.io/curity/idsvr:${VERSION}-slim"
+if [ "${VERSION}" = "5.3.1" ]; then
+  EXTRA_TAGS_UBUNTU="curity.azurecr.io/curity/idsvr:5.3.0-ubuntu curity.azurecr.io/curity/idsvr:5.3.0 curity.azurecr.io/curity/idsvr:5.3.0-ubuntu18 curity.azurecr.io/curity/idsvr:5.3.0-ubuntu18.04"
+  EXTRA_TAGS_CENTOS="curity.azurecr.io/curity/idsvr:5.3.0-centos7 curity.azurecr.io/curity/idsvr:5.3.0-centos"
+  EXTRA_TAGS_BUSTER="curity.azurecr.io/curity/idsvr:5.3.0-buster"
+  EXTRA_TAGS_BUSTER_SLIM="curity.azurecr.io/curity/idsvr:5.3.0-buster-slim curity.azurecr.io/curity/idsvr:5.3.0-slim"
+elif [ "${VERSION}" = "6.0.1" ]; then
+  EXTRA_TAGS_UBUNTU="curity.azurecr.io/curity/idsvr:6.0.0-ubuntu curity.azurecr.io/curity/idsvr:6.0.0 curity.azurecr.io/curity/idsvr:6.0.0-ubuntu18 curity.azurecr.io/curity/idsvr:6.0.0-ubuntu18.04"
+  EXTRA_TAGS_CENTOS="curity.azurecr.io/curity/idsvr:6.0.0-centos7 curity.azurecr.io/curity/idsvr:6.0.0-centos"
+  EXTRA_TAGS_BUSTER="curity.azurecr.io/curity/idsvr:6.0.0-buster"
+  EXTRA_TAGS_BUSTER_SLIM="curity.azurecr.io/curity/idsvr:6.0.0-buster-slim curity.azurecr.io/curity/idsvr:6.0.0-slim"
+elif [ "${VERSION}" = "6.2.2" ]; then
+  EXTRA_TAGS_UBUNTU="curity.azurecr.io/curity/idsvr:6.2.0-ubuntu curity.azurecr.io/curity/idsvr:6.2.0 curity.azurecr.io/curity/idsvr:6.2.0-ubuntu18 curity.azurecr.io/curity/idsvr:6.2.0-ubuntu18.04"
+  EXTRA_TAGS_CENTOS="curity.azurecr.io/curity/idsvr:6.2.0-centos7 curity.azurecr.io/curity/idsvr:6.2.0-centos"
+  EXTRA_TAGS_BUSTER="curity.azurecr.io/curity/idsvr:6.2.0-buster"
+  EXTRA_TAGS_BUSTER_SLIM="curity.azurecr.io/curity/idsvr:6.2.0-buster-slim curity.azurecr.io/curity/idsvr:6.2.0-slim"
+fi
+
+build_image "curity.azurecr.io/curity/idsvr:${VERSION}-ubuntu18.04" "${VERSION}/ubuntu/Dockerfile" "curity.azurecr.io/curity/idsvr:${VERSION}-ubuntu" "curity.azurecr.io/curity/idsvr:${VERSION}-ubuntu18" "curity.azurecr.io/curity/idsvr:${VERSION}" $EXTRA_TAGS_UBUNTU
+build_image "curity.azurecr.io/curity/idsvr:${VERSION}-centos7" "${VERSION}/centos/Dockerfile" "curity.azurecr.io/curity/idsvr:${VERSION}-centos" $EXTRA_TAGS_CENTOS
+build_image "curity.azurecr.io/curity/idsvr:${VERSION}-buster" "${VERSION}/buster/Dockerfile" $EXTRA_TAGS_BUSTER
+build_image "curity.azurecr.io/curity/idsvr:${VERSION}-buster-slim" "${VERSION}/buster-slim/Dockerfile" "curity.azurecr.io/curity/idsvr:${VERSION}-slim" $EXTRA_TAGS_BUSTER_SLIM
