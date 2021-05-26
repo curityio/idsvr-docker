@@ -28,5 +28,12 @@ EOF
 ls -l
 EOF
     assert_failure
-    assert_output --partial 'Permission denied'
+    assert_output --partial 'permission denied'
+}
+
+@test "Check that idsvr user create log file inside container" {
+    run docker run -i $BATS_CURITY_IMAGE bash <<EOF
+echo "Test log writing" >> var/log/test.log
+EOF
+    assert_success "var/log/test.log"
 }
