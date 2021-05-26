@@ -42,16 +42,21 @@ EXPOSE 4466
 RUN yum update -y && yum clean all
 
 RUN useradd --system idsvr
-USER idsvr:idsvr
 
 ENV IDSVR_HOME /opt/idsvr
 ENV JAVA_HOME $IDSVR_HOME/lib/java/jre
 ENV PATH $IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH
 WORKDIR $IDSVR_HOME
 
-COPY --chown=idsvr idsvr-6.2.1/idsvr /opt/idsvr
-COPY --chown=idsvr first-run /opt/idsvr/etc/first-run
+COPY idsvr-6.2.1/idsvr /opt/idsvr
+COPY first-run /opt/idsvr/etc/first-run
 COPY --from=openssl-builder /build/lib/lib*so* /usr/lib64/
 COPY --from=openssl-builder /build/bin/openssl /bin/
+
+RUN find /opt/idsvr -type f -exec chmod a-w {} \; && \
+    chmod -R o-rwx /opt/idsvr && \
+    chown -R idsvr: /opt/idsvr
+
+USER idsvr:idsvr
 
 CMD ["idsvr"]

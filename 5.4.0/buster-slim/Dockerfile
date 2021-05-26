@@ -24,14 +24,19 @@ RUN apt-get update && apt-get upgrade -y && \
 	rm -rf /var/lib/apt/lists/* 
 
 RUN useradd --system idsvr
-USER idsvr:idsvr
 
 ENV IDSVR_HOME /opt/idsvr
 ENV JAVA_HOME $IDSVR_HOME/lib/java/jre
 ENV PATH /usr/local/ssl/bin:$IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH
 WORKDIR $IDSVR_HOME
 
-COPY --chown=idsvr idsvr-5.4.0/idsvr /opt/idsvr
-COPY --chown=idsvr first-run /opt/idsvr/etc/first-run
+COPY idsvr-5.4.0/idsvr /opt/idsvr
+COPY first-run /opt/idsvr/etc/first-run
+
+RUN find /opt/idsvr -type f -exec chmod a-w {} \; && \
+    chmod -R o-rwx /opt/idsvr && \
+    chown -R idsvr: /opt/idsvr
+
+USER idsvr:idsvr
 
 CMD ["idsvr"]
