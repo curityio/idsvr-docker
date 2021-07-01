@@ -62,7 +62,7 @@ do
 done < <(find -- * -maxdepth 0 -type d)
 
 ## Push the latest tag if updated
-CURRENT_LATEST_IMAGE_ID=$(docker images --filter=reference="curity.azurecr.io/curity/idsvr:latest-ubuntu18.04" --format "{{.ID}}")
+CURRENT_LATEST_IMAGE_ID=$(docker images --filter=reference="curity.azurecr.io/curity/idsvr:latest" --format "{{.ID}}")
 LATEST_IMAGE_ID=$(docker images --filter=reference="curity.azurecr.io/curity/idsvr:${LATEST_RELEASE}-ubuntu18.04" --format "{{.ID}}")
 
 if [[ "${LATEST_IMAGE_ID}" != "${CURRENT_LATEST_IMAGE_ID}" ]]; then
