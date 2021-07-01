@@ -59,7 +59,7 @@ do
   export VERSION=${VERSION}
   ./build-images.sh
 
-done < <(find -- * -maxdepth 0 -type d)
+done < <(find . -name '*[0-9]*' -type d)
 
 ## Push the latest tag if updated
 CURRENT_LATEST_IMAGE_ID=$(docker images --filter=reference="curity.azurecr.io/curity/idsvr:latest-ubuntu18.04" --format "{{.ID}}")
