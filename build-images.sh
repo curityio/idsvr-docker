@@ -20,42 +20,14 @@ build_image() {
     # Compare the newly built image with the published one
     BUILT_IMAGE_ID=$(docker images --filter=reference="${IMAGE}" --format "{{.ID}}")
 
-    if [[ "${BUILT_IMAGE_ID}" != "${CURRENT_PUBLISHED_IMAGE_ID}" ]]; then
       # Update the extra tags
       docker tag "${IMAGE}" "${IMAGE}-${DATE}"
-
-      #Run sanity tests if RUN_SANITY_CHECK is set
-      MAJOR_VERSION=(${VERSION//./ }[0])
-      if [[ -n "${RUN_SANITY_CHECK}" ]] && [[ ${MAJOR_VERSION} -ge 5 ]] ; then
-        echo "Running Sanity tests on image: ${IMAGE}-${DATE}"
-        ./../tests/sanity-tests.sh 1 curity-idsvr admin Password1 ${IMAGE}-${DATE};
-      fi
-
       #Run bats test if RUN_BATS_TEST is set
       if [[ -n "${RUN_BATS_TEST}" ]] ; then
         echo "Running Bats tests on image: ${IMAGE}-${DATE}"
         export BATS_CURITY_IMAGE=${IMAGE}-${DATE}
-        tests/bats/bin/bats tests
+        ./tests/bats/bin/bats tests
       fi
-
-      if [[ -n "${PUSH_IMAGES}" ]] ; then docker push "${IMAGE}"; fi
-
-      if [[ -n "${PUSH_IMAGES}" ]] ; then
-        echo "Pushing image: ${IMAGE}-${DATE}"
-        docker push "${IMAGE}-${DATE}";
-      fi
-
-      for TAG in "${@:3}"
-      do
-        docker tag "${IMAGE}" "${TAG}"
-        if [[ -n "${PUSH_IMAGES}" ]] ; then
-          echo "Pushing image: ${TAG}"
-          docker push "${TAG}";
-        fi
-      done
-    else
-      echo "Skip pushing ${IMAGE} because it is unchanged"
-    fi
   fi
 }
 
