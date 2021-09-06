@@ -27,7 +27,7 @@ build_image() {
     IMAGE_INSPECT=$(docker inspect "${IMAGE}")
 
     # Check if the last layer of the base image exists in the published one
-    if [[ $IMAGE_INSPECT != *$BASE_IMAGE_LAST_LAYER_ID* ]]; then
+    if [[ $IMAGE_INSPECT != *$BASE_IMAGE_LAST_LAYER_ID* ]]  || [[ $FORCE_UPDATE_VERSION == *$VERSION* ]]; then
       ./download-release.sh
 
       # Build the image again
