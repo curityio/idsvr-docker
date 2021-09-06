@@ -9,6 +9,14 @@ DATE=$(/bin/date +%Y%m%d)
 
 LATEST_RELEASE=$(find -- * -maxdepth 0 -type d | sort -rh | head -n 1)
 
+# Pull base images once to avoid pull limit in dockerhub
+docker pull centos:centos7
+docker pull buildpack-deps:stretch
+docker pull debian:stretch-slim
+docker pull buildpack-deps:buster
+docker pull debian:buster-slim
+docker pull ubuntu:18.04
+
 while IFS= read -r VERSION
 do
 

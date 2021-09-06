@@ -15,9 +15,6 @@ build_image() {
     BASE_IMAGE=$(cat "${DOCKERFILE}" | grep FROM | tail -1 | sed -e 's/FROM[[:space:]]//g')
     echo "BASE_IMAGE: ${BASE_IMAGE}"
 
-    # Pull the latest base image
-    docker pull "${BASE_IMAGE}"
-
     # Get the last layer id of the base image
     BASE_IMAGE_LAST_LAYER_ID=$(docker inspect "${BASE_IMAGE}" | jq ".[0].RootFS.Layers[-1]")
     echo "BASE_IMAGE_LAST_LAYER_ID: ${BASE_IMAGE_LAST_LAYER_ID}"
