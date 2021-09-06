@@ -13,15 +13,6 @@ SCOPE="release_download release_read"
 
 LATEST_RELEASE=$(find -- * -maxdepth 0 -type d | sort -rh | head -n 1)
 
-# Pull base images to avoid using the cache for those
-docker pull centos:centos7
-docker pull buildpack-deps:stretch
-docker pull debian:stretch-slim
-docker pull buildpack-deps:buster
-docker pull debian:buster-slim
-docker pull ubuntu:18.04
-docker pull curity.azurecr.io/curity/idsvr:latest || true
-
 while IFS= read -r VERSION
 do
   echo "Downloading version ${VERSION}";
@@ -62,10 +53,15 @@ do
 done < <(find -- * -name "[0-9].[0-9].[0-9]" -type d)
 
 ## Push the latest tag if updated
-CURRENT_LATEST_IMAGE_ID=$(docker images --filter=reference="curity.azurecr.io/curity/idsvr:latest" --format "{{.ID}}")
-LATEST_IMAGE_ID=$(docker images --filter=reference="curity.azurecr.io/curity/idsvr:${LATEST_RELEASE}-ubuntu18.04" --format "{{.ID}}")
 
-if [[ "${LATEST_IMAGE_ID}" != "${CURRENT_LATEST_IMAGE_ID}" ]]; then
+# Download the current published latest
+docker pull curity.azurecr.io/curity/idsvr:latest || true
+
+
+CURRENT_LATEST_LAST_LAYER_ID=$(docker inspect curity.azurecr.io/curity/idsvr:latest | jq ".[0].RootFS.Layers[-1]")
+LATEST_IMAGE_INSPECT=$(docker inspect "curity.azurecr.io/curity/idsvr:${LATEST_RELEASE}-ubuntu18.04")
+
+if [[ $LATEST_IMAGE_INSPECT != *$CURRENT_LATEST_LAST_LAYER_ID* ]]; then
   if [[ -n "${PUSH_IMAGES}" ]] ; then
     echo "Pushing image: curity.azurecr.io/curity/idsvr:latest"
     docker tag "curity.azurecr.io/curity/idsvr:${LATEST_RELEASE}-ubuntu18.04" curity.azurecr.io/curity/idsvr:latest && docker push curity.azurecr.io/curity/idsvr:latest;
@@ -73,4 +69,4 @@ if [[ "${LATEST_IMAGE_ID}" != "${CURRENT_LATEST_IMAGE_ID}" ]]; then
 fi
 
 # Clean up date tags
-docker images --format \"\{\{.Repository\}\}:\{\{.Tag\}\}\" | grep "curity.azurecr.io/curity/idsvr:.*-${DATE}" | xargs -rn 1 docker rmi
+docker images --format \"\{\{.Repository\}\}:\{\{.Tag\}\}\" | grep "curity.azurecr.io/curity/idsvr:" | xargs -rn 1 docker rmi
