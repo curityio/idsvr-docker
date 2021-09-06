@@ -28,6 +28,7 @@ build_image() {
 
     # Check if the last layer of the base image exists in the published one
     if [[ $IMAGE_INSPECT != *$BASE_IMAGE_LAST_LAYER_ID* ]]; then
+      ./download-release.sh
 
       # Build the image again
       docker build --no-cache -t "${IMAGE}" -f "${DOCKERFILE}" "${DOCKER_CONTEXT}"
