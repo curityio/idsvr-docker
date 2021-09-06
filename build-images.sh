@@ -12,7 +12,7 @@ build_image() {
   if [[ -f "${DOCKERFILE}" ]] ; then
 
     # Find the base image used in the dockerfile
-    BASE_IMAGE=$(cat "${DOCKERFILE}" | grep FROM | sed -e 's/FROM[[:space:]]//g')
+    BASE_IMAGE=$(cat "${DOCKERFILE}" | grep FROM | tail -1 | sed -e 's/FROM[[:space:]]//g')
     echo "BASE_IMAGE: ${BASE_IMAGE}"
 
     # Pull the latest base image
