@@ -19,7 +19,9 @@ fi
 
 # Download the release from the release API
 RELEASE_FILENAME="idsvr-${VERSION}-linux.tar.gz"
-curl -f -s -S -H "Authorization: Bearer ${ACCESS_TOKEN}" "${RELEASE_API}/${VERSION}/linux-release" > "${RELEASE_FILENAME}"
+if [ ! -f $RELEASE_FILENAME ]; then
+  curl -f -s -S -H "Authorization: Bearer ${ACCESS_TOKEN}" "${RELEASE_API}/${VERSION}/linux-release" > "${RELEASE_FILENAME}"
+fi
 
 # Verify hash of downloaded file
 RELEASE_HASH=$(curl -f -s -S -H "Authorization: Bearer ${ACCESS_TOKEN}" "${RELEASE_API}/${VERSION}" | jq -r '."linux-sha256-checksum"')
