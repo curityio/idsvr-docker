@@ -10,17 +10,28 @@ build_image() {
   IMAGE=$1
   DOCKERFILE=$2
   if [[ -f "${DOCKERFILE}" ]] ; then
-    # Download the current published image and store its ID
+
+    # Find the base image used in the dockerfile
+    BASE_IMAGE=$(cat "${DOCKERFILE}" | grep FROM | sed -e 's/FROM[[:space:]]//g')
+    echo "BASE_IMAGE: ${BASE_IMAGE}"
+
+    # Pull the latest base image
+    docker pull "${BASE_IMAGE}"
+
+    # Get the last layer id of the base image
+    BASE_IMAGE_LAST_LAYER_ID=$(docker inspect "${BASE_IMAGE}" | jq ".[0].RootFS.Layers[-1]")
+    echo "BASE_IMAGE_LAST_LAYER_ID: ${BASE_IMAGE_LAST_LAYER_ID}"
+
+    # Download the current published image and inspect it
     docker pull "${IMAGE}" || true
-    CURRENT_PUBLISHED_IMAGE_ID=$(docker images --filter=reference="${IMAGE}" --format "{{.ID}}")
+    IMAGE_INSPECT=$(docker inspect "${IMAGE}")
 
-    # Build the image again (it should use cache if the base layer is the same)
-    docker build -t "${IMAGE}" -f "${DOCKERFILE}" "${DOCKER_CONTEXT}"
+    # Check if the last layer of the base image exists in the published one
+    if [[ $IMAGE_INSPECT != *$BASE_IMAGE_LAST_LAYER_ID* ]]; then
 
-    # Compare the newly built image with the published one
-    BUILT_IMAGE_ID=$(docker images --filter=reference="${IMAGE}" --format "{{.ID}}")
+      # Build the image again
+      docker build --no-cache -t "${IMAGE}" -f "${DOCKERFILE}" "${DOCKER_CONTEXT}"
 
-    if [[ "${BUILT_IMAGE_ID}" != "${CURRENT_PUBLISHED_IMAGE_ID}" ]]; then
       # Update the extra tags
       docker tag "${IMAGE}" "${IMAGE}-${DATE}"
 
@@ -38,9 +49,10 @@ build_image() {
         tests/bats/bin/bats tests
       fi
 
-      if [[ -n "${PUSH_IMAGES}" ]] ; then docker push "${IMAGE}"; fi
-
       if [[ -n "${PUSH_IMAGES}" ]] ; then
+        echo "Pushing image: ${IMAGE}"
+        docker push "${IMAGE}";
+
         echo "Pushing image: ${IMAGE}-${DATE}"
         docker push "${IMAGE}-${DATE}";
       fi
