@@ -42,5 +42,7 @@ if [[ $LATEST_IMAGE_INSPECT != *$CURRENT_LATEST_LAST_LAYER_ID* ]]; then
   fi
 fi
 
-# Clean up date tags
-docker images --format \"\{\{.Repository\}\}:\{\{.Tag\}\}\" | grep "curity.azurecr.io/curity/idsvr:" | xargs -rn 1 docker rmi
+# Delete stopped containers and images
+docker ps -a | awk '{ print $1,$2 }' | grep "curity.azurecr.io/curity/idsvr" | awk '{print $1 }' | xargs -I {} docker rm {}
+
+docker images --format \"\{\{.Repository\}\}:\{\{.Tag\}\}\" | grep "curity.azurecr.io/curity/idsvr" | xargs -rn 1 docker rmi
