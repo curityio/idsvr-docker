@@ -9,7 +9,7 @@
 # For further information, please contact Curity AB.
 #
 
-FROM ubuntu:18.04
+FROM debian:buster-slim
 
 LABEL maintainer="Curity AB <info@curity.se>"
 
@@ -18,8 +18,7 @@ EXPOSE 6749
 EXPOSE 4465
 EXPOSE 4466
 
-RUN apt-get update && \
-	apt-get upgrade -y && \
+RUN apt-get update && apt-get upgrade -y && \
 	apt-get install -y libssl1.1 openssl && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* 
@@ -28,17 +27,15 @@ RUN useradd --system idsvr
 
 ENV IDSVR_HOME /opt/idsvr
 ENV JAVA_HOME $IDSVR_HOME/lib/java/jre
-ENV PATH $IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH
+ENV PATH /usr/local/ssl/bin:$IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH
 WORKDIR $IDSVR_HOME
 
-COPY idsvr-6.4.1/idsvr /opt/idsvr
+COPY idsvr-6.4.2/idsvr /opt/idsvr
 COPY first-run /opt/idsvr/etc/first-run
 
 RUN find /opt/idsvr -type f -exec chmod a-w {} \; && \
    	chmod -R o-rwx /opt/idsvr && \
-   	chown -R idsvr /opt/idsvr && \
-   	chgrp -R 0 /opt/idsvr && \
-   	chmod -R g+rX /opt/idsvr
+   	chown -R idsvr: /opt/idsvr
 
 USER idsvr:idsvr
 

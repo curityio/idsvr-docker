@@ -2,47 +2,49 @@
 
 set -e
 
-DATE=$(/bin/date +%Y%m%d)
-
 DOCKER_CONTEXT=${VERSION}
 
 build_image() {
   IMAGE=$1
   DOCKERFILE=$2
   if [[ -f "${DOCKERFILE}" ]] ; then
-    # Download the current published image and store its ID
+
+    # Find the base image used in the dockerfile
+    BASE_IMAGE=$(cat "${DOCKERFILE}" | grep FROM | tail -1 | sed -e 's/FROM[[:space:]]//g')
+    echo "BASE_IMAGE: ${BASE_IMAGE}"
+
+    # Get the last layer id of the base image
+    BASE_IMAGE_LAST_LAYER_ID=$(docker inspect "${BASE_IMAGE}" | jq ".[0].RootFS.Layers[-1]")
+    echo "BASE_IMAGE_LAST_LAYER_ID: ${BASE_IMAGE_LAST_LAYER_ID}"
+
+    # Download the current published image and inspect it
     docker pull "${IMAGE}" || true
-    CURRENT_PUBLISHED_IMAGE_ID=$(docker images --filter=reference="${IMAGE}" --format "{{.ID}}")
+    IMAGE_INSPECT=$(docker inspect "${IMAGE}" || true)
 
-    # Build the image again (it should use cache if the base layer is the same)
-    docker build -t "${IMAGE}" -f "${DOCKERFILE}" "${DOCKER_CONTEXT}"
+    # Check if the last layer of the base image exists in the published one
+    if [[ $IMAGE_INSPECT != *$BASE_IMAGE_LAST_LAYER_ID* ]]  || [[ $FORCE_UPDATE_VERSION == *$VERSION* ]]; then
+      ./download-release.sh
 
-    # Compare the newly built image with the published one
-    BUILT_IMAGE_ID=$(docker images --filter=reference="${IMAGE}" --format "{{.ID}}")
-
-    if [[ "${BUILT_IMAGE_ID}" != "${CURRENT_PUBLISHED_IMAGE_ID}" ]]; then
-      # Update the extra tags
-      docker tag "${IMAGE}" "${IMAGE}-${DATE}"
+      # Build the image again
+      docker build --no-cache -t "${IMAGE}" -f "${DOCKERFILE}" "${DOCKER_CONTEXT}"
 
       #Run sanity tests if RUN_SANITY_CHECK is set
       MAJOR_VERSION=(${VERSION//./ }[0])
       if [[ -n "${RUN_SANITY_CHECK}" ]] && [[ ${MAJOR_VERSION} -ge 5 ]] ; then
-        echo "Running Sanity tests on image: ${IMAGE}-${DATE}"
-        ./../tests/sanity-tests.sh 1 curity-idsvr admin Password1 ${IMAGE}-${DATE};
+        echo "Running Sanity tests on image: ${IMAGE}"
+        ./../tests/sanity-tests.sh 1 curity-idsvr admin Password1 ${IMAGE};
       fi
 
       #Run bats test if RUN_BATS_TEST is set
       if [[ -n "${RUN_BATS_TEST}" ]] ; then
-        echo "Running Bats tests on image: ${IMAGE}-${DATE}"
-        export BATS_CURITY_IMAGE=${IMAGE}-${DATE}
+        echo "Running Bats tests on image: ${IMAGE}"
+        export BATS_CURITY_IMAGE=${IMAGE}
         tests/bats/bin/bats tests
       fi
 
-      if [[ -n "${PUSH_IMAGES}" ]] ; then docker push "${IMAGE}"; fi
-
       if [[ -n "${PUSH_IMAGES}" ]] ; then
-        echo "Pushing image: ${IMAGE}-${DATE}"
-        docker push "${IMAGE}-${DATE}";
+        echo "Pushing image: ${IMAGE}"
+        docker push "${IMAGE}";
       fi
 
       for TAG in "${@:3}"
@@ -74,6 +76,16 @@ elif [ "${VERSION}" = "6.2.2" ]; then
   EXTRA_TAGS_CENTOS="curity.azurecr.io/curity/idsvr:6.2.0-centos7 curity.azurecr.io/curity/idsvr:6.2.0-centos"
   EXTRA_TAGS_BUSTER="curity.azurecr.io/curity/idsvr:6.2.0-buster"
   EXTRA_TAGS_BUSTER_SLIM="curity.azurecr.io/curity/idsvr:6.2.0-buster-slim curity.azurecr.io/curity/idsvr:6.2.0-slim"
+elif [ "${VERSION}" = "6.3.1" ]; then
+  EXTRA_TAGS_UBUNTU="curity.azurecr.io/curity/idsvr:6.3.0-ubuntu curity.azurecr.io/curity/idsvr:6.3.0 curity.azurecr.io/curity/idsvr:6.3.0-ubuntu18 curity.azurecr.io/curity/idsvr:6.3.0-ubuntu18.04"
+  EXTRA_TAGS_CENTOS="curity.azurecr.io/curity/idsvr:6.3.0-centos7 curity.azurecr.io/curity/idsvr:6.3.0-centos"
+  EXTRA_TAGS_BUSTER="curity.azurecr.io/curity/idsvr:6.3.0-buster"
+  EXTRA_TAGS_BUSTER_SLIM="curity.azurecr.io/curity/idsvr:6.3.0-buster-slim curity.azurecr.io/curity/idsvr:6.3.0-slim"
+elif [ "${VERSION}" = "6.4.2" ]; then
+  EXTRA_TAGS_UBUNTU="curity.azurecr.io/curity/idsvr:6.4.0-ubuntu curity.azurecr.io/curity/idsvr:6.4.0 curity.azurecr.io/curity/idsvr:6.4.0-ubuntu18 curity.azurecr.io/curity/idsvr:6.4.0-ubuntu18.04"
+  EXTRA_TAGS_CENTOS="curity.azurecr.io/curity/idsvr:6.4.0-centos7 curity.azurecr.io/curity/idsvr:6.4.0-centos"
+  EXTRA_TAGS_BUSTER="curity.azurecr.io/curity/idsvr:6.4.0-buster"
+  EXTRA_TAGS_BUSTER_SLIM="curity.azurecr.io/curity/idsvr:6.4.0-buster-slim curity.azurecr.io/curity/idsvr:6.4.0-slim"
 fi
 
 build_image "curity.azurecr.io/curity/idsvr:${VERSION}-ubuntu18.04" "${VERSION}/ubuntu/Dockerfile" "curity.azurecr.io/curity/idsvr:${VERSION}-ubuntu" "curity.azurecr.io/curity/idsvr:${VERSION}-ubuntu18" "curity.azurecr.io/curity/idsvr:${VERSION}" $EXTRA_TAGS_UBUNTU
