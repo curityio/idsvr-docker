@@ -1,4 +1,8 @@
 {
+  "6.4.3": {
+    "original_files": ["idsvr/lib/identityserver.cat-6.4.3-804f216163_obf.jar"],
+    "hotfix_path": "6-4-3-1-rust-client-compatibility"
+  },
   "6.1.0": {
     "original_files": ["idsvr/lib/identityserver.core-6.1.0-c734ecde67.jar"],
     "hotfix_path": "hotfix-path-traversal-issue"
