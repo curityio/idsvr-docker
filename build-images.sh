@@ -2,8 +2,6 @@
 
 set -e
 
-DATE=$(/bin/date +%Y%m%d)
-
 DOCKER_CONTEXT=${VERSION}
 
 build_image() {
@@ -30,29 +28,23 @@ build_image() {
       # Build the image again
       docker build --no-cache -t "${IMAGE}" -f "${DOCKERFILE}" "${DOCKER_CONTEXT}"
 
-      # Update the extra tags
-      docker tag "${IMAGE}" "${IMAGE}-${DATE}"
-
       #Run sanity tests if RUN_SANITY_CHECK is set
       MAJOR_VERSION=(${VERSION//./ }[0])
       if [[ -n "${RUN_SANITY_CHECK}" ]] && [[ ${MAJOR_VERSION} -ge 5 ]] ; then
-        echo "Running Sanity tests on image: ${IMAGE}-${DATE}"
-        ./../tests/sanity-tests.sh 1 curity-idsvr admin Password1 ${IMAGE}-${DATE};
+        echo "Running Sanity tests on image: ${IMAGE}"
+        ./../tests/sanity-tests.sh 1 curity-idsvr admin Password1 ${IMAGE};
       fi
 
       #Run bats test if RUN_BATS_TEST is set
       if [[ -n "${RUN_BATS_TEST}" ]] ; then
-        echo "Running Bats tests on image: ${IMAGE}-${DATE}"
-        export BATS_CURITY_IMAGE=${IMAGE}-${DATE}
+        echo "Running Bats tests on image: ${IMAGE}"
+        export BATS_CURITY_IMAGE=${IMAGE}
         tests/bats/bin/bats tests
       fi
 
       if [[ -n "${PUSH_IMAGES}" ]] ; then
         echo "Pushing image: ${IMAGE}"
         docker push "${IMAGE}";
-
-        echo "Pushing image: ${IMAGE}-${DATE}"
-        docker push "${IMAGE}-${DATE}";
       fi
 
       for TAG in "${@:3}"
@@ -89,7 +81,7 @@ elif [ "${VERSION}" = "6.3.1" ]; then
   EXTRA_TAGS_CENTOS="curity.azurecr.io/curity/idsvr:6.3.0-centos7 curity.azurecr.io/curity/idsvr:6.3.0-centos"
   EXTRA_TAGS_BUSTER="curity.azurecr.io/curity/idsvr:6.3.0-buster"
   EXTRA_TAGS_BUSTER_SLIM="curity.azurecr.io/curity/idsvr:6.3.0-buster-slim curity.azurecr.io/curity/idsvr:6.3.0-slim"
-elif [ "${VERSION}" = "6.4.2" ]; then
+elif [ "${VERSION}" = "6.4.3" ]; then
   EXTRA_TAGS_UBUNTU="curity.azurecr.io/curity/idsvr:6.4.0-ubuntu curity.azurecr.io/curity/idsvr:6.4.0 curity.azurecr.io/curity/idsvr:6.4.0-ubuntu18 curity.azurecr.io/curity/idsvr:6.4.0-ubuntu18.04"
   EXTRA_TAGS_CENTOS="curity.azurecr.io/curity/idsvr:6.4.0-centos7 curity.azurecr.io/curity/idsvr:6.4.0-centos"
   EXTRA_TAGS_BUSTER="curity.azurecr.io/curity/idsvr:6.4.0-buster"
