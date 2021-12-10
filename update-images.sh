@@ -45,4 +45,4 @@ fi
 # Delete stopped containers and images
 docker ps -a | awk '{ print $1,$2 }' | grep "curity.azurecr.io/curity/idsvr" | awk '{print $1 }' | xargs -I {} docker rm {}
 docker rmi curity.azurecr.io/curity/idsvr:latest
-docker images | awk '{ print $1,$3 }' | grep "curity.azurecr.io/curity/idsvr" | awk '{print $2 }' | xargs -I {} docker rmi {}
+docker images | awk '{ print $1,$3 }' | grep "curity.azurecr.io/curity/idsvr" | awk '{print $2 }' | xargs -I {} docker rmi {} --force
