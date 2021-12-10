@@ -61,7 +61,12 @@ build_image() {
   fi
 }
 
-if [ "${VERSION}" = "5.1.1" ]; then
+if [ "${VERSION}" = "5.0.1" ]; then
+  EXTRA_TAGS_UBUNTU="curity.azurecr.io/curity/idsvr:5.0.0-ubuntu curity.azurecr.io/curity/idsvr:5.0.0 curity.azurecr.io/curity/idsvr:5.0.0-ubuntu18 curity.azurecr.io/curity/idsvr:5.0.0-ubuntu18.04"
+  EXTRA_TAGS_CENTOS="curity.azurecr.io/curity/idsvr:5.0.0-centos7 curity.azurecr.io/curity/idsvr:5.0.0-centos"
+  EXTRA_TAGS_BUSTER="curity.azurecr.io/curity/idsvr:5.0.0-buster"
+  EXTRA_TAGS_BUSTER_SLIM="curity.azurecr.io/curity/idsvr:5.0.0-buster-slim curity.azurecr.io/curity/idsvr:5.0.0-slim"
+elif [ "${VERSION}" = "5.1.1" ]; then
   EXTRA_TAGS_UBUNTU="curity.azurecr.io/curity/idsvr:5.1.0-ubuntu curity.azurecr.io/curity/idsvr:5.1.0 curity.azurecr.io/curity/idsvr:5.1.0-ubuntu18 curity.azurecr.io/curity/idsvr:5.1.0-ubuntu18.04"
   EXTRA_TAGS_CENTOS="curity.azurecr.io/curity/idsvr:5.1.0-centos7 curity.azurecr.io/curity/idsvr:5.1.0-centos"
   EXTRA_TAGS_BUSTER="curity.azurecr.io/curity/idsvr:5.1.0-buster"
