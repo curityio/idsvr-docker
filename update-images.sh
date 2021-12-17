@@ -24,7 +24,7 @@ do
   export VERSION=${VERSION}
   ./build-images.sh
 
-done < <(find -- * -name "[0-9].[0-9].[0-9]" -type d)
+done < <(find -- * -name "[0-9].[0-9].[0-9]" -type d | sort -r)
 
 ## Push the latest tag if updated
 
