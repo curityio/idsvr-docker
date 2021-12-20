@@ -23,7 +23,7 @@ build_image() {
 
     # Check if the last layer of the base image exists in the published one
     if [[ $IMAGE_INSPECT != *$BASE_IMAGE_LAST_LAYER_ID* ]]  || [[ $FORCE_UPDATE_VERSION == *$VERSION* ]]; then
-      ./download-release.sh
+     ./download-release.sh
 
       # Build the image again
       docker build --no-cache -t "${IMAGE}" -f "${DOCKERFILE}" "${DOCKER_CONTEXT}"
@@ -61,62 +61,75 @@ build_image() {
   fi
 }
 
+CENTOS_VERSION="centos8"
 if [ "${VERSION}" = "5.0.3" ]; then
+  CENTOS_VERSION="centos7"
   EXTRA_TAGS_UBUNTU="curity.azurecr.io/curity/idsvr:5.0.0-ubuntu curity.azurecr.io/curity/idsvr:5.0.0 curity.azurecr.io/curity/idsvr:5.0.0-ubuntu18 curity.azurecr.io/curity/idsvr:5.0.0-ubuntu18.04"
   EXTRA_TAGS_CENTOS="curity.azurecr.io/curity/idsvr:5.0.0-centos7 curity.azurecr.io/curity/idsvr:5.0.0-centos"
   EXTRA_TAGS_BUSTER="curity.azurecr.io/curity/idsvr:5.0.0-buster"
   EXTRA_TAGS_BUSTER_SLIM="curity.azurecr.io/curity/idsvr:5.0.0-buster-slim curity.azurecr.io/curity/idsvr:5.0.0-slim"
 elif [ "${VERSION}" = "5.1.3" ]; then
+  CENTOS_VERSION="centos7"
   EXTRA_TAGS_UBUNTU="curity.azurecr.io/curity/idsvr:5.1.0-ubuntu curity.azurecr.io/curity/idsvr:5.1.0 curity.azurecr.io/curity/idsvr:5.1.0-ubuntu18 curity.azurecr.io/curity/idsvr:5.1.0-ubuntu18.04"
   EXTRA_TAGS_CENTOS="curity.azurecr.io/curity/idsvr:5.1.0-centos7 curity.azurecr.io/curity/idsvr:5.1.0-centos"
   EXTRA_TAGS_BUSTER="curity.azurecr.io/curity/idsvr:5.1.0-buster"
   EXTRA_TAGS_BUSTER_SLIM="curity.azurecr.io/curity/idsvr:5.1.0-buster-slim curity.azurecr.io/curity/idsvr:5.1.0-slim"
 elif [ "${VERSION}" = "5.2.3" ]; then
+  CENTOS_VERSION="centos7"
   EXTRA_TAGS_UBUNTU="curity.azurecr.io/curity/idsvr:5.2.0-ubuntu curity.azurecr.io/curity/idsvr:5.2.0 curity.azurecr.io/curity/idsvr:5.2.0-ubuntu18 curity.azurecr.io/curity/idsvr:5.2.0-ubuntu18.04"
   EXTRA_TAGS_CENTOS="curity.azurecr.io/curity/idsvr:5.2.0-centos7 curity.azurecr.io/curity/idsvr:5.2.0-centos"
   EXTRA_TAGS_BUSTER="curity.azurecr.io/curity/idsvr:5.2.0-buster"
   EXTRA_TAGS_BUSTER_SLIM="curity.azurecr.io/curity/idsvr:5.2.0-buster-slim curity.azurecr.io/curity/idsvr:5.2.0-slim"
 elif [ "${VERSION}" = "5.3.4" ]; then
+  CENTOS_VERSION="centos7"
   EXTRA_TAGS_UBUNTU="curity.azurecr.io/curity/idsvr:5.3.0-ubuntu curity.azurecr.io/curity/idsvr:5.3.0 curity.azurecr.io/curity/idsvr:5.3.0-ubuntu18 curity.azurecr.io/curity/idsvr:5.3.0-ubuntu18.04"
   EXTRA_TAGS_CENTOS="curity.azurecr.io/curity/idsvr:5.3.0-centos7 curity.azurecr.io/curity/idsvr:5.3.0-centos"
   EXTRA_TAGS_BUSTER="curity.azurecr.io/curity/idsvr:5.3.0-buster"
   EXTRA_TAGS_BUSTER_SLIM="curity.azurecr.io/curity/idsvr:5.3.0-buster-slim curity.azurecr.io/curity/idsvr:5.3.0-slim"
 elif [ "${VERSION}" = "5.4.3" ]; then
+  CENTOS_VERSION="centos7"
   EXTRA_TAGS_UBUNTU="curity.azurecr.io/curity/idsvr:5.4.0-ubuntu curity.azurecr.io/curity/idsvr:5.4.0 curity.azurecr.io/curity/idsvr:5.4.0-ubuntu18 curity.azurecr.io/curity/idsvr:5.4.0-ubuntu18.04"
   EXTRA_TAGS_CENTOS="curity.azurecr.io/curity/idsvr:5.4.0-centos7 curity.azurecr.io/curity/idsvr:5.4.0-centos"
   EXTRA_TAGS_BUSTER="curity.azurecr.io/curity/idsvr:5.4.0-buster"
   EXTRA_TAGS_BUSTER_SLIM="curity.azurecr.io/curity/idsvr:5.4.0-buster-slim curity.azurecr.io/curity/idsvr:5.4.0-slim"
 elif [ "${VERSION}" = "6.0.4" ]; then
+  CENTOS_VERSION="centos7"
   EXTRA_TAGS_UBUNTU="curity.azurecr.io/curity/idsvr:6.0.0-ubuntu curity.azurecr.io/curity/idsvr:6.0.0 curity.azurecr.io/curity/idsvr:6.0.0-ubuntu18 curity.azurecr.io/curity/idsvr:6.0.0-ubuntu18.04"
   EXTRA_TAGS_CENTOS="curity.azurecr.io/curity/idsvr:6.0.0-centos7 curity.azurecr.io/curity/idsvr:6.0.0-centos"
   EXTRA_TAGS_BUSTER="curity.azurecr.io/curity/idsvr:6.0.0-buster"
   EXTRA_TAGS_BUSTER_SLIM="curity.azurecr.io/curity/idsvr:6.0.0-buster-slim curity.azurecr.io/curity/idsvr:6.0.0-slim"
 elif [ "${VERSION}" = "6.1.3" ]; then
+  CENTOS_VERSION="centos7"
   EXTRA_TAGS_UBUNTU="curity.azurecr.io/curity/idsvr:6.1.0-ubuntu curity.azurecr.io/curity/idsvr:6.1.0 curity.azurecr.io/curity/idsvr:6.1.0-ubuntu18 curity.azurecr.io/curity/idsvr:6.1.0-ubuntu18.04"
   EXTRA_TAGS_CENTOS="curity.azurecr.io/curity/idsvr:6.1.0-centos7 curity.azurecr.io/curity/idsvr:6.1.0-centos"
   EXTRA_TAGS_BUSTER="curity.azurecr.io/curity/idsvr:6.1.0-buster"
   EXTRA_TAGS_BUSTER_SLIM="curity.azurecr.io/curity/idsvr:6.1.0-buster-slim curity.azurecr.io/curity/idsvr:6.1.0-slim"
 elif [ "${VERSION}" = "6.2.5" ]; then
+  CENTOS_VERSION="centos7"
   EXTRA_TAGS_UBUNTU="curity.azurecr.io/curity/idsvr:6.2.0-ubuntu curity.azurecr.io/curity/idsvr:6.2.0 curity.azurecr.io/curity/idsvr:6.2.0-ubuntu18 curity.azurecr.io/curity/idsvr:6.2.0-ubuntu18.04"
   EXTRA_TAGS_CENTOS="curity.azurecr.io/curity/idsvr:6.2.0-centos7 curity.azurecr.io/curity/idsvr:6.2.0-centos"
   EXTRA_TAGS_BUSTER="curity.azurecr.io/curity/idsvr:6.2.0-buster"
   EXTRA_TAGS_BUSTER_SLIM="curity.azurecr.io/curity/idsvr:6.2.0-buster-slim curity.azurecr.io/curity/idsvr:6.2.0-slim"
 elif [ "${VERSION}" = "6.3.4" ]; then
+  CENTOS_VERSION="centos7"
   EXTRA_TAGS_UBUNTU="curity.azurecr.io/curity/idsvr:6.3.0-ubuntu curity.azurecr.io/curity/idsvr:6.3.0 curity.azurecr.io/curity/idsvr:6.3.0-ubuntu18 curity.azurecr.io/curity/idsvr:6.3.0-ubuntu18.04"
   EXTRA_TAGS_CENTOS="curity.azurecr.io/curity/idsvr:6.3.0-centos7 curity.azurecr.io/curity/idsvr:6.3.0-centos"
   EXTRA_TAGS_BUSTER="curity.azurecr.io/curity/idsvr:6.3.0-buster"
   EXTRA_TAGS_BUSTER_SLIM="curity.azurecr.io/curity/idsvr:6.3.0-buster-slim curity.azurecr.io/curity/idsvr:6.3.0-slim"
 elif [ "${VERSION}" = "6.4.6" ]; then
+  CENTOS_VERSION="centos7"
   EXTRA_TAGS_UBUNTU="curity.azurecr.io/curity/idsvr:6.4.0-ubuntu curity.azurecr.io/curity/idsvr:6.4.0 curity.azurecr.io/curity/idsvr:6.4.0-ubuntu18 curity.azurecr.io/curity/idsvr:6.4.0-ubuntu18.04"
   EXTRA_TAGS_CENTOS="curity.azurecr.io/curity/idsvr:6.4.0-centos7 curity.azurecr.io/curity/idsvr:6.4.0-centos"
   EXTRA_TAGS_BUSTER="curity.azurecr.io/curity/idsvr:6.4.0-buster"
   EXTRA_TAGS_BUSTER_SLIM="curity.azurecr.io/curity/idsvr:6.4.0-buster-slim curity.azurecr.io/curity/idsvr:6.4.0-slim"
 elif [ "${VERSION}" = "6.5.3" ]; then
+  CENTOS_VERSION="centos7"
   EXTRA_TAGS_UBUNTU="curity.azurecr.io/curity/idsvr:6.5.0-ubuntu curity.azurecr.io/curity/idsvr:6.5.0 curity.azurecr.io/curity/idsvr:6.5.0-ubuntu18 curity.azurecr.io/curity/idsvr:6.5.0-ubuntu18.04"
   EXTRA_TAGS_CENTOS="curity.azurecr.io/curity/idsvr:6.5.0-centos7 curity.azurecr.io/curity/idsvr:6.5.0-centos"
   EXTRA_TAGS_BUSTER="curity.azurecr.io/curity/idsvr:6.5.0-buster"
   EXTRA_TAGS_BUSTER_SLIM="curity.azurecr.io/curity/idsvr:6.5.0-buster-slim curity.azurecr.io/curity/idsvr:6.5.0-slim"
 elif [ "${VERSION}" = "6.6.3" ]; then
+  CENTOS_VERSION="centos7"
   EXTRA_TAGS_UBUNTU="curity.azurecr.io/curity/idsvr:6.6.0-ubuntu curity.azurecr.io/curity/idsvr:6.6.0 curity.azurecr.io/curity/idsvr:6.6.0-ubuntu18 curity.azurecr.io/curity/idsvr:6.6.0-ubuntu18.04"
   EXTRA_TAGS_CENTOS="curity.azurecr.io/curity/idsvr:6.6.0-centos7 curity.azurecr.io/curity/idsvr:6.6.0-centos"
   EXTRA_TAGS_BUSTER="curity.azurecr.io/curity/idsvr:6.6.0-buster"
@@ -124,6 +137,6 @@ elif [ "${VERSION}" = "6.6.3" ]; then
 fi
 
 build_image "curity.azurecr.io/curity/idsvr:${VERSION}-ubuntu18.04" "${VERSION}/ubuntu/Dockerfile" "curity.azurecr.io/curity/idsvr:${VERSION}-ubuntu" "curity.azurecr.io/curity/idsvr:${VERSION}-ubuntu18" "curity.azurecr.io/curity/idsvr:${VERSION}" $EXTRA_TAGS_UBUNTU
-build_image "curity.azurecr.io/curity/idsvr:${VERSION}-centos7" "${VERSION}/centos/Dockerfile" "curity.azurecr.io/curity/idsvr:${VERSION}-centos" $EXTRA_TAGS_CENTOS
+build_image "curity.azurecr.io/curity/idsvr:${VERSION}-${CENTOS_VERSION}" "${VERSION}/centos/Dockerfile" "curity.azurecr.io/curity/idsvr:${VERSION}-centos" $EXTRA_TAGS_CENTOS
 build_image "curity.azurecr.io/curity/idsvr:${VERSION}-buster" "${VERSION}/buster/Dockerfile" $EXTRA_TAGS_BUSTER
 build_image "curity.azurecr.io/curity/idsvr:${VERSION}-buster-slim" "${VERSION}/buster-slim/Dockerfile" "curity.azurecr.io/curity/idsvr:${VERSION}-slim" $EXTRA_TAGS_BUSTER_SLIM
