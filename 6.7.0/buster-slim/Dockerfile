@@ -19,6 +19,7 @@ EXPOSE 4465
 EXPOSE 4466
 
 RUN apt-get update && apt-get upgrade -y && \
+	apt-get install -y openssl && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* 
 
