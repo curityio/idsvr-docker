@@ -135,6 +135,12 @@ elif [ "${VERSION}" = "6.6.3" ]; then
   EXTRA_TAGS_BUSTER="curity.azurecr.io/curity/idsvr:6.6.0-buster"
   EXTRA_TAGS_BUSTER_SLIM="curity.azurecr.io/curity/idsvr:6.6.0-buster-slim curity.azurecr.io/curity/idsvr:6.6.0-slim"
 fi
+elif [ "${VERSION}" = "6.7.1" ]; then
+  EXTRA_TAGS_UBUNTU="curity.azurecr.io/curity/idsvr:6.7.0-ubuntu curity.azurecr.io/curity/idsvr:6.7.0 curity.azurecr.io/curity/idsvr:6.7.0-ubuntu18 curity.azurecr.io/curity/idsvr:6.7.0-ubuntu18.04"
+  EXTRA_TAGS_CENTOS="curity.azurecr.io/curity/idsvr:6.7.0-centos8 curity.azurecr.io/curity/idsvr:6.7.0-centos"
+  EXTRA_TAGS_BUSTER="curity.azurecr.io/curity/idsvr:6.7.0-buster"
+  EXTRA_TAGS_BUSTER_SLIM="curity.azurecr.io/curity/idsvr:6.7.0-buster-slim curity.azurecr.io/curity/idsvr:6.7.0-slim"
+fi
 
 build_image "curity.azurecr.io/curity/idsvr:${VERSION}-ubuntu18.04" "${VERSION}/ubuntu/Dockerfile" "curity.azurecr.io/curity/idsvr:${VERSION}-ubuntu" "curity.azurecr.io/curity/idsvr:${VERSION}-ubuntu18" "curity.azurecr.io/curity/idsvr:${VERSION}" $EXTRA_TAGS_UBUNTU
 build_image "curity.azurecr.io/curity/idsvr:${VERSION}-${CENTOS_VERSION}" "${VERSION}/centos/Dockerfile" "curity.azurecr.io/curity/idsvr:${VERSION}-centos" $EXTRA_TAGS_CENTOS
