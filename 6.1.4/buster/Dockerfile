@@ -9,7 +9,7 @@
 # For further information, please contact Curity AB.
 #
 
-FROM debian:buster-slim
+FROM buildpack-deps:buster
 
 LABEL maintainer="Curity AB <info@curity.se>"
 
@@ -19,7 +19,6 @@ EXPOSE 4465
 EXPOSE 4466
 
 RUN apt-get update && apt-get upgrade -y && \
-	apt-get install -y libssl1.1 openssl && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* 
 
@@ -30,7 +29,7 @@ ENV JAVA_HOME $IDSVR_HOME/lib/java/jre
 ENV PATH /usr/local/ssl/bin:$IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH
 WORKDIR $IDSVR_HOME
 
-COPY idsvr-6.1.3/idsvr /opt/idsvr
+COPY idsvr-6.1.4/idsvr /opt/idsvr
 COPY first-run /opt/idsvr/etc/first-run
 
 RUN find /opt/idsvr -type f -exec chmod a-w {} \; && \
