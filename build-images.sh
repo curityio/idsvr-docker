@@ -62,7 +62,7 @@ build_image() {
 }
 
 CENTOS_VERSION="centos8"
-if [ "${VERSION}" = "5.0.3" ]; then
+if [ "${VERSION}" = "5.0.4" ]; then
   CENTOS_VERSION="centos7"
   EXTRA_TAGS_UBUNTU="curity.azurecr.io/curity/idsvr:5.0.0-ubuntu curity.azurecr.io/curity/idsvr:5.0.0 curity.azurecr.io/curity/idsvr:5.0.0-ubuntu18 curity.azurecr.io/curity/idsvr:5.0.0-ubuntu18.04"
   EXTRA_TAGS_CENTOS="curity.azurecr.io/curity/idsvr:5.0.0-centos7 curity.azurecr.io/curity/idsvr:5.0.0-centos"
