@@ -141,6 +141,14 @@ elif [ "${VERSION}" = "6.7.3" ]; then
   EXTRA_TAGS_BUSTER_SLIM="curity.azurecr.io/curity/idsvr:6.7.0-buster-slim curity.azurecr.io/curity/idsvr:6.7.0-slim"
 fi
 
+if [[ "$VERSION" == *.0 ]]; then
+  BRANCH_VERSION=${VERSION%??}
+  EXTRA_TAGS_UBUNTU="curity.azurecr.io/curity/idsvr:${BRANCH_VERSION}-ubuntu curity.azurecr.io/curity/idsvr:${BRANCH_VERSION} curity.azurecr.io/curity/idsvr:${BRANCH_VERSION}-ubuntu18 curity.azurecr.io/curity/idsvr:${BRANCH_VERSION}-ubuntu18.04"
+  EXTRA_TAGS_CENTOS="curity.azurecr.io/curity/idsvr:${BRANCH_VERSION}-centos8 curity.azurecr.io/curity/idsvr:${BRANCH_VERSION}-centos"
+  EXTRA_TAGS_BUSTER="curity.azurecr.io/curity/idsvr:${BRANCH_VERSION}-buster"
+  EXTRA_TAGS_BUSTER_SLIM="curity.azurecr.io/curity/idsvr:${BRANCH_VERSION}-buster-slim curity.azurecr.io/curity/idsvr:${BRANCH_VERSION}-slim"
+fi
+
 build_image "curity.azurecr.io/curity/idsvr:${VERSION}-ubuntu18.04" "${VERSION}/ubuntu/Dockerfile" "curity.azurecr.io/curity/idsvr:${VERSION}-ubuntu" "curity.azurecr.io/curity/idsvr:${VERSION}-ubuntu18" "curity.azurecr.io/curity/idsvr:${VERSION}" $EXTRA_TAGS_UBUNTU
 build_image "curity.azurecr.io/curity/idsvr:${VERSION}-${CENTOS_VERSION}" "${VERSION}/centos/Dockerfile" "curity.azurecr.io/curity/idsvr:${VERSION}-centos" $EXTRA_TAGS_CENTOS
 build_image "curity.azurecr.io/curity/idsvr:${VERSION}-buster" "${VERSION}/buster/Dockerfile" $EXTRA_TAGS_BUSTER
