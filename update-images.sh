@@ -11,6 +11,7 @@ LATEST_RELEASE=$(find -- * -maxdepth 0 -type d | sort -rh | head -n 1)
 
 # Pull base images once to avoid pull limit in dockerhub
 docker pull centos:centos7
+docker pull quay.io/centos/centos:stream8
 docker pull buildpack-deps:stretch
 docker pull debian:stretch-slim
 docker pull buildpack-deps:buster
