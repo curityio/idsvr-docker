@@ -9,7 +9,7 @@
 # For further information, please contact Curity AB.
 #
 
-FROM centos:centos8 AS openssl-builder
+FROM quay.io/centos/centos:stream8 AS openssl-builder
 
 RUN yum clean all && \
 	yum install -y perl-core curl && \
@@ -30,7 +30,7 @@ RUN cd /tmp/openssl-${OPENSSL_VERSION} && ./config --prefix=/build --release \
     make test && \
     make install_sw install_ssldirs
 
-FROM centos:centos8
+FROM quay.io/centos/centos:stream8
 
 LABEL maintainer="Curity AB <info@curity.se>"
 
