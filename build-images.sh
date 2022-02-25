@@ -139,6 +139,11 @@ elif [ "${VERSION}" = "6.7.3" ]; then
   EXTRA_TAGS_CENTOS="curity.azurecr.io/curity/idsvr:6.7-centos8 curity.azurecr.io/curity/idsvr:6.7-centos"
   EXTRA_TAGS_BUSTER="curity.azurecr.io/curity/idsvr:6.7-buster"
   EXTRA_TAGS_BUSTER_SLIM="curity.azurecr.io/curity/idsvr:6.7-buster-slim curity.azurecr.io/curity/idsvr:6.7-slim"
+elif [ "${VERSION}" = "6.8.1" ]; then
+  EXTRA_TAGS_UBUNTU="curity.azurecr.io/curity/idsvr:6.8-ubuntu curity.azurecr.io/curity/idsvr:6.8 curity.azurecr.io/curity/idsvr:6.8-ubuntu18 curity.azurecr.io/curity/idsvr:6.8-ubuntu18.04"
+  EXTRA_TAGS_CENTOS="curity.azurecr.io/curity/idsvr:6.8-centos8 curity.azurecr.io/curity/idsvr:6.8-centos"
+  EXTRA_TAGS_BUSTER="curity.azurecr.io/curity/idsvr:6.8-buster"
+  EXTRA_TAGS_BUSTER_SLIM="curity.azurecr.io/curity/idsvr:6.8-buster-slim curity.azurecr.io/curity/idsvr:6.8-slim"
 fi
 
 if [[ "$VERSION" == *.0 ]]; then
