@@ -2,12 +2,8 @@
 
 set -e
 
-DATE=$(/bin/date +%Y%m%d)
-
 [[ -z "${CLIENT_ID}" ]] && echo "CLIENT_ID not set" >&2 && exit 1;
 [[ -z "${CLIENT_SECRET}" ]] && echo "CLIENT_SECRET not set" >&2 && exit 1;
-
-LATEST_RELEASE=$(find -- * -maxdepth 0 -type d | sort -rh | head -n 1)
 
 # Pull base images once to avoid pull limit in dockerhub
 docker pull ubuntu:18.04

@@ -2,8 +2,6 @@
 
 set -e
 
-DATE=$(/bin/date +%Y%m%d)
-
 [[ -z "${CLIENT_ID}" ]] && echo "CLIENT_ID not set" >&2 && exit 1;
 [[ -z "${CLIENT_SECRET}" ]] && echo "CLIENT_SECRET not set" >&2 && exit 1;
 
