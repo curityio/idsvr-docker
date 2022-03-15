@@ -25,23 +25,6 @@ do
 
 done < <(find -- * -name "[0-9].[0-9].[0-9]" -type d | sort -r)
 
-## Push the latest tag if updated
-
-# Download the current published latest
-docker pull curity.azurecr.io/curity/idsvr:latest || true
-
-
-CURRENT_LATEST_LAST_LAYER_ID=$(docker inspect curity.azurecr.io/curity/idsvr:latest | jq ".[0].RootFS.Layers[-1]")
-LATEST_IMAGE_INSPECT=$(docker inspect "curity.azurecr.io/curity/idsvr:${LATEST_RELEASE}-ubuntu18.04")
-
-if [[ $LATEST_IMAGE_INSPECT != *$CURRENT_LATEST_LAST_LAYER_ID* ]]; then
-  if [[ -n "${PUSH_IMAGES}" ]] ; then
-    echo "Pushing image: curity.azurecr.io/curity/idsvr:latest"
-    docker tag "curity.azurecr.io/curity/idsvr:${LATEST_RELEASE}-ubuntu18.04" curity.azurecr.io/curity/idsvr:latest && docker push curity.azurecr.io/curity/idsvr:latest;
-  fi
-fi
-
 # Delete stopped containers and images
 docker ps -a | awk '{ print $1,$2 }' | grep "curity.azurecr.io/curity/idsvr" | awk '{print $1 }' | xargs -I {} docker rm {}
-docker rmi curity.azurecr.io/curity/idsvr:latest
 docker images | awk '{ print $1,$3 }' | grep "curity.azurecr.io/curity/idsvr" | awk '{print $2 }' | xargs -I {} docker rmi {} --force

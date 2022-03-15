@@ -16,3 +16,7 @@ if ! [[ "$VERSION" < "7.0.0" ]]; then
   ./create-ubuntu-multiplatform-image.sh
 fi
 done < <(find -- * -name "[0-9].[0-9].[0-9]" -type d | sort -r)
+
+# Delete stopped containers and images
+docker ps -a | awk '{ print $1,$2 }' | grep "curity.azurecr.io/curity/idsvr" | awk '{print $1 }' | xargs -I {} docker rm {}
+docker images | awk '{ print $1,$3 }' | grep "curity.azurecr.io/curity/idsvr" | awk '{print $2 }' | xargs -I {} docker rmi {} --force
