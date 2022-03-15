@@ -23,7 +23,7 @@ build_image() {
 
     # Check if the last layer of the base image exists in the published one
     if [[ $IMAGE_INSPECT != *$BASE_IMAGE_LAST_LAYER_ID* ]]  || [[ $FORCE_UPDATE_VERSION == *$VERSION* ]]; then
-     ./download-release.sh
+      ARTIFACT=linux ./download-release.sh
 
       # Build the image again
       docker build --no-cache -t "${IMAGE}" -f "${DOCKERFILE}" "${DOCKER_CONTEXT}"
@@ -153,8 +153,12 @@ if [[ "$VERSION" == *.0 ]]; then
   EXTRA_TAGS_BUSTER="curity.azurecr.io/curity/idsvr:${BRANCH_VERSION}-buster"
   EXTRA_TAGS_BUSTER_SLIM="curity.azurecr.io/curity/idsvr:${BRANCH_VERSION}-buster-slim curity.azurecr.io/curity/idsvr:${BRANCH_VERSION}-slim"
 fi
+if [[ "$VERSION" < "7.0.0" ]]; then
+  build_image "curity.azurecr.io/curity/idsvr:${VERSION}-ubuntu18.04" "${VERSION}/ubuntu/Dockerfile" "curity.azurecr.io/curity/idsvr:${VERSION}-ubuntu" "curity.azurecr.io/curity/idsvr:${VERSION}-ubuntu18" "curity.azurecr.io/curity/idsvr:${VERSION}" $EXTRA_TAGS_UBUNTU
+else
+  build_image "curity.azurecr.io/curity/idsvr:${VERSION}-x86" "${VERSION}/ubuntu/Dockerfile"
+fi
 
-build_image "curity.azurecr.io/curity/idsvr:${VERSION}-ubuntu18.04" "${VERSION}/ubuntu/Dockerfile" "curity.azurecr.io/curity/idsvr:${VERSION}-ubuntu" "curity.azurecr.io/curity/idsvr:${VERSION}-ubuntu18" "curity.azurecr.io/curity/idsvr:${VERSION}" $EXTRA_TAGS_UBUNTU
 build_image "curity.azurecr.io/curity/idsvr:${VERSION}-${CENTOS_VERSION}" "${VERSION}/centos/Dockerfile" "curity.azurecr.io/curity/idsvr:${VERSION}-centos" $EXTRA_TAGS_CENTOS
 build_image "curity.azurecr.io/curity/idsvr:${VERSION}-buster" "${VERSION}/buster/Dockerfile" $EXTRA_TAGS_BUSTER
 build_image "curity.azurecr.io/curity/idsvr:${VERSION}-buster-slim" "${VERSION}/buster-slim/Dockerfile" "curity.azurecr.io/curity/idsvr:${VERSION}-slim" $EXTRA_TAGS_BUSTER_SLIM
