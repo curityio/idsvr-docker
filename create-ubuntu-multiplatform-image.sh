@@ -22,6 +22,6 @@ TAG_ARRAY=("curity.azurecr.io/curity/idsvr:${VERSION}-ubuntu18.04" "curity.azure
 
 
 for m in "${TAG_ARRAY[@]}"; do
-  docker manifest create "$m" ARM_IMAGE X86_IMAGE
+  docker manifest create "$m" "$ARM_IMAGE" "$X86_IMAGE"
   docker manifest push "$m"
 done
