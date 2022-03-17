@@ -3,7 +3,6 @@
 set -e
 
 D=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-PATH=$D:$PATH
 IMAGE_BASE="curity.azurecr.io/curity/idsvr"
 
 [[ -z "${CLIENT_ID}" ]] && echo "CLIENT_ID not set" >&2 && exit 1;
@@ -18,9 +17,9 @@ docker pull debian:buster-slim
 while IFS= read -r VERSION
 do
 if ! [[ "$VERSION" < "7.0.0" ]]; then
-  export VERSION=${VERSION}
-  build-arm-images.sh
-  create-multiplatform-images.sh
+  export
+  VERSION=${VERSION} "$D"/build-arm-images.sh
+  VERSION=${VERSION} "$D"/create-multiplatform-images.sh
 fi
 done < <(find -- * -name "[0-9].[0-9].[0-9]" -type d | sort -r)
 

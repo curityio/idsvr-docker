@@ -3,7 +3,6 @@
 set -e
 
 D=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-PATH=$D:$PATH
 IMAGE_BASE="curity.azurecr.io/curity/idsvr"
 
 [[ -z "${CLIENT_ID}" ]] && echo "CLIENT_ID not set" >&2 && exit 1;
@@ -20,10 +19,8 @@ docker pull ubuntu:18.04
 
 while IFS= read -r VERSION
 do
-
   # build the images and push them.
-  export VERSION=${VERSION}
-  build-images.sh
+  VERSION=${VERSION} "$D"/build-images.sh
 
 done < <(find -- * -name "[0-9].[0-9].[0-9]" -type d | sort -r)
 

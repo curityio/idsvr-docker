@@ -3,7 +3,6 @@
 set -e
 
 D=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-PATH=$D:$PATH
 IMAGE_BASE="curity.azurecr.io/curity/idsvr"
 DOCKER_CONTEXT=${VERSION}
 
@@ -26,8 +25,7 @@ build_image() {
 
     # Check if the last layer of the base image exists in the published one
     if [[ $IMAGE_INSPECT != *$BASE_IMAGE_LAST_LAYER_ID* ]]  || [[ $FORCE_UPDATE_VERSION == *$VERSION* ]]; then
-      export ARTIFACT=linux
-      download-release.sh
+      ARTIFACT=linux "$D"/download-release.sh
 
       # Build the image again
       docker build --no-cache -t "${IMAGE}" -f "${DOCKERFILE}" "${DOCKER_CONTEXT}"
