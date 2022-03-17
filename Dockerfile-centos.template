@@ -15,7 +15,7 @@ RUN yum clean all && \
 	yum install -y perl-core curl && \
 	yum groupinstall -y "Development tools"
 
-ENV OPENSSL_VERSION=1.1.1m
+ENV OPENSSL_VERSION=1.1.1n
 
 RUN cd /tmp && curl https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz --output openssl.tar.gz && \
     curl https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz.sha256 --output openssl.tar.gz.sha256 && \
