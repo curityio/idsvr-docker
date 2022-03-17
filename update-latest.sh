@@ -18,7 +18,8 @@ LATEST_ARM_IMAGE_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' "${
 LATEST_X86_IMAGE_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' "${X86_IMAGE}" | sed "s/.*sha256://g")
 
 
-if [[ $CURRENT_LATEST_MULTIPLATFORM_MANIFEST != *$LATEST_ARM_IMAGE_DIGEST*  || $CURRENT_LATEST_MULTIPLATFORM_MANIFEST != *$LATEST_X86_IMAGE_DIGEST* ]]; then
+if [[ $CURRENT_LATEST_MULTIPLATFORM_MANIFEST != *$LATEST_ARM_IMAGE_DIGEST* ||
+      $CURRENT_LATEST_MULTIPLATFORM_MANIFEST != *$LATEST_X86_IMAGE_DIGEST* ]]; then
   if [[ -n "${PUSH_IMAGES}" ]] ; then
     echo "Pushing image: $LATEST_TAG"
     docker manifest rm "$LATEST_TAG" || true
