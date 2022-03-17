@@ -2,6 +2,7 @@
 
 set -e
 
+IMAGE_BASE="curity.azurecr.io/curity/idsvr"
 DOCKER_CONTEXT=${VERSION}
 
 build_image() {
@@ -53,4 +54,7 @@ build_image() {
   fi
 }
 
-build_image "curity.azurecr.io/curity/idsvr:${VERSION}-arm" "${VERSION}/ubuntu/Dockerfile"
+build_image "${IMAGE_BASE}:${VERSION}-ubuntu-arm" "${VERSION}/ubuntu/Dockerfile"
+build_image "${IMAGE_BASE}:${VERSION}-centos-arm" "${VERSION}/centos/Dockerfile"
+build_image "${IMAGE_BASE}:${VERSION}-buster-arm" "${VERSION}/buster/Dockerfile"
+build_image "${IMAGE_BASE}:${VERSION}-buster-slim-arm" "${VERSION}/buster-slim/Dockerfile"
