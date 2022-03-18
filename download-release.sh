@@ -2,6 +2,9 @@
 
 set -e
 
+D=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+SUFFIX="${TARGET_ARCH:-}"
+UNPACK_DIR="$D/$VERSION/idsvr-$VERSION$SUFFIX"
 [[ -z "${CLIENT_ID}" ]] && echo "CLIENT_ID not set" >&2 && exit 1;
 [[ -z "${CLIENT_SECRET}" ]] && echo "CLIENT_SECRET not set" >&2 && exit 1
 
@@ -27,7 +30,8 @@ fi
 RELEASE_HASH=$(curl -f -s -S -H "Authorization: Bearer ${ACCESS_TOKEN}" "${RELEASE_API}/${VERSION}" | jq -r ".\"${ARTIFACT}-sha256-checksum\"")
 echo "${RELEASE_HASH}" "${RELEASE_FILENAME}" | sha256sum -c
 
-tar -xf "${RELEASE_FILENAME}" -C "${VERSION}"
+mkdir -p "$UNPACK_DIR"
+tar -xf "${RELEASE_FILENAME}" -C "$UNPACK_DIR" --strip-components 1
 
 if jq -e -r '."'$VERSION'"' hotfixes.json > /dev/null 2>&1; then
   # Applying hotfix for $VERSION
