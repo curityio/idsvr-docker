@@ -5,6 +5,7 @@ set -e
 D=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 IMAGE_BASE="curity.azurecr.io/curity/idsvr"
 DOCKER_CONTEXT="$D/$VERSION"
+LATEST_VERSION=$(find -- * -maxdepth 0 -type d | sort -rh | head -n 1)
 
 build_multiplatform_image() {
   DOCKERFILE=$1
@@ -41,7 +42,9 @@ if [[ "$VERSION" == *.0 ]]; then
   EXTRA_TAGS_BUSTER_SLIM="${IMAGE_BASE}:${BRANCH_VERSION}-buster-slim ${IMAGE_BASE}:${BRANCH_VERSION}-slim"
 fi
 
-build_multiplatform_image "${VERSION}/ubuntu/Dockerfile" "$UBUNTU_X86_LAST_LAYER_ID" "$UBUNTU_ARM_LAST_LAYER_ID" "${IMAGE_BASE}:${VERSION}-ubuntu18.04" "${IMAGE_BASE}:${VERSION}-ubuntu" "${IMAGE_BASE}:${VERSION}-ubuntu18" "${IMAGE_BASE}:${VERSION}" $EXTRA_TAGS_UBUNTU
+if [[ "$VERSION" == "$LATEST_VERSION" ]]; then LATEST_TAG="${IMAGE_BASE}:latest"; else LATEST_TAG=""; fi
+
+build_multiplatform_image "${VERSION}/ubuntu/Dockerfile" "$UBUNTU_X86_LAST_LAYER_ID" "$UBUNTU_ARM_LAST_LAYER_ID" "${IMAGE_BASE}:${VERSION}-ubuntu18.04" "${IMAGE_BASE}:${VERSION}-ubuntu" "${IMAGE_BASE}:${VERSION}-ubuntu18" "${IMAGE_BASE}:${VERSION}" $LATEST_TAG $EXTRA_TAGS_UBUNTU
 build_multiplatform_image "${VERSION}/centos/Dockerfile" "$CENTOS_X86_LAST_LAYER_ID" "$CENTOS_ARM_LAST_LAYER_ID" "${IMAGE_BASE}:${VERSION}-centos8" "${IMAGE_BASE}:${VERSION}-centos" $EXTRA_TAGS_CENTOS
 build_multiplatform_image "${VERSION}/buster/Dockerfile" "$BUSTER_X86_LAST_LAYER_ID" "$BUSTER_ARM_LAST_LAYER_ID" "${IMAGE_BASE}:${VERSION}-buster" $EXTRA_TAGS_BUSTER
 build_multiplatform_image "${VERSION}/buster-slim/Dockerfile" "$BUSTER_SLIM_X86_LAST_LAYER_ID" "$BUSTER_SLIM_ARM_LAST_LAYER_ID" "${IMAGE_BASE}:${VERSION}-buster-slim" "${IMAGE_BASE}:${VERSION}-slim" $EXTRA_TAGS_BUSTER_SLIM
