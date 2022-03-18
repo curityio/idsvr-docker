@@ -2,20 +2,35 @@
 
 set -e
 
+D=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 IMAGE_BASE="curity.azurecr.io/curity/idsvr"
+DOCKER_CONTEXT="$D/$VERSION"
 
 build_multiplatform_image() {
-  DISTRO=$1
-  ARM_IMAGE="${IMAGE_BASE}:${VERSION}-${DISTRO}-arm"
-  X86_IMAGE="${IMAGE_BASE}:${VERSION}-${DISTRO}-x86"
+  DOCKERFILE=$1
+  X86_LAYER_ID=$2
+  ARM_LAYER_ID=$3
 
-  for TAG in "${@:2}"
-  do
-      echo "creating manifest for $TAG with $ARM_IMAGE and $X86_IMAGE"
-      docker manifest create "$TAG" "$ARM_IMAGE" "$X86_IMAGE"
-      docker manifest push "$TAG"
-      docker manifest rm "$TAG"
-  done
+  docker pull "$4" --platform linux/amd64 || true
+  X86_IMAGE_INSPECT=$(docker inspect "$4" || true)
+
+  docker pull "$4" --platform linux/arm64 || true
+  ARM_IMAGE_INSPECT=$(docker inspect "$4" || true)
+
+
+  if [[ $X86_IMAGE_INSPECT != *$X86_LAYER_ID* ]]  || [[ $ARM_IMAGE_INSPECT != *$ARM_LAYER_ID* ]]  ||
+     [[ $FORCE_UPDATE_VERSION == *$VERSION* ]]; then
+
+    TARGET_ARCH=-amd64 ARTIFACT=linux "$D"/download-release.sh
+    TARGET_ARCH=-arm64 ARTIFACT=linux-arm "$D"/download-release.sh
+
+    for TAG in "${@:4}"
+    do
+        if [[ -n "${PUSH_IMAGES}" ]]; then PUSH="--push"; else PUSH=""; fi
+        echo "Running docker buildx for tag: ${TAG} with parameters --platform linux/amd64,linux/arm64 ${PUSH}"
+        docker buildx build --platform linux/amd64,linux/arm64 -t "${TAG}" "$PUSH" -f "${DOCKERFILE}" "${DOCKER_CONTEXT}"
+    done
+  fi
 }
 
 if [[ "$VERSION" == *.0 ]]; then
@@ -27,10 +42,10 @@ if [[ "$VERSION" == *.0 ]]; then
 fi
 
 # shellcheck disable=SC2086
-build_multiplatform_image "ubuntu" "${IMAGE_BASE}:${VERSION}-ubuntu18.04" "${IMAGE_BASE}:${VERSION}-ubuntu" "${IMAGE_BASE}:${VERSION}-ubuntu18" "${IMAGE_BASE}:${VERSION}" $EXTRA_TAGS_UBUNTU
+build_multiplatform_image "${VERSION}/ubuntu/Dockerfile" "$UBUNTU_X86_LAST_LAYER_ID" "$UBUNTU_ARM_LAST_LAYER_ID" "${IMAGE_BASE}:${VERSION}-ubuntu18.04" "${IMAGE_BASE}:${VERSION}-ubuntu" "${IMAGE_BASE}:${VERSION}-ubuntu18" "${IMAGE_BASE}:${VERSION}" $EXTRA_TAGS_UBUNTU
 # shellcheck disable=SC2086
-build_multiplatform_image "centos" "${IMAGE_BASE}:${VERSION}-centos8" "${IMAGE_BASE}:${VERSION}-centos" $EXTRA_TAGS_CENTOS
+build_multiplatform_image "${VERSION}/centos/Dockerfile" "$CENTOS_X86_LAST_LAYER_ID" "$CENTOS_ARM_LAST_LAYER_ID" "${IMAGE_BASE}:${VERSION}-centos8" "${IMAGE_BASE}:${VERSION}-centos" $EXTRA_TAGS_CENTOS
 # shellcheck disable=SC2086
-build_multiplatform_image "buster" "${IMAGE_BASE}:${VERSION}-buster" $EXTRA_TAGS_BUSTER
+build_multiplatform_image "${VERSION}/buster/Dockerfile" "$BUSTER_X86_LAST_LAYER_ID" "$BUSTER_ARM_LAST_LAYER_ID" "${IMAGE_BASE}:${VERSION}-buster" $EXTRA_TAGS_BUSTER
 # shellcheck disable=SC2086
-build_multiplatform_image "buster-slim" "${IMAGE_BASE}:${VERSION}-buster-slim" "${IMAGE_BASE}:${VERSION}-slim" $EXTRA_TAGS_BUSTER_SLIM
+build_multiplatform_image "${VERSION}/buster-slim/Dockerfile" "$BUSTER_SLIM_X86_LAST_LAYER_ID" "$BUSTER_SLIM_ARM_LAST_LAYER_ID" "${IMAGE_BASE}:${VERSION}-buster-slim" "${IMAGE_BASE}:${VERSION}-slim" $EXTRA_TAGS_BUSTER_SLIM
