@@ -19,8 +19,10 @@ docker pull ubuntu:18.04
 
 while IFS= read -r VERSION
 do
-  # build the images and push them.
-  VERSION=${VERSION} "$D"/build-images.sh
+  if [[ "$VERSION" < "7.0.0" ]]; then
+    # build the images before 7.0.0 and push them
+    VERSION=${VERSION} "$D"/build-images.sh
+  fi
 
 done < <(find -- * -name "[0-9].[0-9].[0-9]" -type d | sort -r)
 
