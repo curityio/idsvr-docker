@@ -13,6 +13,8 @@ FROM ubuntu:18.04
 
 LABEL maintainer="Curity AB <info@curity.se>"
 
+ARG TARGETARCH
+
 EXPOSE 8443
 EXPOSE 6749
 EXPOSE 4465
@@ -31,7 +33,7 @@ ENV JAVA_HOME $IDSVR_HOME/lib/java/jre
 ENV PATH $IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH
 WORKDIR $IDSVR_HOME
 
-COPY idsvr-{{VERSION}}/idsvr /opt/idsvr
+COPY idsvr-{{VERSION}}-${TARGETARCH}/idsvr /opt/idsvr
 COPY first-run /opt/idsvr/etc/first-run
 
 RUN find /opt/idsvr -type f -exec chmod a-w {} \; && \
