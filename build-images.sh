@@ -118,7 +118,7 @@ elif [ "${VERSION}" = "6.8.1" ]; then
   EXTRA_TAGS_BUSTER_SLIM="${IMAGE_BASE}:6.8-buster-slim ${IMAGE_BASE}:6.8-slim"
 fi
 
-  build_image "${IMAGE_BASE}:${VERSION}-ubuntu18.04" "${VERSION}/ubuntu/Dockerfile" "${IMAGE_BASE}:${VERSION}-ubuntu" "${IMAGE_BASE}:${VERSION}-ubuntu18" "${IMAGE_BASE}:${VERSION}" $EXTRA_TAGS_UBUNTU
-  build_image "${IMAGE_BASE}:${VERSION}-${CENTOS_VERSION}" "${VERSION}/centos/Dockerfile" "${IMAGE_BASE}:${VERSION}-centos" $EXTRA_TAGS_CENTOS
-  build_image "${IMAGE_BASE}:${VERSION}-buster" "${VERSION}/buster/Dockerfile" $EXTRA_TAGS_BUSTER
-  build_image "${IMAGE_BASE}:${VERSION}-buster-slim" "${VERSION}/buster-slim/Dockerfile" "${IMAGE_BASE}:${VERSION}-slim" $EXTRA_TAGS_BUSTER_SLIM
+build_image "${IMAGE_BASE}:${VERSION}-ubuntu18.04" "${VERSION}/ubuntu/Dockerfile" "${IMAGE_BASE}:${VERSION}-ubuntu" "${IMAGE_BASE}:${VERSION}-ubuntu18" "${IMAGE_BASE}:${VERSION}" $EXTRA_TAGS_UBUNTU
+build_image "${IMAGE_BASE}:${VERSION}-${CENTOS_VERSION}" "${VERSION}/centos/Dockerfile" "${IMAGE_BASE}:${VERSION}-centos" $EXTRA_TAGS_CENTOS
+build_image "${IMAGE_BASE}:${VERSION}-buster" "${VERSION}/buster/Dockerfile" $EXTRA_TAGS_BUSTER
+build_image "${IMAGE_BASE}:${VERSION}-buster-slim" "${VERSION}/buster-slim/Dockerfile" "${IMAGE_BASE}:${VERSION}-slim" $EXTRA_TAGS_BUSTER_SLIM
