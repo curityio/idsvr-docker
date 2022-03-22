@@ -24,6 +24,7 @@ do
   # build the images and push them. Latest pushed separately after the loop to avoid making each release :latest while running this script.
   export VERSION=${VERSION}
   ./build-images.sh
+  docker images | awk '{ print $1,$3 }' | grep "curity.azurecr.io/curity/idsvr" | awk '{print $2 }' | xargs -I {} docker rmi {} --force
 
 done < <(find -- * -name "[0-9].[0-9].[0-9]" -type d | sort -r)
 
