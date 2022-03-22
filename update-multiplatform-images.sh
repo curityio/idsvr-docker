@@ -28,7 +28,7 @@ BUSTER_SLIM_X86_LAST_LAYER_ID=$(docker inspect "${BUSTER_SLIM}" | jq ".[0].RootF
 docker pull $UBUNTU_18--platform linux/arm64
 docker pull $CENTOS_8 --platform linux/arm64
 docker pull $BUSTER --platform linux/arm64
-docker pull $BUSTER_SLIM--platform linux/arm64
+docker pull $BUSTER_SLIM --platform linux/arm64
 
 UBUNTU_ARM_LAST_LAYER_ID=$(docker inspect "${UBUNTU_18}" | jq ".[0].RootFS.Layers[-1]"); export UBUNTU_ARM_LAST_LAYER_ID
 CENTOS_ARM_LAST_LAYER_ID=$(docker inspect "${CENTOS_8}" | jq ".[0].RootFS.Layers[-1]"); export CENTOS_ARM_LAST_LAYER_ID
