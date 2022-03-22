@@ -22,6 +22,7 @@ do
   if [[ "$VERSION" < "7.0.0" ]]; then
     # build the images before 7.0.0 and push them
     VERSION=${VERSION} "$D"/build-images.sh
+    docker images | awk '{ print $1,$3 }' | grep "curity.azurecr.io/curity/idsvr" | awk '{print $2 }' | xargs -I {} docker rmi {} --force
   fi
 
 done < <(find -- * -name "[0-9].[0-9].[0-9]" -type d | sort -r)
