@@ -31,7 +31,7 @@ RELEASE_HASH=$(curl -f -s -S -H "Authorization: Bearer ${ACCESS_TOKEN}" "${RELEA
 echo "${RELEASE_HASH}" "${RELEASE_FILENAME}" | sha256sum -c
 
 mkdir -p "$UNPACK_DIR"
-tar -xf "${RELEASE_FILENAME}" -C "$UNPACK_DIR" --strip-components 1
+tar -xzf "${RELEASE_FILENAME}" -C "$UNPACK_DIR" --strip-components 1
 
 if jq -e -r '."'$VERSION'"' hotfixes.json > /dev/null 2>&1; then
   # Applying hotfix for $VERSION
