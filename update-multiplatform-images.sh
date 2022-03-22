@@ -25,7 +25,7 @@ BUSTER_X86_LAST_LAYER_ID=$(docker inspect "${BUSTER}" | jq ".[0].RootFS.Layers[-
 BUSTER_SLIM_X86_LAST_LAYER_ID=$(docker inspect "${BUSTER_SLIM}" | jq ".[0].RootFS.Layers[-1]"); export BUSTER_SLIM_X86_LAST_LAYER_ID
 
 # Pull ARM base images once to avoid pull limit in dockerhub
-docker pull $UBUNTU_18--platform linux/arm64
+docker pull $UBUNTU_18 --platform linux/arm64
 docker pull $CENTOS_8 --platform linux/arm64
 docker pull $BUSTER --platform linux/arm64
 docker pull $BUSTER_SLIM --platform linux/arm64
