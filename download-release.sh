@@ -40,8 +40,8 @@ if jq -e -r '."'$VERSION'"' hotfixes.json > /dev/null 2>&1; then
   curl -f -s -S -H "Authorization: Bearer ${ACCESS_TOKEN}" "${RELEASE_API}/${VERSION}/${HOTFIX_PATH}/file" > "${HOTFIX_PATH}-${VERSION}.tgz"
 
   for original_file in $(jq -e -r '."'$VERSION'".original_files[]' hotfixes.json); do
-    rm "${VERSION}/idsvr-${VERSION}/${original_file}"
+    rm "${UNPACK_DIR}/${original_file}"
   done
 
-  tar -xf "${HOTFIX_PATH}-${VERSION}.tgz" --exclude='*.md' -C "${VERSION}/idsvr-${VERSION}"
+  tar -xzf "${HOTFIX_PATH}-${VERSION}.tgz" --exclude='*.md' -C "$UNPACK_DIR"
 fi
