@@ -28,7 +28,11 @@ fi
 
 # Verify hash of downloaded file
 RELEASE_HASH=$(curl -f -s -S -H "Authorization: Bearer ${ACCESS_TOKEN}" "${RELEASE_API}/${VERSION}" | jq -r ".\"${ARTIFACT}-sha256-checksum\"")
-echo "${RELEASE_HASH}" "${RELEASE_FILENAME}" | sha256sum -c
+CALCULATED_RELEASE_HASH=$(openssl sha256 "${RELEASE_FILENAME}")
+if [[ $CALCULATED_RELEASE_HASH != *$RELEASE_HASH* ]]; then
+  echo "Release hash verification failed, expecting $RELEASE_HASH and got $CALCULATED_RELEASE_HASH for $RELEASE_FILENAME"
+  exit 1
+fi
 
 mkdir -p "$UNPACK_DIR"
 tar -xzf "${RELEASE_FILENAME}" -C "$UNPACK_DIR" --strip-components 1
