@@ -20,13 +20,13 @@ if [[ "${ACCESS_TOKEN}" == "null" ]]; then
   exit 1
 fi
 
-echo "$ACCESS_TOKEN"
-
 # Download the release from the release API
 RELEASE_FILENAME="idsvr-${VERSION}-${ARTIFACT}.tar.gz"
 if [ ! -f $RELEASE_FILENAME ]; then
   curl -f -s -S -H "Authorization: Bearer ${ACCESS_TOKEN}" "${RELEASE_API}/${VERSION}/${ARTIFACT}-release" > "${RELEASE_FILENAME}"
 fi
+
+ls -la .
 
 # Verify hash of downloaded file
 RELEASE_HASH=$(curl -f -s -S -H "Authorization: Bearer ${ACCESS_TOKEN}" "${RELEASE_API}/${VERSION}" | jq -r ".\"${ARTIFACT}-sha256-checksum\"")
