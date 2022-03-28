@@ -20,6 +20,8 @@ if [[ "${ACCESS_TOKEN}" == "null" ]]; then
   exit 1
 fi
 
+echo "$ACCESS_TOKEN"
+
 # Download the release from the release API
 RELEASE_FILENAME="idsvr-${VERSION}-${ARTIFACT}.tar.gz"
 if [ ! -f $RELEASE_FILENAME ]; then
