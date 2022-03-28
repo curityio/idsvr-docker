@@ -22,11 +22,10 @@ fi
 
 # Download the release from the release API
 RELEASE_FILENAME="idsvr-${VERSION}-${ARTIFACT}.tar.gz"
-if [ ! -f $RELEASE_FILENAME ]; then
-  curl -f -s -S -H "Authorization: Bearer ${ACCESS_TOKEN}" "${RELEASE_API}/${VERSION}/${ARTIFACT}-release" > "${RELEASE_FILENAME}"
+if [ -f $RELEASE_FILENAME ]; then
+  rm "$RELEASE_FILENAME"
 fi
-
-ls -la .
+  curl -f -s -S -H "Authorization: Bearer ${ACCESS_TOKEN}" "${RELEASE_API}/${VERSION}/${ARTIFACT}-release" > "${RELEASE_FILENAME}"
 
 # Verify hash of downloaded file
 RELEASE_HASH=$(curl -f -s -S -H "Authorization: Bearer ${ACCESS_TOKEN}" "${RELEASE_API}/${VERSION}" | jq -r ".\"${ARTIFACT}-sha256-checksum\"")
