@@ -39,7 +39,7 @@ EXPOSE 6749
 EXPOSE 4465
 EXPOSE 4466
 
-RUN yum update -y --exclude=centos-gpg-keys* && yum clean all
+RUN yum update -y && yum clean all
 
 RUN useradd --system idsvr
 
