@@ -31,6 +31,8 @@ build_multiplatform_image() {
         echo "Running docker buildx for tag: ${TAG} with parameters --platform linux/amd64,linux/arm64 ${PUSH}"
         docker buildx build --platform linux/amd64,linux/arm64 ${PUSH} -t "${TAG}" -f "${DOCKERFILE}" "${DOCKER_CONTEXT}"
     done
+    else
+      echo "$4 is based on the latest base image, skip building"
   fi
 }
 
