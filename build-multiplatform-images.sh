@@ -29,7 +29,7 @@ build_multiplatform_image() {
     do
         if [[ -n "${PUSH_IMAGES}" ]]; then PUSH="--push"; else PUSH=""; fi
         echo "Running docker buildx for tag: ${TAG} with parameters --platform linux/amd64,linux/arm64 ${PUSH}"
-        docker buildx build --platform linux/amd64,linux/arm64 -t "${TAG}" "$PUSH" -f "${DOCKERFILE}" "${DOCKER_CONTEXT}"
+        docker buildx build --platform linux/amd64,linux/arm64 ${PUSH} -t "${TAG}" -f "${DOCKERFILE}" "${DOCKER_CONTEXT}"
     done
   fi
 }
