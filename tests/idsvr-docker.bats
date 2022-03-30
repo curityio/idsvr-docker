@@ -28,7 +28,7 @@ EOF
 ls -l
 EOF
     assert_failure
-    assert_output --partial 'permission denied'
+    assert_output --partial 'Permission denied'
 }
 
 @test "Check that idsvr user create log file inside container" {
