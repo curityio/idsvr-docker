@@ -6,6 +6,7 @@ D=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 IMAGE_BASE="curity.azurecr.io/curity/idsvr"
 DOCKER_CONTEXT="$D/$VERSION"
 LATEST_VERSION=$(find -- * -maxdepth 0 -type d | sort -rh | head -n 1)
+FORCE_BUILD=${FORCE_DISTRO:-none}
 
 build_multiplatform_image() {
   DOCKERFILE=$1
@@ -20,7 +21,7 @@ build_multiplatform_image() {
 
 
   if [[ $X86_IMAGE_INSPECT != *$X86_LAYER_ID* ]] || [[ $ARM_IMAGE_INSPECT != *$ARM_LAYER_ID* ]] ||
-     [[ $FORCE_DISTRO == *$DOCKERFILE* ]] || [[ $FORCE_UPDATE_VERSION == *$VERSION* ]]; then
+     [[ $DOCKERFILE == *$FORCE_BUILD* ]] || [[ $FORCE_UPDATE_VERSION == *$VERSION* ]]; then
 
     TARGET_ARCH=-amd64 ARTIFACT=linux "$D"/download-release.sh
     TARGET_ARCH=-arm64 ARTIFACT=linux-arm "$D"/download-release.sh

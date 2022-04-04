@@ -5,6 +5,7 @@ set -e
 D=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 IMAGE_BASE="curity.azurecr.io/curity/idsvr"
 DOCKER_CONTEXT=${VERSION}
+FORCE_BUILD=${FORCE_DISTRO:-none}
 
 build_image() {
   IMAGE=$1
@@ -25,7 +26,7 @@ build_image() {
 
     # Check if the last layer of the base image exists in the published one
     if [[ $IMAGE_INSPECT != *$BASE_IMAGE_LAST_LAYER_ID* ]] || [[ $FORCE_UPDATE_VERSION == *$VERSION* ]] ||
-       [[ $FORCE_DISTRO == *$DOCKERFILE* ]]; then
+       [[ $DOCKERFILE == *$FORCE_BUILD* ]]; then
       ARTIFACT=linux "$D"/download-release.sh
 
       # Build the image again
