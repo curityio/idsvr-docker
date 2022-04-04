@@ -19,8 +19,8 @@ build_multiplatform_image() {
   ARM_IMAGE_INSPECT=$(docker inspect "$4" || true)
 
 
-  if [[ $X86_IMAGE_INSPECT != *$X86_LAYER_ID* ]]  || [[ $ARM_IMAGE_INSPECT != *$ARM_LAYER_ID* ]]  ||
-     [[ $FORCE_UPDATE_VERSION == *$VERSION* ]]; then
+  if [[ $X86_IMAGE_INSPECT != *$X86_LAYER_ID* ]] || [[ $ARM_IMAGE_INSPECT != *$ARM_LAYER_ID* ]] ||
+     [[ $FORCE_DISTRO == *$DOCKERFILE* ]] || [[ $FORCE_UPDATE_VERSION == *$VERSION* ]]; then
 
     TARGET_ARCH=-amd64 ARTIFACT=linux "$D"/download-release.sh
     TARGET_ARCH=-arm64 ARTIFACT=linux-arm "$D"/download-release.sh
