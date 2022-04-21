@@ -30,7 +30,7 @@ ENV JAVA_HOME $IDSVR_HOME/lib/java/jre
 ENV PATH /usr/local/ssl/bin:$IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH
 WORKDIR $IDSVR_HOME
 
-COPY idsvr-6.6.4/idsvr /opt/idsvr
+COPY idsvr-6.6.5/idsvr /opt/idsvr
 COPY first-run /opt/idsvr/etc/first-run
 
 RUN find /opt/idsvr -type f -exec chmod a-w {} \; && \
