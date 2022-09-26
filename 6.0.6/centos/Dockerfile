@@ -15,23 +15,15 @@ RUN yum clean all && \
 	yum install -y perl-core curl && \
 	yum groupinstall -y "Development tools"
 
-#ENV OPENSSL_VERSION=1.1.1p
-#
-#RUN cd /tmp && curl https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz --output openssl.tar.gz && \
-#    curl https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz.sha256 --output openssl.tar.gz.sha256 && \
-#    echo $(cat openssl.tar.gz.sha256) openssl.tar.gz | sha256sum -c && \
-#    tar -xf openssl.tar.gz && \
-#    rm openssl.tar.gz
-#
-#RUN cd /tmp/openssl-${OPENSSL_VERSION} && ./config --prefix=/build --release \
-#    no-ec2m no-idea no-mdc2 no-rc5 no-ssl no-dtls no-dtls1-method no-dtls1_2-method && \
-#    make && \
-#    chmod -R go+rX . && \
-#    make TESTS=-test_afalg test && \
-#    make install_sw install_ssldirs
+ENV OPENSSL_VERSION=1.1.1q
 
-RUN cd /tmp && git clone https://github.com/openssl/openssl.git && cd openssl && git checkout OpenSSL_1_1_1-stable && \
-    ./config --prefix=/build --release \
+RUN cd /tmp && curl https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz --output openssl.tar.gz && \
+    curl https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz.sha256 --output openssl.tar.gz.sha256 && \
+    echo $(cat openssl.tar.gz.sha256) openssl.tar.gz | sha256sum -c && \
+    tar -xf openssl.tar.gz && \
+    rm openssl.tar.gz
+
+RUN cd /tmp/openssl-${OPENSSL_VERSION} && ./config --prefix=/build --release \
     no-ec2m no-idea no-mdc2 no-rc5 no-ssl no-dtls no-dtls1-method no-dtls1_2-method && \
     make && \
     chmod -R go+rX . && \
