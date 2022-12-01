@@ -29,8 +29,8 @@ COPY idsvr-{{VERSION}}/idsvr /opt/idsvr
 COPY first-run /opt/idsvr/etc/first-run
 
 RUN find /opt/idsvr -type f -exec chmod a-w {} \; && \
-   	chmod -R o-rwx /opt/idsvr && \
-   	chown -R idsvr: /opt/idsvr
+    chmod -R o-rwx /opt/idsvr && \
+    chown -R idsvr: /opt/idsvr
 
 USER idsvr:idsvr
 
