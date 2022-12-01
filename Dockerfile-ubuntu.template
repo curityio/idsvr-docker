@@ -43,6 +43,6 @@ RUN find /opt/idsvr -type f -exec chmod a-w {} \; && \
     chgrp -R 0 /opt/idsvr && \
     chmod -R g+rX /opt/idsvr
 
-USER idsvr:idsvr
+USER 999:999
 
 CMD ["idsvr"]

@@ -39,6 +39,6 @@ RUN find /opt/idsvr -type f -exec chmod a-w {} \; && \
     chmod -R o-rwx /opt/idsvr && \
     chown -R idsvr: /opt/idsvr
 
-USER idsvr:idsvr
+USER 999:999
 
 CMD ["idsvr"]
