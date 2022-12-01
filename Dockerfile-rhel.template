@@ -18,7 +18,8 @@ EXPOSE 6749
 EXPOSE 4465
 EXPOSE 4466
 
-RUN useradd --system idsvr
+RUN groupadd --system --gid 999 idsvr && \
+    useradd --system --gid idsvr --uid 999 --shell /bin/bash --create-home idsvr
 
 ENV IDSVR_HOME /opt/idsvr
 ENV JAVA_HOME $IDSVR_HOME/lib/java/jre

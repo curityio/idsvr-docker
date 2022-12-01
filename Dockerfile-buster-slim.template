@@ -25,7 +25,8 @@ RUN apt-get update && apt-get upgrade -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-RUN useradd --system idsvr
+RUN groupadd --system --gid 999 idsvr && \
+    useradd --system --gid idsvr --uid 999 --shell /bin/bash --create-home idsvr
 
 ENV IDSVR_HOME /opt/idsvr
 ENV JAVA_HOME $IDSVR_HOME/lib/java/jre
