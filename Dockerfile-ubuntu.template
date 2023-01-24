@@ -9,7 +9,7 @@
 # For further information, please contact Curity AB.
 #
 
-FROM ubuntu:18.04
+FROM ubuntu:22.04
 
 LABEL maintainer="Curity AB <info@curity.se>"
 
