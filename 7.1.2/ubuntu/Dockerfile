@@ -33,14 +33,8 @@ ENV JAVA_HOME $IDSVR_HOME/lib/java/jre
 ENV PATH $IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH
 WORKDIR $IDSVR_HOME
 
-COPY idsvr-7.1.2-${TARGETARCH}/idsvr /opt/idsvr
-COPY first-run /opt/idsvr/etc/first-run
-
-RUN find /opt/idsvr -type f -exec chmod a-w {} \; && \
-   	chmod -R o-rwx /opt/idsvr && \
-   	chown -R idsvr /opt/idsvr && \
-   	chgrp -R 0 /opt/idsvr && \
-   	chmod -R g+rX /opt/idsvr
+COPY --chown=idsvr idsvr-7.1.2-${TARGETARCH}/idsvr /opt/idsvr
+COPY --chown=idsvr first-run /opt/idsvr/etc/first-run
 
 USER idsvr:idsvr
 

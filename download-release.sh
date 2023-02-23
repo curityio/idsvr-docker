@@ -63,3 +63,7 @@ if jq -e -r '."'$VERSION'"' hotfixes.json > /dev/null 2>&1; then
 
   tar -xzf "${HOTFIX_PATH}-${VERSION}.tgz" --exclude='*.md' -C "$UNPACK_DIR"
 fi
+
+find "$UNPACK_DIR"/idsvr -type f -exec chmod a-w {} \;
+chmod -R o-rwx "$UNPACK_DIR"/idsvr
+chmod -R g+rX "$UNPACK_DIR"/idsvr
