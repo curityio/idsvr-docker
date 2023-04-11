@@ -39,7 +39,7 @@ Customers can update this user account and apply their own image policy when req
 
 ## Kubernetes Non Root Check
 
-You may need to use the Kubernetes `runAsNonRoot` security context setting:
+You may need to deploy the docker image and also use the Kubernetes `runAsNonRoot` security context setting:
 
 ```yaml
 spec:
@@ -51,7 +51,7 @@ spec:
 ```
 
 If so, you will need to configure a numeric user ID.\
-You can do this by removing the default user and adding a numeric user and group.\
+Do so by removing the default user and adding a numeric user and group.\
 Then change file ownership to that user, which will inherit existing permissions.
 
 ```dockerfile
