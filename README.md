@@ -59,11 +59,13 @@ FROM curity.azurecr.io/curity/idsvr:latest
 USER root
 
 RUN deluser idsvr && \
-  groupadd --system --gid 10001 idsvr && \
-  useradd  --system --gid idsvr --uid 10002 --shell /bin/bash --create-home idsvr && \
-  chown -R 10002 /opt/idsvr
-USER 10002
+    groupadd --system --gid 10000 idsvr && \
+    useradd  --system --gid idsvr --uid 10001 --shell /bin/bash --create-home idsvr && \
+    chown -R 10001 /opt/idsvr
+USER 10001
 ```
+
+We expect to update the default docker image to use a numeric user ID for a future release.
 
 # Contributing
 
