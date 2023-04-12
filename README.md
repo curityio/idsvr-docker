@@ -65,8 +65,6 @@ RUN deluser idsvr && \
 USER 10001
 ```
 
-We expect to update the default docker image to use a numeric user ID for a future release.
-
 # Contributing
 
 Pull requests are welcome. To do so, just fork this repo, and submit a pull request. 
