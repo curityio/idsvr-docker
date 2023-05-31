@@ -31,6 +31,40 @@ So, the tag of the form `<version>-<os>` always contains the latest, while the t
 * Extract the release in the `VERSION` directory of this project
 * Run the command `docker build -t <image_tag> -f <VERSION>/<DISTRO>/Dockerfile <VERSION>`  
 
+# Customizing the image
+
+The Curity Identity Server is a Java based product and can run in many docker setups.\
+The default docker image runs as a low privilege `idsvr` user account.\
+Customers can update this user account and apply their own image policy when required.
+
+## Kubernetes Non Root Check
+
+You may need to deploy the docker image and also use the Kubernetes `runAsNonRoot` security context setting:
+
+```yaml
+spec:
+  securityContext:
+    runAsNonRoot: true
+  containers:
+  - name: curity
+    image: custom_idsvr:latest
+```
+
+If so, you will need to configure a numeric user ID.\
+Do so by removing the default user and adding a numeric user and group.\
+Then change file ownership to that user, which will inherit existing permissions.
+
+```dockerfile
+FROM curity.azurecr.io/curity/idsvr:latest
+USER root
+
+RUN deluser idsvr && \
+    groupadd --system --gid 10000 idsvr && \
+    useradd  --system --gid idsvr --uid 10001 --shell /bin/bash --create-home idsvr && \
+    chown -R 10001 /opt/idsvr
+USER 10001
+```
+
 # Contributing
 
 Pull requests are welcome. To do so, just fork this repo, and submit a pull request. 
