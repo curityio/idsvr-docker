@@ -9,7 +9,7 @@
 # For further information, please contact Curity AB.
 #
 
-FROM ubuntu:22.04
+FROM buildpack-deps:buster
 
 LABEL maintainer="Curity AB <info@curity.se>"
 
@@ -20,9 +20,7 @@ EXPOSE 6749
 EXPOSE 4465
 EXPOSE 4466
 
-RUN apt-get update && \
-	apt-get upgrade -y && \
-	apt-get install -y openssl && \
+RUN apt-get update && apt-get upgrade -y && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* 
 
@@ -33,7 +31,7 @@ ENV JAVA_HOME $IDSVR_HOME/lib/java/jre
 ENV PATH $IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH
 WORKDIR $IDSVR_HOME
 
-COPY --chown=idsvr idsvr-8.4.0-${TARGETARCH}/idsvr /opt/idsvr
+COPY --chown=idsvr idsvr-8.4.1-${TARGETARCH}/idsvr /opt/idsvr
 COPY --chown=idsvr first-run /opt/idsvr/etc/first-run
 
 USER idsvr:idsvr
