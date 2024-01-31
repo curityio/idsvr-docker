@@ -34,7 +34,7 @@ So, the tag of the form `<version>-<os>` always contains the latest, while the t
 # Customizing the image
 
 The Curity Identity Server is a Java based product and can run in many docker setups.\
-The default docker image runs as a low privilege `idsvr` user account.\
+The default docker image runs as a low privilege `10001` user account (`idsvr`).\
 Customers can update this user account and apply their own image policy when required.
 
 ## Kubernetes Non Root Check
@@ -64,6 +64,31 @@ RUN deluser idsvr && \
     chown -R 10001 /opt/idsvr
 USER 10001
 ```
+
+> [!IMPORTANT]
+> Images after version 9.0.0 already use the user `10001` instead of `idsvr` which means the `runAsNonRoot: true` securityContext is allowed by default  
+
+## Custom image based on the provided images
+
+If you need to install extra tools, you can do so by overlaying our image. 
+In some cases, operation can only run with the root user. In that case it is advisable to switch to the root user, perform the operation that requires more permissions and then switch back to the user of the image
+
+```dockerfile
+USER root 
+...
+RUN apt-get install -y curl
+...
+USER 10001:1000
+
+```
+Also copying resources in the server files, i.e plugins can be done like so:
+```dockerfile
+COPY --chown=10001:10000 custom-plugin.jar /opt/idsvr/usr/share/plugins/custom-plugin-group/
+```
+
+> [!NOTE]
+> For images before version 9.0.0 use `USER idsvr:idsvr`
+
 
 # Contributing
 
