@@ -8,12 +8,15 @@
 #
 # For further information, please contact Curity AB.
 #
+FROM quay.io/centos/centos:stream8
 
-FROM quay.io/centos/centos:stream8 AS openssl-builder
+LABEL maintainer="Curity AB <info@curity.se>"
 
-RUN yum clean all && \
-	yum install -y perl-core curl && \
-	yum groupinstall -y "Development tools"
+ARG TARGETARCH
+
+RUN yum update -y && yum clean all && \
+    yum install -y perl-core curl && \
+    yum groupinstall -y "Development tools"
 
 ENV OPENSSL_VERSION=3.0.13
 
@@ -21,27 +24,21 @@ RUN cd /tmp && curl https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.ta
     curl https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz.sha256 --output openssl.tar.gz.sha256 && \
     echo $(cat openssl.tar.gz.sha256) openssl.tar.gz | sha256sum -c && \
     tar -xf openssl.tar.gz && \
-    rm openssl.tar.gz
-
-RUN cd /tmp/openssl-${OPENSSL_VERSION} && ./config --prefix=/build --release \
+    rm -f openssl.tar.gz && \
+    cd /tmp/openssl-${OPENSSL_VERSION} && ./config --prefix=/usr/local --release \
     no-ec2m no-idea no-mdc2 no-rc5 no-ssl no-dtls no-dtls1-method no-dtls1_2-method && \
     make && \
     chmod -R go+rX . && \
     make TESTS=-test_afalg test && \
-    make install_sw install_ssldirs
+    make install_sw install_ssldirs && \
+    rm -rf /tmp/openssl-${OPENSSL_VERSION}
 
-FROM quay.io/centos/centos:stream8
-
-LABEL maintainer="Curity AB <info@curity.se>"
-
-ARG TARGETARCH
+ENV LD_LIBRARY_PATH=/usr/local/lib
 
 EXPOSE 8443
 EXPOSE 6749
 EXPOSE 4465
 EXPOSE 4466
-
-RUN yum update -y && yum clean all
 
 RUN useradd --system idsvr
 
@@ -52,7 +49,6 @@ WORKDIR $IDSVR_HOME
 
 COPY --chown=idsvr idsvr-8.4.1-${TARGETARCH}/idsvr /opt/idsvr
 COPY --chown=idsvr first-run /opt/idsvr/etc/first-run
-COPY --from=openssl-builder /build/bin/openssl /bin/
 
 USER idsvr:idsvr
 
