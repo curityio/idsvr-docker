@@ -19,11 +19,13 @@ In order to add a new version, run the following `VERSION=X.X.X ./add-release.sh
 
 # Image updates 
 
-Since the base OS of the images can regularly be patched, the script `update-images.sh` is run every day to make sure that the images contain the latest security fixes. 
+Since the base OS of the images can regularly be patched, the script `update-multiplatform-images.sh` is run every day to make sure that the images contain the latest security fixes. 
 
-The script downloads the releases from Curity's release API, pulls the latest base OS images and rebuilds all the versions. If there is a change in the OS, the docker cache won't be used and the new images will be pushed to Docker hub.
+The script downloads the releases from Curity's release API, pulls the latest base OS images and rebuilds all the versions. If there is a change in the OS, the docker cache won't be used and the new images will be pushed to Curity's Azure Container Registry.
   
-So, the tag of the form `<version>-<os>` always contains the latest, while the tag `<version>-<os>-<date>` is the image that was built that specific date (which is never updated).
+So, the tag of the form `<version>-<os>` always contains the latest built image.
+
+Also, the tag `<minor>-<os>`, i.e `9.0-ubuntu` is updated with a new patch version if that exists. So if `9.0.1` is released, the `9.0-<os>` tags will point to `9.0.1-<os>` tag and after that point only the latest patch for each minor version will be daily updated.
 
 # Building a single image
 
