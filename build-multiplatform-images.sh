@@ -56,10 +56,10 @@ if [ "${MAJOR_VERSION}" == "8" ]; then
   build_multiplatform_image "${VERSION}/centos/Dockerfile" "$CENTOS_X86_LAST_LAYER_ID" "$CENTOS_ARM_LAST_LAYER_ID" "${IMAGE_BASE}:${VERSION}-centos8" "${IMAGE_BASE}:${VERSION}-centos" $EXTRA_TAGS_CENTOS
 else
   EXTRA_TAGS_BOOKWORM="${IMAGE_BASE}:${BRANCH_VERSION}-debian ${IMAGE_BASE}:${BRANCH_VERSION}-bookworm"
-  build_multiplatform_image "${VERSION}/debian/Dockerfile" "$BOOKWORM_X86_LAST_LAYER_ID" "$BOOKWORM_ARM_LAST_LAYER_ID" "${IMAGE_BASE}:${VERSION}-bookworm" $EXTRA_TAGS_BOOKWORM
+  build_multiplatform_image "${VERSION}/debian/Dockerfile" "$BOOKWORM_X86_LAST_LAYER_ID" "$BOOKWORM_ARM_LAST_LAYER_ID" "${IMAGE_BASE}:${VERSION}-bookworm" ${IMAGE_BASE}:${VERSION}-debian $EXTRA_TAGS_BOOKWORM
 
   EXTRA_TAGS_BOOKWORM_SLIM="${IMAGE_BASE}:${BRANCH_VERSION}-bookworm-slim ${IMAGE_BASE}:${BRANCH_VERSION}-slim ${IMAGE_BASE}:${BRANCH_VERSION}-debian-slim"
-  build_multiplatform_image "${VERSION}/debian-slim/Dockerfile" "$BOOKWORM_SLIM_X86_LAST_LAYER_ID" "$BOOKWORM_SLIM_ARM_LAST_LAYER_ID" "${IMAGE_BASE}:${VERSION}-bookworm-slim" "${IMAGE_BASE}:${VERSION}-slim" $EXTRA_TAGS_BOOKWORM_SLIM
+  build_multiplatform_image "${VERSION}/debian-slim/Dockerfile" "$BOOKWORM_SLIM_X86_LAST_LAYER_ID" "$BOOKWORM_SLIM_ARM_LAST_LAYER_ID" "${IMAGE_BASE}:${VERSION}-bookworm-slim" "${IMAGE_BASE}:${VERSION}-slim" "${IMAGE_BASE}:${VERSION}-debian-slim" $EXTRA_TAGS_BOOKWORM_SLIM
 
   EXTRA_TAGS_CENTOS9="${IMAGE_BASE}:${BRANCH_VERSION}-centos9 ${IMAGE_BASE}:${BRANCH_VERSION}-centos"
   build_multiplatform_image "${VERSION}/centos/Dockerfile" "$CENTOS9_X86_LAST_LAYER_ID" "$CENTOS9_ARM_LAST_LAYER_ID" "${IMAGE_BASE}:${VERSION}-centos9" "${IMAGE_BASE}:${VERSION}-centos" $EXTRA_TAGS_CENTOS9
