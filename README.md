@@ -19,11 +19,13 @@ In order to add a new version, run the following `VERSION=X.X.X ./add-release.sh
 
 # Image updates 
 
-Since the base OS of the images can regularly be patched, the script `update-images.sh` is run every day to make sure that the images contain the latest security fixes. 
+Since the base OS of the images can regularly be patched, the script `update-multiplatform-images.sh` is run every day to make sure that the images contain the latest security fixes. 
 
-The script downloads the releases from Curity's release API, pulls the latest base OS images and rebuilds all the versions. If there is a change in the OS, the docker cache won't be used and the new images will be pushed to Docker hub.
+The script downloads the releases from Curity's release API, pulls the latest base OS images and rebuilds all the versions. If there is a change in the OS, the docker cache won't be used and the new images will be pushed to Curity's Azure Container Registry.
   
-So, the tag of the form `<version>-<os>` always contains the latest, while the tag `<version>-<os>-<date>` is the image that was built that specific date (which is never updated).
+So, the tag of the form `<version>-<os>` always contains the latest built image.
+
+Also, the tag `<minor>-<os>`, i.e `9.0-ubuntu` is updated with a new patch version if that exists. So if `9.0.1` is released, the `9.0-<os>` tags will point to `9.0.1-<os>` tag and after that point only the latest patch for each minor version will be daily updated.
 
 # Building a single image
 
@@ -34,7 +36,7 @@ So, the tag of the form `<version>-<os>` always contains the latest, while the t
 # Customizing the image
 
 The Curity Identity Server is a Java based product and can run in many docker setups.\
-The default docker image runs as a low privilege `idsvr` user account.\
+The default docker image runs as a low privilege `10001` user account (`idsvr`).\
 Customers can update this user account and apply their own image policy when required.
 
 ## Kubernetes Non Root Check
@@ -64,6 +66,31 @@ RUN deluser idsvr && \
     chown -R 10001 /opt/idsvr
 USER 10001
 ```
+
+> [!IMPORTANT]
+> Images after version 9.0.0 already use the user `10001` instead of `idsvr` which means the `runAsNonRoot: true` securityContext is allowed by default  
+
+## Custom image based on the provided images
+
+If you need to install extra tools, you can do so by overlaying our image. 
+In some cases, operation can only run with the root user. In that case it is advisable to switch to the root user, perform the operation that requires more permissions and then switch back to the user of the image
+
+```dockerfile
+USER root 
+...
+RUN apt-get install -y curl
+...
+USER 10001:1000
+
+```
+Also copying resources in the server files, i.e plugins can be done like so:
+```dockerfile
+COPY --chown=10001:10000 custom-plugin.jar /opt/idsvr/usr/share/plugins/custom-plugin-group/
+```
+
+> [!NOTE]
+> For images before version 9.0.0 use `USER idsvr:idsvr`
+
 
 # Contributing
 

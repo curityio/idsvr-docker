@@ -15,7 +15,7 @@ RUN yum clean all && \
 	yum install -y perl-core curl && \
 	yum groupinstall -y "Development tools"
 
-ENV OPENSSL_VERSION=1.1.1w
+ENV OPENSSL_VERSION=3.0.13
 
 RUN cd /tmp && curl https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz --output openssl.tar.gz && \
     curl https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz.sha256 --output openssl.tar.gz.sha256 && \
@@ -28,7 +28,8 @@ RUN cd /tmp/openssl-${OPENSSL_VERSION} && ./config --prefix=/build --release \
     make && \
     chmod -R go+rX . && \
     make TESTS=-test_afalg test && \
-    make install_sw install_ssldirs
+    make install_sw install_ssldirs && \
+    ln -s /build/lib64 /build/lib
 
 FROM quay.io/centos/centos:stream8
 
@@ -53,6 +54,9 @@ WORKDIR $IDSVR_HOME
 COPY --chown=idsvr idsvr-8.0.0-${TARGETARCH}/idsvr /opt/idsvr
 COPY --chown=idsvr first-run /opt/idsvr/etc/first-run
 COPY --from=openssl-builder /build/bin/openssl /bin/
+COPY --from=openssl-builder /build/lib/libssl.so.3 /lib64/
+COPY --from=openssl-builder /build/lib/libcrypto.so.3 /lib64/
+
 
 USER idsvr:idsvr
 
