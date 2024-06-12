@@ -11,11 +11,14 @@
 
 FROM quay.io/centos/centos:stream8 AS openssl-builder
 
-RUN yum clean all && \
+RUN cd /etc/yum.repos.d/ && \
+    sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-* && \
+    sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-* && \
+    yum clean all && \
 	yum install -y perl-core curl && \
 	yum groupinstall -y "Development tools"
 
-ENV OPENSSL_VERSION=3.0.13
+ENV OPENSSL_VERSION=3.0.14
 
 RUN cd /tmp && curl -L https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz --output openssl.tar.gz && \
     curl -L https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz.sha256 --output openssl.tar.gz.sha256 && \
@@ -42,7 +45,10 @@ EXPOSE 6749
 EXPOSE 4465
 EXPOSE 4466
 
-RUN yum update -y && yum clean all
+RUN cd /etc/yum.repos.d/ && \
+    sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-* && \
+    sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-* && \
+    yum update -y && yum clean all
 
 RUN useradd --system idsvr
 
@@ -51,7 +57,7 @@ ENV JAVA_HOME $IDSVR_HOME/lib/java/jre
 ENV PATH $IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH
 WORKDIR $IDSVR_HOME
 
-COPY --chown=idsvr idsvr-8.0.0-${TARGETARCH}/idsvr /opt/idsvr
+COPY --chown=idsvr idsvr-8.0.1-${TARGETARCH}/idsvr /opt/idsvr
 COPY --chown=idsvr first-run /opt/idsvr/etc/first-run
 COPY --from=openssl-builder /build/bin/openssl /bin/
 COPY --from=openssl-builder /build/lib/libssl.so.3 /lib64/
