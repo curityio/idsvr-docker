@@ -11,7 +11,10 @@
 
 FROM quay.io/centos/centos:stream8 AS openssl-builder
 
-RUN yum clean all && \
+RUN cd /etc/yum.repos.d/ && \
+    sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-* && \
+    sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-* && \
+    yum clean all && \
 	yum install -y perl-core curl && \
 	yum groupinstall -y "Development tools"
 
@@ -42,7 +45,10 @@ EXPOSE 6749
 EXPOSE 4465
 EXPOSE 4466
 
-RUN yum update -y && yum clean all
+RUN cd /etc/yum.repos.d/ && \
+    sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-* && \
+    sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-* && \
+    yum update -y && yum clean all
 
 RUN useradd --system idsvr
 
