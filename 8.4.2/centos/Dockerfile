@@ -15,7 +15,7 @@ RUN yum clean all && \
 	yum install -y perl-core curl && \
 	yum groupinstall -y "Development tools"
 
-ENV OPENSSL_VERSION=3.0.13
+ENV OPENSSL_VERSION=3.0.14
 
 RUN cd /tmp && curl -L https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz --output openssl.tar.gz && \
     curl -L https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz.sha256 --output openssl.tar.gz.sha256 && \
@@ -51,7 +51,7 @@ ENV JAVA_HOME $IDSVR_HOME/lib/java/jre
 ENV PATH $IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH
 WORKDIR $IDSVR_HOME
 
-COPY --chown=idsvr idsvr-8.4.1-${TARGETARCH}/idsvr /opt/idsvr
+COPY --chown=idsvr idsvr-8.4.2-${TARGETARCH}/idsvr /opt/idsvr
 COPY --chown=idsvr first-run /opt/idsvr/etc/first-run
 COPY --from=openssl-builder /build/bin/openssl /bin/
 COPY --from=openssl-builder /build/lib/libssl.so.3 /lib64/
