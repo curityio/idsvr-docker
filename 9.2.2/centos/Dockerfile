@@ -14,7 +14,7 @@ FROM quay.io/centos/centos:stream9 AS openssl-builder
 RUN yum clean all && \
 	yum install -y perl-core
 
-ENV OPENSSL_VERSION=3.0.14
+ENV OPENSSL_VERSION=3.0.15
 
 RUN cd /tmp && curl -L https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz --output openssl.tar.gz && \
     curl -L https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz.sha256 --output openssl.tar.gz.sha256 && \
