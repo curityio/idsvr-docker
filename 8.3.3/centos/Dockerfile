@@ -20,8 +20,8 @@ RUN cd /etc/yum.repos.d/ && \
 
 ENV OPENSSL_VERSION=3.0.15
 
-RUN cd /tmp && curl -L https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz --output openssl.tar.gz && \
-    curl -L https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz.sha256 --output openssl.tar.gz.sha256 && \
+RUN cd /tmp && curl -L https://github.com/openssl/openssl/releases/download/openssl-${OPENSSL_VERSION}/openssl-${OPENSSL_VERSION}.tar.gz --output openssl.tar.gz && \
+    curl -L https://github.com/openssl/openssl/releases/download/openssl-${OPENSSL_VERSION}/openssl-${OPENSSL_VERSION}.tar.gz.sha256 --output openssl.tar.gz.sha256 && \
     echo $(cat openssl.tar.gz.sha256) openssl.tar.gz | sha256sum -c && \
     tar -xf openssl.tar.gz && \
     rm openssl.tar.gz
