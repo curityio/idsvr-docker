@@ -2,5 +2,9 @@
   "9.2.2": {
     "original_files": ["idsvr/lib/identityserver.authn-9.2.2-116f809e9e.jar"],
     "hotfix_path": "9-2-2-1-haapi-nonce"
+  },
+  "9.7.0": {
+    "original_files": ["idsvr/lib/identityserver.authn-9.7.0-053279e59b.jar"],
+    "hotfix_path": "9-7-0-1-haapi-nonce"
   }
 }
