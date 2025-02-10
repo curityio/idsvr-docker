@@ -27,8 +27,6 @@ BOOKWORM_SLIM_X86_LAST_LAYER_ID=$(docker inspect "${BOOKWORM_SLIM}" | jq ".[0].R
 # Pull ARM base images once to avoid pull limit in dockerhub
 docker pull "$UBUNTU_22" --platform linux/arm64
 docker pull "$CENTOS_9" --platform linux/arm64
-docker pull "$BUSTER" --platform linux/arm64
-docker pull "$BUSTER_SLIM" --platform linux/arm64
 docker pull "$BOOKWORM" --platform linux/arm64
 docker pull "$BOOKWORM_SLIM" --platform linux/arm64
 
