@@ -50,7 +50,7 @@ ENV JAVA_HOME $IDSVR_HOME/lib/java/jre
 ENV PATH $IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH
 WORKDIR $IDSVR_HOME
 
-COPY --chown=10001:10000 idsvr-9.7.1-${TARGETARCH}/idsvr /opt/idsvr
+COPY --chown=10001:10000 idsvr-9.7.2-${TARGETARCH}/idsvr /opt/idsvr
 COPY --chown=10001:10000 first-run /opt/idsvr/etc/first-run
 COPY --from=openssl-builder /build/bin/openssl /bin/
 COPY --from=openssl-builder /build/lib/libssl.so.3 /lib64/
