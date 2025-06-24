@@ -5,7 +5,7 @@ set -e
 D=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 IMAGE_BASE="curity.azurecr.io/curity/idsvr"
 DOCKER_CONTEXT="$D/$VERSION"
-LATEST_VERSION=$(find -- * -maxdepth 0 -type d | sort -rh | head -n 1)
+LATEST_VERSION=$(find -- * -name "*.[0-9].[0-9]" -maxdepth 0 -type d | sort -rh | head -n 1)
 FORCE_BUILD=${FORCE_DISTRO:-none}
 
 build_multiplatform_image() {
