@@ -16,11 +16,11 @@ RUN yum clean all && \
 
 ENV OPENSSL_VERSION=3.0.17
 
-RUN cd /tmp && curl -L https://github.com/openssl/openssl/releases/download/openssl-${OPENSSL_VERSION}/openssl-${OPENSSL_VERSION}.tar.gz --output openssl.tar.gz && \
-    curl -L https://github.com/openssl/openssl/releases/download/openssl-${OPENSSL_VERSION}/openssl-${OPENSSL_VERSION}.tar.gz.sha256 --output openssl.tar.gz.sha256 && \
-    echo $(cat openssl.tar.gz.sha256) openssl.tar.gz | sha256sum -c && \
-    tar -xf openssl.tar.gz && \
-    rm openssl.tar.gz
+RUN cd /tmp && curl -L https://github.com/openssl/openssl/releases/download/openssl-${OPENSSL_VERSION}/openssl-${OPENSSL_VERSION}.tar.gz --output openssl-${OPENSSL_VERSION}.tar.gz && \
+    curl -L https://github.com/openssl/openssl/releases/download/openssl-${OPENSSL_VERSION}/openssl-${OPENSSL_VERSION}.tar.gz.sha256 --output openssl-${OPENSSL_VERSION}.tar.gz.sha256 && \
+    echo $(cat openssl-${OPENSSL_VERSION}.tar.gz.sha256) | sha256sum -c && \
+    tar -xf openssl-${OPENSSL_VERSION}.tar.gz && \
+    rm openssl-${OPENSSL_VERSION}.tar.gz
 
 RUN cd /tmp/openssl-${OPENSSL_VERSION} && ./config --prefix=/build --release \
     no-ec2m no-idea no-mdc2 no-rc5 no-ssl no-dtls no-dtls1-method no-dtls1_2-method && \
