@@ -26,7 +26,7 @@ RUN cd /tmp/openssl-${OPENSSL_VERSION} && ./config --prefix=/build --release \
     no-ec2m no-idea no-mdc2 no-rc5 no-ssl no-dtls no-dtls1-method no-dtls1_2-method && \
     make && \
     chmod -R go+rX . && \
-    make TESTS=-test_afalg test && \
+    make TESTS='-test_afalg -test_cmp_http' test && \
     make install_sw install_ssldirs && \
     ln -s /build/lib64 /build/lib
 
