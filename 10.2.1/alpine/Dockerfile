@@ -1,0 +1,37 @@
+#
+# Copyright (C) 2020 Curity AB. All rights reserved.
+#
+# The contents of this file are the property of Curity AB.
+# You may not copy or use this file, in either source code
+# or executable form, except in compliance with terms
+# set by Curity AB.
+#
+# For further information, please contact Curity AB.
+#
+
+FROM alpine:3.22
+
+LABEL maintainer="Curity AB <info@curity.se>"
+
+ARG TARGETARCH
+
+EXPOSE 8443
+EXPOSE 6749
+EXPOSE 4465
+EXPOSE 4466
+
+RUN apk update && apk upgrade && apk add openssl
+
+RUN addgroup -S idsvr -g 10000 && adduser -S idsvr -G idsvr -u 10001
+
+ENV IDSVR_HOME /opt/idsvr
+ENV JAVA_HOME $IDSVR_HOME/lib/java/jre
+ENV PATH $IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH
+WORKDIR $IDSVR_HOME
+
+COPY --chown=10001:10000 idsvr-10.2.1-${TARGETARCH}/idsvr /opt/idsvr
+COPY --chown=10001:10000 first-run /opt/idsvr/etc/first-run
+
+USER 10001:10000
+
+CMD ["idsvr"]
