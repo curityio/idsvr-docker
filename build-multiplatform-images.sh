@@ -42,7 +42,7 @@ if [[ "$VERSION" == "$LATEST_VERSION" ]]; then LATEST_TAG="${IMAGE_BASE}:latest"
 BRANCH_VERSION=${VERSION%??}
 MAJOR_VERSION=${BRANCH_VERSION%??}
 
-if [ "${$VERSION}" == "$LATEST_VERSION" ]; then
+if [ "$VERSION" == "$LATEST_VERSION" ]; then
   build_multiplatform_image "${VERSION}/amazonlinux/Dockerfile" "$AMAZONLINUX_X86_LAST_LAYER_ID" "$AMAZONLINUX_ARM_LAST_LAYER_ID" "${IMAGE_BASE}:${VERSION}-amazonlinux" "${IMAGE_BASE}:${BRANCH_VERSION}-amazonlinux"
 fi
 

@@ -25,7 +25,7 @@ UBUNTU_X86_LAST_LAYER_ID=$(docker inspect "${UBUNTU_22}" | jq ".[0].RootFS.Layer
 CENTOS9_X86_LAST_LAYER_ID=$(docker inspect "${CENTOS_9}" | jq ".[0].RootFS.Layers[-1]"); export CENTOS9_X86_LAST_LAYER_ID
 BOOKWORM_X86_LAST_LAYER_ID=$(docker inspect "${BOOKWORM}" | jq ".[0].RootFS.Layers[-1]"); export BOOKWORM_X86_LAST_LAYER_ID
 BOOKWORM_SLIM_X86_LAST_LAYER_ID=$(docker inspect "${BOOKWORM_SLIM}" | jq ".[0].RootFS.Layers[-1]"); export BOOKWORM_SLIM_X86_LAST_LAYER_ID
-AMAZONLINUX_X86_LAST_LAYER_ID=$(docker inspect "${$AMAZONLINUX}" | jq ".[0].RootFS.Layers[-1]"); export AMAZONLINUX_X86_LAST_LAYER_ID
+AMAZONLINUX_X86_LAST_LAYER_ID=$(docker inspect "${AMAZONLINUX}" | jq ".[0].RootFS.Layers[-1]"); export AMAZONLINUX_X86_LAST_LAYER_ID
 
 # Pull ARM base images once to avoid pull limit in dockerhub
 docker pull "$UBUNTU_22" --platform linux/arm64
@@ -38,7 +38,7 @@ UBUNTU_ARM_LAST_LAYER_ID=$(docker inspect "${UBUNTU_22}" | jq ".[0].RootFS.Layer
 CENTOS9_ARM_LAST_LAYER_ID=$(docker inspect "${CENTOS_9}" | jq ".[0].RootFS.Layers[-1]"); export CENTOS9_ARM_LAST_LAYER_ID
 BOOKWORM_ARM_LAST_LAYER_ID=$(docker inspect "${BOOKWORM}" | jq ".[0].RootFS.Layers[-1]"); export BOOKWORM_ARM_LAST_LAYER_ID
 BOOKWORM_SLIM_ARM_LAST_LAYER_ID=$(docker inspect "${BOOKWORM_SLIM}" | jq ".[0].RootFS.Layers[-1]"); export BOOKWORM_SLIM_ARM_LAST_LAYER_ID
-AMAZONLINUX_ARM_LAST_LAYER_ID=$(docker inspect "${$AMAZONLINUX}" | jq ".[0].RootFS.Layers[-1]"); export AMAZONLINUX_ARM_LAST_LAYER_ID
+AMAZONLINUX_ARM_LAST_LAYER_ID=$(docker inspect "${AMAZONLINUX}" | jq ".[0].RootFS.Layers[-1]"); export AMAZONLINUX_ARM_LAST_LAYER_ID
 
 docker buildx create --use
 while IFS= read -r VERSION
