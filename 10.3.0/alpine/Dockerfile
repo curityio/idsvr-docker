@@ -20,7 +20,7 @@ EXPOSE 6749
 EXPOSE 4465
 EXPOSE 4466
 
-RUN apk update && apk upgrade && apk add openssl
+RUN apk update && apk upgrade && apk add --no-cache bash openssl
 
 RUN addgroup -S idsvr -g 10000 && adduser -S idsvr -G idsvr -u 10001
 
