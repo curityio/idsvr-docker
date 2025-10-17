@@ -9,23 +9,27 @@
 # For further information, please contact Curity AB.
 #
 
-FROM registry.access.redhat.com/ubi8/ubi
+FROM alpine:3.22
 
 LABEL maintainer="Curity AB <info@curity.se>"
+
+ARG TARGETARCH
 
 EXPOSE 8443
 EXPOSE 6749
 EXPOSE 4465
 EXPOSE 4466
 
-RUN groupadd --system --gid 10000 idsvr && useradd --system --no-create-home --uid 10001 --gid 10000 idsvr
+RUN apk update && apk upgrade && apk add openssl
+
+RUN addgroup -S idsvr -g 10000 && adduser -S idsvr -G idsvr -u 10001
 
 ENV IDSVR_HOME /opt/idsvr
 ENV JAVA_HOME $IDSVR_HOME/lib/java/jre
 ENV PATH $IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH
 WORKDIR $IDSVR_HOME
 
-COPY --chown=10001:10000 idsvr-10.0.0/idsvr /opt/idsvr
+COPY --chown=10001:10000 idsvr-10.0.2-${TARGETARCH}/idsvr /opt/idsvr
 COPY --chown=10001:10000 first-run /opt/idsvr/etc/first-run
 
 USER 10001:10000
