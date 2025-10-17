@@ -42,8 +42,9 @@ if [[ "$VERSION" == "$LATEST_VERSION" ]]; then LATEST_TAG="${IMAGE_BASE}:latest"
 BRANCH_VERSION=${VERSION%??}
 MAJOR_VERSION=${BRANCH_VERSION%??}
 
-if [ "$VERSION" == "$LATEST_VERSION" ]; then
+if [ "$MAJOR_VERSION" == "10" ]; then
   build_multiplatform_image "${VERSION}/amazonlinux/Dockerfile" "$AMAZONLINUX_X86_LAST_LAYER_ID" "$AMAZONLINUX_ARM_LAST_LAYER_ID" "${IMAGE_BASE}:${VERSION}-amazonlinux" "${IMAGE_BASE}:${BRANCH_VERSION}-amazonlinux"
+  build_multiplatform_image "${VERSION}/alpine/Dockerfile" "$ALPINE_X86_LAST_LAYER_ID" "$ALPINE_ARM_LAST_LAYER_ID" "${IMAGE_BASE}:${VERSION}-alpine" "${IMAGE_BASE}:${BRANCH_VERSION}-alpine"
 fi
 
 EXTRA_TAGS_UBUNTU="${IMAGE_BASE}:${BRANCH_VERSION}-ubuntu ${IMAGE_BASE}:${BRANCH_VERSION} ${IMAGE_BASE}:${BRANCH_VERSION}-ubuntu22 ${IMAGE_BASE}:${BRANCH_VERSION}-ubuntu22.04"
