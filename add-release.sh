@@ -6,6 +6,7 @@ if [ ! -d "${VERSION}" ]; then
   mkdir -p "${VERSION}/rhel"  
   mkdir -p "${VERSION}/debian"
   mkdir -p "${VERSION}/debian-slim"
+  mkdir -p "${VERSION}/amazonlinux"
 
   cp first-run "${VERSION}/first-run"
   cp .dockerignore "${VERSION}/.dockerignore"
@@ -15,4 +16,5 @@ if [ ! -d "${VERSION}" ]; then
   sed -e "s/{{VERSION}}/${VERSION}/g" Dockerfile-rhel.template > "${VERSION}/rhel/Dockerfile"  
   sed -e "s/{{VERSION}}/${VERSION}/g" Dockerfile-debian.template > "${VERSION}/debian/Dockerfile"
   sed -e "s/{{VERSION}}/${VERSION}/g" Dockerfile-debian-slim.template > "${VERSION}/debian-slim/Dockerfile"
+  sed -e "s/{{VERSION}}/${VERSION}/g" Dockerfile-amazonlinux.template > "${VERSION}/amazonlinux/Dockerfile"
 fi
