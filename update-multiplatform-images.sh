@@ -44,7 +44,7 @@ docker buildx create --use
 while IFS= read -r VERSION
 do
   VERSION=${VERSION} "$D"/build-multiplatform-images.sh
-done < <(find -- * -name "*.[0-9].[0-9]*" -type d | sort -Vr)
+done < <(find -- * -name "*.[0-9].[0-9]*" -type d -maxdepth 1 | sort -Vr)
 
 # Delete stopped containers and images
 docker buildx prune -af && docker buildx rm
