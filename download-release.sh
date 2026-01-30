@@ -52,16 +52,19 @@ mkdir -p "$UNPACK_DIR"
 tar -xzf "${RELEASE_FILENAME}" -C "$UNPACK_DIR" --strip-components 1
 
 if jq -e -r '."'$VERSION'"' hotfixes.json > /dev/null 2>&1; then
-  # Applying hotfix for $VERSION
-  HOTFIX_PATH=$(jq -e -r '."'$VERSION'".hotfix_path' hotfixes.json)
+  # Iterate over all hotfixes for $VERSION (array)
+  HOTFIX_COUNT=$(jq -r '."'$VERSION'" | length' hotfixes.json)
+  for ((i=0; i<$HOTFIX_COUNT; i++)); do
+    HOTFIX_PATH=$(jq -r '."'$VERSION'"['$i'].hotfix_path' hotfixes.json)
 
-  curl -f -s -S -H "Authorization: Bearer ${ACCESS_TOKEN}" "${RELEASE_API}/${VERSION}/${HOTFIX_PATH}/file" > "${HOTFIX_PATH}-${VERSION}.tgz"
+    curl -f -s -S -H "Authorization: Bearer ${ACCESS_TOKEN}" "${RELEASE_API}/${VERSION}/${HOTFIX_PATH}/file" > "${HOTFIX_PATH}-${VERSION}.tgz"
 
-  for original_file in $(jq -e -r '."'$VERSION'".original_files[]' hotfixes.json); do
-    rm "${UNPACK_DIR}/${original_file}"
+    for original_file in $(jq -r '."'$VERSION'"['$i'].original_files[]' hotfixes.json); do
+      rm -f "${UNPACK_DIR}/${original_file}"
+    done
+
+    tar -xzf "${HOTFIX_PATH}-${VERSION}.tgz" --exclude='*.md' -C "$UNPACK_DIR"
   done
-
-  tar -xzf "${HOTFIX_PATH}-${VERSION}.tgz" --exclude='*.md' -C "$UNPACK_DIR"
 fi
 
 find "$UNPACK_DIR"/idsvr -type f -exec chmod a-w {} \;
