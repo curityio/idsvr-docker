@@ -45,6 +45,8 @@ docker buildx inspect --bootstrap
 while IFS= read -r VERSION
 do
   VERSION=${VERSION} "$D"/build-multiplatform-images.sh
+  # Remove curity images for this version to free up space
+  docker images --format '{{.Repository}}:{{.Tag}} {{.ID}}' | grep '^curity\.azurecr\.io/curity' | awk '{print $2}' | xargs -r docker rmi
 done < <(find -- * -name "*.[0-9].[0-9]*" -type d -maxdepth 0 | sort -Vr)
 
 # Delete stopped containers and images
