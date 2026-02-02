@@ -41,12 +41,15 @@ BOOKWORM_SLIM_ARM_LAST_LAYER_ID=$(docker inspect "${BOOKWORM_SLIM}" | jq ".[0].R
 AMAZONLINUX_ARM_LAST_LAYER_ID=$(docker inspect "${AMAZONLINUX}" | jq ".[0].RootFS.Layers[-1]"); export AMAZONLINUX_ARM_LAST_LAYER_ID
 
 docker buildx create --use
+docker buildx inspect --bootstrap
 while IFS= read -r VERSION
 do
   VERSION=${VERSION} "$D"/build-multiplatform-images.sh
+  # Remove curity images for this version to free up space
+  docker images --format '{{.Repository}}:{{.Tag}} {{.ID}}' | grep '^curity\.azurecr\.io/curity' | awk '{print $2}' | xargs -r docker rmi
 done < <(find -- * -name "*.[0-9].[0-9]*" -type d -maxdepth 0 | sort -Vr)
 
 # Delete stopped containers and images
-docker buildx prune -af && docker buildx rm
-docker ps -a | awk '{ print $1,$2 }' | grep "${IMAGE_BASE}" | awk '{print $1 }' | xargs -I {} docker rm {}
-docker images | awk '{ print $1,$3 }' | grep "${IMAGE_BASE}" | awk '{print $2 }' | xargs -I {} docker rmi {} --force
+docker buildx stop && docker buildx rm
+docker rm $(docker ps --filter status=exited -q) || true
+docker image prune -af

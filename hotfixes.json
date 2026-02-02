@@ -1,22 +1,43 @@
 {
-  "9.2.2": {
-    "original_files": ["idsvr/lib/identityserver.authn-9.2.2-116f809e9e.jar"],
-    "hotfix_path": "9-2-2-1-haapi-nonce"
-  },
-  "9.4.0": {
-    "original_files": [
-      "idsvr/lib/identityserver.authn-9.4.0-94050d67d8.jar",
-      "idsvr/lib/identityserver.oauth-9.4.0-94050d67d8.jar",
-      "idsvr/lib/identityserver.core-9.4.0-94050d67d8.jar"
-    ],
-    "hotfix_path": "9-4-0-1-sdk-request-injectable"
-  },
-  "9.7.1": {
-    "original_files": ["idsvr/lib/identityserver.oauth-9.7.1-f196b375e4.jar"],
-    "hotfix_path": "9-7-1-1-improve-haapi-attestation-recovery"
-  },
-  "10.0.2": {
-    "original_files": ["idsvr/lib/identityserver.oauth-10.0.2-1ec50d3ecd.jar"],
-    "hotfix_path": "10-0-2-1-improve-haapi-attestation-recovery"
-  }
+  "9.2.2": [
+    {
+      "original_files": [
+        "idsvr/lib/identityserver.authn-9.2.2-116f809e9e.jar"
+      ],
+      "hotfix_path": "9-2-2-1-haapi-nonce"
+    }
+  ],
+  "9.4.0": [
+    {
+      "original_files": [
+        "idsvr/lib/identityserver.authn-9.4.0-94050d67d8.jar",
+        "idsvr/lib/identityserver.oauth-9.4.0-94050d67d8.jar",
+        "idsvr/lib/identityserver.core-9.4.0-94050d67d8.jar"
+      ],
+      "hotfix_path": "9-4-0-1-sdk-request-injectable"
+    }
+  ],
+  "9.7.1": [
+    {
+      "original_files": [
+        "idsvr/lib/identityserver.oauth-9.7.1-f196b375e4.jar"
+      ],
+      "hotfix_path": "9-7-1-1-improve-haapi-attestation-recovery"
+    }
+  ],
+  "10.0.2": [
+    {
+      "original_files": [
+        "idsvr/lib/identityserver.oauth-10.0.2-1ec50d3ecd.jar"
+      ],
+      "hotfix_path": "10-0-2-1-improve-haapi-attestation-recovery"
+    },
+    {
+      "original_files": [
+        "idsvr/lib/identityserver.core-10.0.2-1ec50d3ecd.jar",
+        "idsvr/lib/identityserver.usermanagement-10.0.2-1ec50d3ecd.jar"
+      ],
+      "hotfix_path": "10-0-2-2"
+    }
+  ]
 }
