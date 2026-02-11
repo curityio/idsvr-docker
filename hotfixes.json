@@ -39,5 +39,40 @@
       ],
       "hotfix_path": "10-0-2-2"
     }
+  ],
+  "10.1.0": [
+    {
+      "original_files": [
+        "idsvr/lib/identityserver.core-10.1.0-10f1a9c464.jar",
+        "idsvr/lib/identityserver.usermanagement-10.1.0-10f1a9c464.jar"
+      ],
+      "hotfix_path": "10-1-0-1"
+    }
+  ],
+  "10.2.1": [
+    {
+      "original_files": [
+        "idsvr/lib/identityserver.core-10.2.1-25fff1758e.jar",
+        "idsvr/lib/identityserver.usermanagement-10.2.1-25fff1758e.jar"
+      ],
+      "hotfix_path": "10-2-1-2"
+    }
+  ],
+  "10.3.0": [
+    {
+      "original_files": [
+        "idsvr/lib/identityserver.core-10.3.0-8d8d9d9daf.jar",
+        "idsvr/lib/identityserver.usermanagement-10.3.0-8d8d9d9daf.jar"
+      ],
+      "hotfix_path": "10-3-0-2"
+    }
+  ],
+  "10.6.1": [
+    {
+      "original_files": [
+        "idsvr/lib/identityserver.usermanagement-10.6.1-0b51a60445.jar"
+      ],
+      "hotfix_path": "10-6-1-1"
+    }
   ]
 }
