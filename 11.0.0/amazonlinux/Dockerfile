@@ -30,4 +30,6 @@ WORKDIR $IDSVR_HOME
 COPY idsvr-11.0.0-${TARGETARCH}/idsvr /opt/idsvr
 COPY first-run /opt/idsvr/etc/first-run
 
+RUN chmod -R +w /opt/idsvr/var/.plugins/
+
 CMD ["idsvr"]

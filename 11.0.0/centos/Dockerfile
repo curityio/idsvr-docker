@@ -56,6 +56,8 @@ COPY --from=openssl-builder /build/bin/openssl /bin/
 COPY --from=openssl-builder /build/lib/libssl.so.3 /lib64/
 COPY --from=openssl-builder /build/lib/libcrypto.so.3 /lib64/
 
+RUN chmod -R +w /opt/idsvr/var/.plugins/
+
 USER 10001:10000
 
 CMD ["idsvr"]
