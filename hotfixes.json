@@ -41,6 +41,22 @@
       "hotfix_path": "10-3-0-2"
     }
   ],
+  "10.4.2": [
+    {
+      "original_files": [
+        "idsvr/lib/identityserver.usermanagement-10.4.2-8f2691bd53.jar"
+      ],
+      "hotfix_path": "10-4-2-2"
+    }
+  ],
+  "10.5.0": [
+    {
+      "original_files": [
+        "idsvr/lib/identityserver.usermanagement-10.5.0-73b0a6ceb7.jar"
+      ],
+      "hotfix_path": "10-5-0-1"
+    }
+  ],
   "10.6.1": [
     {
       "original_files": [
