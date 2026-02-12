@@ -35,6 +35,8 @@ WORKDIR $IDSVR_HOME
 COPY --chown=10001:10000 idsvr-11.0.0-${TARGETARCH}/idsvr /opt/idsvr
 COPY --chown=10001:10000 first-run /opt/idsvr/etc/first-run
 
+RUN chmod -R +w /opt/idsvr/var/.plugins/
+
 USER 10001:10000
 
 CMD ["idsvr"]
