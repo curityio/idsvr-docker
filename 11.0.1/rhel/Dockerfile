@@ -25,7 +25,7 @@ ENV JAVA_HOME $IDSVR_HOME/lib/java/jre
 ENV PATH $IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH
 WORKDIR $IDSVR_HOME
 
-COPY --chown=10001:10000 idsvr-11.0.0/idsvr /opt/idsvr
+COPY --chown=10001:10000 idsvr-11.0.1/idsvr /opt/idsvr
 COPY --chown=10001:10000 first-run /opt/idsvr/etc/first-run
 
 RUN chmod -R +w /opt/idsvr/var/.plugins/
