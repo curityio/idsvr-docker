@@ -52,5 +52,4 @@ build_multiplatform_image "${VERSION}/debian/Dockerfile" "$BOOKWORM_X86_LAST_LAY
 EXTRA_TAGS_BOOKWORM_SLIM="${IMAGE_BASE}:${BRANCH_VERSION}-bookworm-slim ${IMAGE_BASE}:${BRANCH_VERSION}-slim ${IMAGE_BASE}:${BRANCH_VERSION}-debian-slim"
 build_multiplatform_image "${VERSION}/debian-slim/Dockerfile" "$BOOKWORM_SLIM_X86_LAST_LAYER_ID" "$BOOKWORM_SLIM_ARM_LAST_LAYER_ID" "${IMAGE_BASE}:${VERSION}-bookworm-slim" "${IMAGE_BASE}:${VERSION}-slim" "${IMAGE_BASE}:${VERSION}-debian-slim" $EXTRA_TAGS_BOOKWORM_SLIM
 
-
 build_multiplatform_image "${VERSION}/amazonlinux/Dockerfile" "$AMAZONLINUX_X86_LAST_LAYER_ID" "$AMAZONLINUX_ARM_LAST_LAYER_ID" "${IMAGE_BASE}:${VERSION}-amazonlinux" "${IMAGE_BASE}:${BRANCH_VERSION}-amazonlinux"
