@@ -42,9 +42,6 @@ if [[ "$VERSION" == "$LATEST_VERSION" ]]; then LATEST_TAG="${IMAGE_BASE}:latest"
 BRANCH_VERSION=${VERSION%??}
 MAJOR_VERSION=${BRANCH_VERSION%??}
 
-if [ "$MAJOR_VERSION" == "10" ]; then
-  build_multiplatform_image "${VERSION}/amazonlinux/Dockerfile" "$AMAZONLINUX_X86_LAST_LAYER_ID" "$AMAZONLINUX_ARM_LAST_LAYER_ID" "${IMAGE_BASE}:${VERSION}-amazonlinux" "${IMAGE_BASE}:${BRANCH_VERSION}-amazonlinux"
-fi
 
 EXTRA_TAGS_UBUNTU="${IMAGE_BASE}:${BRANCH_VERSION}-ubuntu ${IMAGE_BASE}:${BRANCH_VERSION} ${IMAGE_BASE}:${BRANCH_VERSION}-ubuntu22 ${IMAGE_BASE}:${BRANCH_VERSION}-ubuntu22.04"
 build_multiplatform_image "${VERSION}/ubuntu/Dockerfile" "$UBUNTU_X86_LAST_LAYER_ID" "$UBUNTU_ARM_LAST_LAYER_ID" "${IMAGE_BASE}:${VERSION}-ubuntu22.04" "${IMAGE_BASE}:${VERSION}-ubuntu" "${IMAGE_BASE}:${VERSION}-ubuntu22" "${IMAGE_BASE}:${VERSION}" $LATEST_TAG $EXTRA_TAGS_UBUNTU
@@ -55,7 +52,4 @@ build_multiplatform_image "${VERSION}/debian/Dockerfile" "$BOOKWORM_X86_LAST_LAY
 EXTRA_TAGS_BOOKWORM_SLIM="${IMAGE_BASE}:${BRANCH_VERSION}-bookworm-slim ${IMAGE_BASE}:${BRANCH_VERSION}-slim ${IMAGE_BASE}:${BRANCH_VERSION}-debian-slim"
 build_multiplatform_image "${VERSION}/debian-slim/Dockerfile" "$BOOKWORM_SLIM_X86_LAST_LAYER_ID" "$BOOKWORM_SLIM_ARM_LAST_LAYER_ID" "${IMAGE_BASE}:${VERSION}-bookworm-slim" "${IMAGE_BASE}:${VERSION}-slim" "${IMAGE_BASE}:${VERSION}-debian-slim" $EXTRA_TAGS_BOOKWORM_SLIM
 
-if [ "${MAJOR_VERSION}" == "9" ]; then
-  EXTRA_TAGS_CENTOS9="${IMAGE_BASE}:${BRANCH_VERSION}-centos9 ${IMAGE_BASE}:${BRANCH_VERSION}-centos"
-  build_multiplatform_image "${VERSION}/centos/Dockerfile" "$CENTOS9_X86_LAST_LAYER_ID" "$CENTOS9_ARM_LAST_LAYER_ID" "${IMAGE_BASE}:${VERSION}-centos9" "${IMAGE_BASE}:${VERSION}-centos" $EXTRA_TAGS_CENTOS9
-fi
+build_multiplatform_image "${VERSION}/amazonlinux/Dockerfile" "$AMAZONLINUX_X86_LAST_LAYER_ID" "$AMAZONLINUX_ARM_LAST_LAYER_ID" "${IMAGE_BASE}:${VERSION}-amazonlinux" "${IMAGE_BASE}:${BRANCH_VERSION}-amazonlinux"
