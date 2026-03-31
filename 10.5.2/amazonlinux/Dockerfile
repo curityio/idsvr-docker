@@ -27,7 +27,7 @@ ENV JAVA_HOME $IDSVR_HOME/lib/java/jre
 ENV PATH $IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH
 WORKDIR $IDSVR_HOME
 
-COPY idsvr-10.5.1-${TARGETARCH}/idsvr /opt/idsvr
+COPY idsvr-10.5.2-${TARGETARCH}/idsvr /opt/idsvr
 COPY first-run /opt/idsvr/etc/first-run
 
 CMD ["idsvr"]
