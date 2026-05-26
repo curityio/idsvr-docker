@@ -28,7 +28,7 @@ ENV PATH="$IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH"
 ENV JAVA_OPTS="-XX:MaxRAMPercentage=75.0"
 WORKDIR $IDSVR_HOME
 
-COPY idsvr-11.2.0-${TARGETARCH}/idsvr /opt/idsvr
+COPY idsvr-11.2.1-${TARGETARCH}/idsvr /opt/idsvr
 COPY first-run /opt/idsvr/etc/first-run
 
 CMD ["idsvr"]
