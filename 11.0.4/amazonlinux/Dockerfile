@@ -22,14 +22,13 @@ EXPOSE 4466
 
 RUN yum update -y && yum clean all
 
-ENV IDSVR_HOME /opt/idsvr
-ENV JAVA_HOME $IDSVR_HOME/lib/java/jre
-ENV PATH $IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH
+ENV IDSVR_HOME="/opt/idsvr"
+ENV JAVA_HOME="$IDSVR_HOME/lib/java/jre"
+ENV PATH="$IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH"
+ENV JAVA_OPTS="-XX:MaxRAMPercentage=75.0"
 WORKDIR $IDSVR_HOME
 
-COPY idsvr-11.0.3-${TARGETARCH}/idsvr /opt/idsvr
+COPY idsvr-11.0.4-${TARGETARCH}/idsvr /opt/idsvr
 COPY first-run /opt/idsvr/etc/first-run
-
-RUN chmod -R +w /opt/idsvr/var/.plugins/
 
 CMD ["idsvr"]
