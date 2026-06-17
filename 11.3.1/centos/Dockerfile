@@ -51,7 +51,7 @@ ENV PATH="$IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH"
 ENV JAVA_OPTS="-XX:MaxRAMPercentage=75.0"
 WORKDIR $IDSVR_HOME
 
-COPY --chown=10001:10000 idsvr-11.3.0-${TARGETARCH}/idsvr /opt/idsvr
+COPY --chown=10001:10000 idsvr-11.3.1-${TARGETARCH}/idsvr /opt/idsvr
 COPY --chown=10001:10000 first-run /opt/idsvr/etc/first-run
 COPY --from=openssl-builder /build/bin/openssl /bin/
 COPY --from=openssl-builder /build/lib/libssl.so.3 /lib64/
