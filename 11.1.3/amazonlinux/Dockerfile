@@ -9,16 +9,18 @@
 # For further information, please contact Curity AB.
 #
 
-FROM registry.access.redhat.com/ubi8/ubi
+FROM amazonlinux:2023
 
 LABEL maintainer="Curity AB <info@curity.se>"
+
+ARG TARGETARCH
 
 EXPOSE 8443
 EXPOSE 6749
 EXPOSE 4465
 EXPOSE 4466
 
-RUN groupadd --system --gid 10000 idsvr && useradd --system --no-create-home --uid 10001 --gid 10000 idsvr
+RUN yum update -y && yum clean all
 
 ENV IDSVR_HOME="/opt/idsvr"
 ENV JAVA_HOME="$IDSVR_HOME/lib/java/jre"
@@ -26,9 +28,7 @@ ENV PATH="$IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH"
 ENV JAVA_OPTS="-XX:MaxRAMPercentage=75.0"
 WORKDIR $IDSVR_HOME
 
-COPY --chown=10001:10000 idsvr-11.1.2/idsvr /opt/idsvr
-COPY --chown=10001:10000 first-run /opt/idsvr/etc/first-run
-
-USER 10001:10000
+COPY idsvr-11.1.3-${TARGETARCH}/idsvr /opt/idsvr
+COPY first-run /opt/idsvr/etc/first-run
 
 CMD ["idsvr"]
