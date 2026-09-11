@@ -9,7 +9,7 @@
 # For further information, please contact Curity AB.
 #
 
-FROM debian:bookworm-slim
+FROM debian:bookworm
 
 LABEL maintainer="Curity AB <info@curity.se>"
 
@@ -21,7 +21,7 @@ EXPOSE 4465
 EXPOSE 4466
 
 RUN apt-get update && apt-get upgrade -y && \
-	apt-get install -y openssl && \
+    apt-get install -y openssl && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* 
 
@@ -33,7 +33,7 @@ ENV PATH="$IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH"
 ENV JAVA_OPTS="-XX:MaxRAMPercentage=75.0"
 WORKDIR $IDSVR_HOME
 
-COPY --chown=10001:10000 idsvr-11.0.4-${TARGETARCH}/idsvr /opt/idsvr
+COPY --chown=10001:10000 idsvr-11.0.5-${TARGETARCH}/idsvr /opt/idsvr
 COPY --chown=10001:10000 first-run /opt/idsvr/etc/first-run
 
 USER 10001:10000
