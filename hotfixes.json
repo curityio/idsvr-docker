@@ -1,3 +1,10 @@
 {
-
+  "11.5.1": [
+    {
+      "original_files": [
+        "idsvr/lib/identityserver.cat-11.5.1-4596bfb384_obf.jar"
+      ],
+      "hotfix_path": "11-5-1-1-support-ios-27"
+    }
+  ]
 }
