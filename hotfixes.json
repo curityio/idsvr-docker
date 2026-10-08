@@ -1,4 +1,12 @@
 {
+  "10.3.5": [
+    {
+      "original_files": [
+        "idsvr/lib/identityserver.oauth-10.3.5-0dc0d8abcf.jar"
+      ],
+      "hotfix_path": "10-3-5-1-encode-certificate-organizationidentifier"
+    }
+  ],
   "11.5.1": [
     {
       "original_files": [
