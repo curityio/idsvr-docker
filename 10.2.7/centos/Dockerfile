@@ -45,12 +45,13 @@ RUN yum update -y && yum clean all
 
 RUN groupadd --system --gid 10000 idsvr && useradd --system --no-create-home --uid 10001 --gid 10000 idsvr
 
-ENV IDSVR_HOME /opt/idsvr
-ENV JAVA_HOME $IDSVR_HOME/lib/java/jre
-ENV PATH $IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH
+ENV IDSVR_HOME="/opt/idsvr"
+ENV JAVA_HOME="$IDSVR_HOME/lib/java/jre"
+ENV PATH="$IDSVR_HOME/bin:$JAVA_HOME/bin:$PATH"
+ENV JAVA_OPTS="-XX:MaxRAMPercentage=75.0"
 WORKDIR $IDSVR_HOME
 
-COPY --chown=10001:10000 idsvr-10.2.6-${TARGETARCH}/idsvr /opt/idsvr
+COPY --chown=10001:10000 idsvr-10.2.7-${TARGETARCH}/idsvr /opt/idsvr
 COPY --chown=10001:10000 first-run /opt/idsvr/etc/first-run
 COPY --from=openssl-builder /build/bin/openssl /bin/
 COPY --from=openssl-builder /build/lib/libssl.so.3 /lib64/
