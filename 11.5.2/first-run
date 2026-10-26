@@ -1,0 +1,8 @@
+#!/bin/bash
+
+## This Script will run only on the first run of the server and run the installer if the admin password is set in an
+## environment variable. It can be skipped by setting the environment variable $SKIP_INSTALL
+
+if [ -n "$PASSWORD" -a -z "$SKIP_INSTALL" ]; then
+    unattendedinstall
+fi
